@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <meta name="wishora-occasion" content="get-well" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Thiệp Chúc mau khỏe — Wishora</title>
+    <meta
+      name="description"
+      content="Gửi lời động viên đến người đang ốm. Tạo thiệp chúc mừng cá nhân hóa và gửi bằng một đường link."
+    />
+    <meta name="theme-color" content="#d62f5c" />
+    <meta name="color-scheme" content="light" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Wishora" />
+    <meta property="og:title" content="Thiệp Chúc mau khỏe — Wishora" />
+    <meta
+      property="og:description"
+      content="Gửi lời động viên đến người đang ốm. Tạo thiệp chúc mừng cá nhân hóa và gửi bằng một đường link."
+    />
+    <meta property="og:url" content="https://trongmobile.github.io/hpbd/o/get-well/" />
+    <meta
+      property="og:image"
+      content="https://trongmobile.github.io/hpbd/assets/og/get-well.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Chúc mau khỏe — thiệp chúc mừng Wishora" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Thiệp Chúc mau khỏe — Wishora" />
+    <meta
+      name="twitter:description"
+      content="Gửi lời động viên đến người đang ốm. Tạo thiệp chúc mừng cá nhân hóa và gửi bằng một đường link."
+    />
+    <meta
+      name="twitter:image"
+      content="https://trongmobile.github.io/hpbd/assets/og/get-well.png"
+    />
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Dancing+Script:wght@600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=Pacifico&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Quicksand:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/occasions.css" />
+
+    <script>
+      // Chọn view sớm để tránh nháy trang chủ khi mở link thiệp:
+      // có tham số thiệp mà không có ?page= → thiệp được chia sẻ.
+      (function () {
+        var r = document.documentElement;
+        var q = new URLSearchParams(location.search);
+        var isCard =
+          !q.has("page") &&
+          ["type", "name", "message", "theme", "occasion", "title", "effects", "anim"].some(function (k) {
+            return q.has(k);
+          });
+        r.dataset.view = isCard ? "greeting" : "site";
+        if (location.protocol === "file:") r.dataset.file = "1";
+      })();
+    </script>
+    <script type="module" src="js/app.js"></script>
+
+    <!-- GoatCounter: đếm lượt truy cập, không cookie. Thay YOUR_CODE bằng site code của bạn. -->
+    <script>
+      // Link thiệp chứa tên/lời chúc trong query nên chỉ ghi nhận: /greeting và /<page> (danh sách cố định).
+      window.goatcounter = {
+        path: function () {
+          if (document.documentElement.dataset.view === "greeting") return "/greeting";
+          var p = new URLSearchParams(location.search).get("page");
+          return ["occasions", "create", "collections", "guide"].indexOf(p) >= 0 ? "/" + p : "/";
+        },
+      };
+    </script>
+    <script
+      data-goatcounter="https://hpbd.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Bỏ qua điều hướng</a>
+    <p class="file-warning" role="alert">
+      Trang dùng ES modules nên cần chạy qua HTTP server (ví dụ
+      <code>python3 -m http.server</code>), không mở trực tiếp bằng file://.
+    </p>
+    <noscript
+      ><p class="file-warning" style="display: block">
+        Wishora cần bật JavaScript để hoạt động.
+      </p></noscript
+    >
+
+    <!-- ============ TRANG WEB (trang chủ, dịp lễ, bộ sưu tập, hướng dẫn, tạo thiệp) ============ -->
+    <div id="site-view">
+      <header class="site-header">
+        <a class="brand" href="./" data-nav aria-label="Wishora — trang chủ">
+          <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+            <defs><linearGradient id="brand-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6b8f" /><stop offset=".55" stop-color="#d62f5c" /><stop offset="1" stop-color="#8b2fc9" /></linearGradient></defs>
+            <rect width="32" height="32" rx="10" fill="url(#brand-g)" />
+            <path d="M7 12.5l4.4 11 4.6-9.2 4.6 9.2 4.4-11" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M16 4.6c.5 2 1.1 2.6 3 3.1-1.9.5-2.5 1.1-3 3.1-.5-2-1.1-2.6-3-3.1 1.9-.5 2.5-1.1 3-3.1z" fill="#ffd166" />
+          </svg>
+          <span class="brand-name">Wishora</span>
+        </a>
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+          <span class="sr-only">Mở menu</span><span class="nav-bars" aria-hidden="true"></span>
+        </button>
+        <nav class="site-nav" id="site-nav" aria-label="Điều hướng chính">
+          <a href="./" data-nav data-page-link="home">Trang chủ</a>
+          <a href="?page=occasions" data-nav data-page-link="occasions">Khám phá dịp lễ</a>
+          <a href="?page=collections" data-nav data-page-link="collections">Bộ sưu tập thiệp</a>
+          <a href="?page=guide" data-nav data-page-link="guide">Hướng dẫn</a>
+          <a class="btn btn-primary btn-sm nav-cta" href="?page=create" data-nav data-page-link="create">Tạo thiệp ngay</a>
+        </nav>
+      </header>
+
+      <div id="url-alert" class="alert" role="alert" hidden>
+        <span id="url-alert-text"></span>
+        <button type="button" class="alert-close" aria-label="Đóng thông báo">×</button>
+      </div>
+
+      <main id="main" tabindex="-1">
+        <!-- ===== Trang chủ ===== -->
+        <div data-page="home">
+          <section class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Gửi lời thương, trao niềm vui</p>
+              <h1>Every Occasion Deserves a Beautiful Wish</h1>
+              <p class="hero-vi">Mỗi dịp đặc biệt, một lời chúc ý nghĩa</p>
+              <p class="lead">
+                Tạo thiệp cá nhân hóa cho mọi dịp và gửi bất ngờ chỉ bằng một đường link. Không cần tài khoản.
+              </p>
+              <div class="hero-cta">
+                <a class="btn btn-primary" href="?page=create" data-nav>Tạo thiệp ngay</a>
+                <a class="btn btn-ghost" href="?page=occasions" data-nav>Khám phá mẫu thiệp</a>
+              </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+              <span class="hv-blob hv-b1"></span><span class="hv-blob hv-b2"></span>
+              <div class="hv-phone">
+                <span class="hv-notch"></span>
+                <div class="hv-screen is-active" data-theme="tet-traditional">
+                  <span class="hv-art hv-art-a">🏮</span><span class="hv-art hv-art-b">🌸</span>
+                  <div class="hv-panel">
+                    <p class="hv-hb">Chúc Mừng Năm Mới</p>
+                    <p class="hv-name">Gia đình Lan</p>
+                    <span class="hv-div">❀</span>
+                    <p class="hv-wish">Chúc cả nhà một năm mới an khang, thịnh vượng, vạn sự như ý!</p>
+                    <p class="hv-sign">Vạn sự như ý 🌼</p>
+                  </div>
+                </div>
+                <div class="hv-screen" data-theme="elegant-pink">
+                  <span class="hv-art hv-art-a">🌷</span><span class="hv-art hv-art-b">🌸</span>
+                  <div class="hv-panel">
+                    <p class="hv-hb">Chúc Mừng 20/10</p>
+                    <p class="hv-name">Mẹ yêu</p>
+                    <span class="hv-div">✿</span>
+                    <p class="hv-wish">Con chúc mẹ luôn khỏe mạnh, hạnh phúc và thật nhiều niềm vui.</p>
+                    <p class="hv-sign">Gửi với tất cả yêu thương</p>
+                  </div>
+                </div>
+                <div class="hv-screen" data-theme="christmas-wonderland">
+                  <span class="hv-art hv-art-a">🎄</span><span class="hv-art hv-art-b">🎁</span>
+                  <div class="hv-panel">
+                    <p class="hv-hb">Merry Christmas</p>
+                    <p class="hv-name">Minh Anh</p>
+                    <span class="hv-div">❄</span>
+                    <p class="hv-wish">Giáng sinh an lành! Chúc bạn một mùa lễ thật ấm áp bên người thương.</p>
+                    <p class="hv-sign">Merry Christmas 🎄</p>
+                  </div>
+                </div>
+              </div>
+              <span class="hv-chip hv-c1"><i><img src="assets/illustrations/li-xi-vn.svg" alt="" width="24" height="24" /></i>Tết</span>
+              <span class="hv-chip hv-c2"><i>🌷</i>8/3 · 20/10</span>
+              <span class="hv-chip hv-c3"><i>🎂</i>Sinh nhật</span>
+              <span class="hv-chip hv-c4"><i>💝</i>Valentine</span>
+              <span class="hv-chip hv-c5"><i>🔗</i>Gửi bằng một liên kết</span>
+            </div>
+          </section>
+
+          <section class="band" aria-labelledby="upcoming-title">
+            <div class="section-head">
+              <div>
+                <h2 id="upcoming-title">Sắp đến ngày đặc biệt</h2>
+                <p>Tính theo ngày hiện tại (múi giờ Việt Nam). Chọn một dịp để gửi lời chúc kịp lúc.</p>
+              </div>
+              <a class="link-more" href="?page=occasions&category=upcoming" data-nav>Xem tất cả →</a>
+            </div>
+            <ul class="upcoming-list" id="upcoming-list"></ul>
+          </section>
+
+          <section class="band" aria-labelledby="featured-title">
+            <div class="section-head">
+              <div>
+                <h2 id="featured-title">Dịp nổi bật</h2>
+                <p>Mỗi dịp có bộ theme, lời chúc và hiệu ứng riêng.</p>
+              </div>
+              <a class="link-more" href="?page=occasions" data-nav>Tất cả dịp lễ →</a>
+            </div>
+            <div class="occ-grid" id="featured-grid"></div>
+          </section>
+
+          <section class="band" aria-labelledby="how-title">
+            <h2 id="how-title">Gửi thiệp trong 3 bước</h2>
+            <ol class="steps">
+              <li><span class="step-n">1</span><strong>Chọn dịp</strong><p>Tết, 8/3, 20/10, 20/11, Giáng sinh, sinh nhật… hoặc một dịp riêng của bạn.</p></li>
+              <li><span class="step-n">2</span><strong>Viết lời chúc</strong><p>Chọn lời chúc gợi ý theo mối quan hệ rồi sửa lại cho thật riêng.</p></li>
+              <li><span class="step-n">3</span><strong>Gửi liên kết</strong><p>Sao chép link gửi qua Zalo, Messenger, WhatsApp, email… Người nhận không cần tài khoản.</p></li>
+            </ol>
+          </section>
+
+          <section class="band" aria-labelledby="themes-title">
+            <div class="section-head">
+              <div>
+                <h2 id="themes-title">Bộ sưu tập thiệp</h2>
+                <p>Hơn 30 theme: từ truyền thống trang trọng đến ngọt ngào, hiện đại.</p>
+              </div>
+              <a class="link-more" href="?page=collections" data-nav>Xem bộ sưu tập →</a>
+            </div>
+            <div class="theme-strip" id="theme-strip"></div>
+          </section>
+        </div>
+
+        <!-- ===== Khám phá dịp lễ ===== -->
+        <div data-page="occasions" hidden>
+          <header class="page-head">
+            <h1 id="occasions-title" tabindex="-1">Khám phá dịp lễ</h1>
+            <p>Tìm dịp bạn muốn gửi lời chúc. Gõ có dấu hoặc không dấu đều được.</p>
+          </header>
+          <form class="filter-bar" id="occ-filter" role="search" aria-label="Tìm và lọc dịp lễ" autocomplete="off">
+            <div class="filter-row">
+              <label class="sr-only" for="occ-q">Tìm dịp lễ</label>
+              <input id="occ-q" class="search-input" type="search" placeholder="Tìm dịp lễ… ví dụ: phu nu, tet, giang sinh" />
+              <label class="sr-only" for="occ-month">Tháng</label>
+              <select id="occ-month" class="select"></select>
+              <label class="sr-only" for="occ-region">Khu vực</label>
+              <select id="occ-region" class="select">
+                <option value="">Mọi khu vực</option>
+                <option value="VN">Việt Nam</option>
+                <option value="international">Quốc tế</option>
+              </select>
+              <label class="sr-only" for="occ-country">Quốc gia để tính ngày lễ</label>
+              <select id="occ-country" class="select" title="Quốc gia dùng để tính Ngày của Mẹ và Ngày của Cha"></select>
+            </div>
+            <div class="chips" id="occ-chips" role="group" aria-label="Danh mục"></div>
+            <label class="check"><input type="checkbox" id="occ-themes" /> Chỉ dịp có mẫu thiệp sẵn</label>
+          </form>
+          <p class="result-count" id="occ-count" aria-live="polite"></p>
+          <div class="occ-grid" id="occ-grid"></div>
+          <div class="empty" id="occ-empty" hidden>
+            <p class="empty-glyph" aria-hidden="true">🔍</p>
+            <h2>Không tìm thấy dịp phù hợp</h2>
+            <p>Thử bỏ bớt bộ lọc, đổi từ khóa — hoặc tự tạo thiệp với dịp cá nhân hóa.</p>
+            <button type="button" class="btn btn-ghost" id="occ-reset">Xóa bộ lọc</button>
+            <a class="btn btn-primary" href="?page=create&occasion=free-wish" data-nav>Viết lời chúc tự do</a>
+          </div>
+        </div>
+
+        <!-- ===== Bộ sưu tập ===== -->
+        <div data-page="collections" hidden>
+          <header class="page-head">
+            <h1 id="collections-title" tabindex="-1">Bộ sưu tập thiệp</h1>
+            <p>Mỗi theme có màu sắc, kiểu chữ, hình trang trí và hiệu ứng riêng. Chọn một mẫu để bắt đầu.</p>
+          </header>
+          <div id="collections-body"></div>
+        </div>
+
+        <!-- ===== Hướng dẫn ===== -->
+        <div data-page="guide" hidden>
+          <header class="page-head">
+            <h1 id="guide-title" tabindex="-1">Hướng dẫn</h1>
+            <p>Mọi thứ bạn cần biết để gửi một tấm thiệp.</p>
+          </header>
+          <div class="prose">
+            <h2>Cách tạo thiệp</h2>
+            <ol>
+              <li>Vào <a href="?page=create" data-nav>Tạo thiệp</a> hoặc chọn một dịp ở <a href="?page=occasions" data-nav>Khám phá dịp lễ</a>.</li>
+              <li>Nhập tên người nhận, chọn mối quan hệ (nếu muốn) để nhận lời chúc gợi ý, rồi chỉnh lại theo ý bạn.</li>
+              <li>Chọn theme, bật/tắt hiệu ứng và xem trước trên điện thoại hoặc máy tính.</li>
+              <li>Nhấn “Tạo liên kết” rồi sao chép hoặc chia sẻ.</li>
+            </ol>
+            <h2>Liên kết thiệp hoạt động thế nào?</h2>
+            <p>Toàn bộ nội dung thiệp nằm trong chính đường link — không lưu trên máy chủ, không cần tài khoản. Vì vậy ai có link đều xem được, và không thể thu hồi hay sửa thiệp đã gửi.</p>
+            <h2>Câu hỏi thường gặp</h2>
+            <h3>Link quá dài thì sao?</h3>
+            <p>Lời chúc càng dài, link càng dài. Một số ứng dụng chat có thể cắt link rất dài; hãy rút gọn lời chúc nếu người nhận mở không được.</p>
+            <h3>Vì sao một số dịp không có đếm ngược?</h3>
+            <p>Các dịp không có lịch cố định (như tốt nghiệp, xin lỗi…) không hiển thị đếm ngược. Dịp tính theo âm lịch chỉ đếm ngược khi đã có ngày được xác minh.</p>
+            <h3>Ngày của Mẹ và Ngày của Cha có khác theo quốc gia không?</h3>
+            <p>Có. Ở trang Khám phá dịp lễ bạn có thể chọn quốc gia để tính ngày. Mặc định là Việt Nam.</p>
+            <h3>Hiển thị link trên Zalo/Facebook có ảnh riêng cho từng thiệp không?</h3>
+            <p>Hiện chưa. Website tĩnh chỉ có ảnh xem trước chung của Wishora cho mọi liên kết.</p>
+            <p><a class="btn btn-primary" href="?page=create" data-nav>Tạo thiệp ngay</a></p>
+          </div>
+        </div>
+
+        <!-- ===== Tạo thiệp ===== -->
+        <div data-page="create" hidden>
+          <header class="page-head compact">
+            <button type="button" class="btn btn-text back-btn" id="btn-back">← Quay lại</button>
+            <h1 id="create-title" tabindex="-1">Tạo thiệp của bạn</h1>
+          </header>
+          <section class="workbench" id="create" aria-label="Tạo thiệp">
+            <form id="card-form" class="card-form" novalidate autocomplete="off">
+              <div class="field">
+                <label for="occasion">Dịp chúc mừng</label>
+                <select id="occasion" name="occasion" class="select select-block"></select>
+                <p class="field-note" id="occasion-note"></p>
+              </div>
+
+              <div class="field">
+                <label for="name">Người nhận <span class="req" aria-hidden="true">*</span></label>
+                <input id="name" name="name" type="text" maxlength="60" placeholder="Ví dụ: Minh Anh" required aria-describedby="name-error" />
+                <p class="error" id="name-error" role="alert"></p>
+              </div>
+
+              <fieldset class="field" id="relation-field">
+                <legend>Mối quan hệ với người nhận <small>(tùy chọn)</small></legend>
+                <div class="chips" id="relation-chips" role="radiogroup" aria-label="Mối quan hệ"></div>
+              </fieldset>
+
+              <div class="field">
+                <label for="title">Tiêu đề thiệp <small>(tùy chọn)</small></label>
+                <input id="title" name="title" type="text" maxlength="80" aria-describedby="title-error" />
+                <p class="error" id="title-error" role="alert"></p>
+              </div>
+
+              <div class="field">
+                <label for="message">Lời chúc <span class="req" aria-hidden="true">*</span></label>
+                <textarea id="message" name="message" rows="6" maxlength="1000" placeholder="Viết lời chúc thật đặc biệt dành cho người ấy..." required aria-describedby="message-error msg-count"></textarea>
+                <div class="field-foot">
+                  <p class="error" id="message-error" role="alert"></p>
+                  <span class="counter" id="msg-count" aria-live="polite">0 / 1.000</span>
+                </div>
+                <div class="suggest" id="suggest-box">
+                  <p class="suggest-title">Gợi ý lời chúc <small id="suggest-for"></small></p>
+                  <div class="suggest-list" id="suggest-list"></div>
+                </div>
+              </div>
+
+              <fieldset class="field">
+                <legend>Chọn theme</legend>
+                <div id="theme-grid" class="theme-grid" role="radiogroup" aria-label="Theme thiệp"></div>
+              </fieldset>
+
+              <fieldset class="field">
+                <legend>Tùy chọn hiệu ứng</legend>
+                <label class="switch">
+                  <input type="checkbox" id="opt-anim" role="switch" checked />
+                  <span class="switch-ui" aria-hidden="true"></span>
+                  <span class="switch-text"><strong>Hiệu ứng động</strong><small>Hạt trang trí, confetti và chuyển cảnh (tự điều chỉnh theo dịp)</small></span>
+                </label>
+                <label class="switch">
+                  <input type="checkbox" id="opt-sfx" role="switch" checked />
+                  <span class="switch-ui" aria-hidden="true"></span>
+                  <span class="switch-text"><strong>Hiệu ứng âm thanh</strong><small>Tiếng mở thiệp và chuông chúc mừng theo từng dịp — chỉ phát khi người nhận bấm mở, họ vẫn tắt được</small></span>
+                </label>
+                <label class="switch" id="music-row">
+                  <input type="checkbox" id="opt-music" role="switch" />
+                  <span class="switch-ui" aria-hidden="true"></span>
+                  <span class="switch-text"><strong>Nhạc nền</strong><small>Giai điệu Happy Birthday — mặc định tắt, chỉ phát khi bạn bật</small></span>
+                </label>
+              </fieldset>
+
+              <div class="actions">
+                <button type="button" class="btn btn-ghost" id="btn-preview">Xem trước thiệp</button>
+                <button type="submit" class="btn btn-primary" id="btn-create">Tạo liên kết thiệp</button>
+                <button type="button" class="btn btn-ghost btn-wide" id="btn-gif">🎞️ Xuất GIF (điện thoại)</button>
+              </div>
+
+              <section id="gif-panel" class="gif-panel" aria-live="polite" hidden>
+                <h3>Ảnh GIF thiệp</h3>
+                <div class="gif-progress" id="gif-progress-wrap">
+                  <progress id="gif-progress" max="100" value="0" aria-label="Tiến độ tạo GIF"></progress>
+                  <span id="gif-status">Đang tạo GIF…</span>
+                </div>
+                <div class="gif-done" id="gif-done" hidden>
+                  <img id="gif-preview" class="gif-preview" alt="Xem trước ảnh GIF của thiệp" width="180" height="320" />
+                  <div class="gif-side">
+                    <p id="gif-info" class="gif-info"></p>
+                    <div class="result-actions">
+                      <a class="btn btn-primary" id="gif-download" href="#" download="wishora.gif">Tải GIF về máy</a>
+                      <button type="button" class="btn btn-ghost" id="gif-share" hidden>Gửi GIF…</button>
+                    </div>
+                    <p class="url-note gif-note">GIF được vẽ lại từ thiệp (bố cục, màu, chữ, hiệu ứng) ở khổ điện thoại 360×640, không có âm thanh. Gửi qua Zalo/Messenger nên chọn "gửi dạng tệp" để ảnh vẫn chuyển động.</p>
+                  </div>
+                </div>
+              </section>
+
+              <section id="result" class="result" aria-live="polite" hidden>
+                <h3>🎉 Thiệp đã sẵn sàng!</h3>
+                <p class="result-hint">Gửi liên kết này cho người nhận — họ không cần tài khoản.</p>
+                <input id="share-url" class="share-url" type="text" readonly aria-label="Liên kết chia sẻ" />
+                <p id="url-note" class="url-note" hidden></p>
+                <div class="result-actions">
+                  <button type="button" class="btn btn-primary" id="btn-copy">Sao chép liên kết</button>
+                  <a class="btn btn-ghost" id="btn-open" href="#" target="_blank" rel="noopener">Mở thiệp</a>
+                  <button type="button" class="btn btn-ghost" id="btn-share" hidden>Chia sẻ…</button>
+                  <button type="button" class="btn btn-text" id="btn-edit">Chỉnh sửa thiệp</button>
+                  <button type="button" class="btn btn-text" id="btn-new">Tạo thiệp mới</button>
+                </div>
+              </section>
+            </form>
+
+            <aside class="preview-col" aria-label="Xem trước thiệp">
+              <div class="preview-head">
+                <h2>Xem trước trực tiếp</h2>
+                <div class="seg" role="group" aria-label="Kích thước xem trước">
+                  <button type="button" data-size="mobile" aria-pressed="true">Điện thoại</button>
+                  <button type="button" data-size="desktop" aria-pressed="false">Máy tính</button>
+                </div>
+              </div>
+              <div class="preview-frame" id="preview-frame" data-size="mobile">
+                <div class="preview-host" id="preview-host"></div>
+              </div>
+              <button type="button" class="btn btn-text preview-toggle" id="btn-stage-toggle">Xem màn hình chúc mừng →</button>
+            </aside>
+          </section>
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <p>
+          <strong>Wishora</strong> — Gửi lời thương, trao niềm vui. Dữ liệu thiệp nằm hoàn toàn trong đường link, không lưu trên máy chủ.
+        </p>
+      </footer>
+    </div>
+
+    <!-- ============ TRANG THIỆP ĐƯỢC CHIA SẺ ============ -->
+    <div id="greeting-view"></div>
+
+    <!-- Xem trước toàn màn hình -->
+    <div id="preview-modal" class="modal" role="dialog" aria-modal="true" aria-label="Xem trước thiệp" hidden>
+      <button type="button" class="modal-close" id="modal-close">← Quay lại chỉnh sửa</button>
+      <div class="modal-host" id="modal-host"></div>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

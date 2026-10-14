@@ -1,0 +1,14 @@
+{
+  "name": "wishora",
+  "private": true,
+  "type": "module",
+  "description": "Wishora — nền tảng tạo thiệp chúc mừng cho mọi dịp (HTML/CSS/JS thuần)",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "start": "python3 -m http.server 8000",
+    "build:pages": "node tools/build-pages.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.0"
+  }
+}

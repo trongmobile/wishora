@@ -1,0 +1,143 @@
+/* ==========================================================
+   Wishora — animations.css: keyframes, hạt trang trí, quà & phong bì
+   ========================================================== */
+
+/* ---------- Keyframes dùng chung ---------- */
+@keyframes popIn { from { opacity: 0; transform: translateY(12px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.12); opacity: 1; } }
+@keyframes pulseBtn { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+@keyframes stepIn { from { opacity: 0; transform: var(--step-from); } to { opacity: 1; transform: none; } }
+@keyframes twinkleLayer { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes cloudDrift { from { translate: -14px 0; } to { translate: 40px 8px; } }
+@keyframes sway { 0%, 100% { rotate: -3deg; } 50% { rotate: 4deg; } }
+@keyframes firework {
+  0% { transform: scale(0.15); opacity: 0; }
+  8% { opacity: 1; }
+  55% { opacity: 0.9; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+
+/* ---------- Thiệp: xuất hiện từng bước ---------- */
+.stage[data-anim="on"] .reveal.play .step {
+  animation: stepIn var(--step-dur) var(--step-ease) both;
+  animation-delay: calc(var(--i) * 0.24s + 0.1s);
+}
+.stage[data-anim="on"] .reveal.play .recipient.step { animation-name: stepIn; }
+.stage[data-anim="on"] .reveal.play .panel { animation: popIn 0.7s var(--ease) both; }
+.stage[data-theme="candy"][data-anim="on"] .reveal.play .panel { animation: none; }
+
+/* ---------- Hạt trang trí nền ---------- */
+.amb {
+  position: absolute; left: var(--x); top: var(--y); font-size: var(--sz); line-height: 1; color: var(--amb-color);
+  opacity: 0; will-change: transform, opacity; user-select: none;
+}
+.amb-rise { top: 100%; animation: ambRise var(--dur) linear var(--delay) infinite; }
+.amb-fall { top: -8%; animation: ambFall var(--dur) linear var(--delay) infinite; }
+.amb-drift { animation: ambDrift var(--dur) ease-in-out var(--delay) infinite; }
+.amb-twinkle { animation: ambTwinkle var(--dur) ease-in-out var(--delay) infinite; }
+@keyframes ambRise {
+  0% { transform: translate3d(0, 0, 0) rotate(0); opacity: 0; }
+  10%, 85% { opacity: 0.9; }
+  100% { transform: translate3d(var(--dx), -118cqh, 0) rotate(var(--rot)); opacity: 0; }
+}
+@keyframes ambFall {
+  0% { transform: translate3d(0, 0, 0) rotate(0); opacity: 0; }
+  10%, 85% { opacity: 0.85; }
+  100% { transform: translate3d(var(--dx), 118cqh, 0) rotate(calc(var(--rot) * 4)); opacity: 0; }
+}
+@keyframes ambDrift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(calc(var(--rot) * -0.3)); opacity: 0.75; }
+  50% { transform: translate3d(var(--dx), -22px, 0) rotate(calc(var(--rot) * 0.3)); opacity: 1; }
+}
+@keyframes ambTwinkle {
+  0%, 100% { transform: scale(0.4); opacity: 0.15; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* ---------- Confetti ---------- */
+.cf {
+  position: absolute; top: -6%; left: var(--x); width: var(--w); height: var(--h); background: var(--c);
+  opacity: 0; will-change: transform, opacity; animation: cfFall var(--dur) cubic-bezier(0.3, 0.55, 0.5, 1) var(--delay) forwards;
+}
+.cf-round { border-radius: 50%; }
+.cf-char { width: auto; height: auto; background: none; font-size: calc(var(--w) * 2); line-height: 1; }
+@keyframes cfFall {
+  0% { transform: translate3d(0, 0, 0) rotate(0); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translate3d(var(--dx), 112cqh, 0) rotate(var(--rot)); opacity: 0; }
+}
+
+/* ---------- Tắt hiệu ứng ---------- */
+.stage[data-anim="off"] .ambient, .stage[data-anim="off"] .confetti-layer { display: none; }
+.stage[data-anim="off"] *, .stage[data-anim="off"] *::before, .stage[data-anim="off"] *::after { animation: none !important; transition: none !important; }
+.stage[data-anim="off"][data-theme="gold"] .stage-art::before,
+.stage[data-anim="off"][data-theme="gold"] .stage-art::after { opacity: 0.35; }
+
+/* ==========================================================
+   Hộp quà
+   ========================================================== */
+.gift, .envelope { position: relative; width: 100%; height: 100%; animation: float 3.4s ease-in-out infinite; }
+.gift-glow {
+  position: absolute; left: 50%; top: 50%; width: 130%; aspect-ratio: 1; border-radius: 50%; translate: -50% -50%; z-index: -1;
+  background: radial-gradient(circle, var(--glow), transparent 62%); opacity: 0.35; animation: breathe 3.4s ease-in-out infinite;
+}
+.gift-box {
+  position: absolute; left: 9%; right: 9%; bottom: 0; height: 56%; border-radius: 6% 6% 10% 10%;
+  background: linear-gradient(var(--gift-1), var(--gift-2)); border: var(--gift-border); box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28), inset 0 -10px 0 rgba(0, 0, 0, 0.12);
+}
+.gift-box::before { content: ""; position: absolute; left: 43%; width: 14%; top: 0; bottom: 0; background: var(--ribbon); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08); }
+.gift-lid {
+  position: absolute; left: 3%; right: 3%; bottom: 52%; height: 24%; border-radius: 10%; transform-origin: 0 100%;
+  background: linear-gradient(var(--gift-1), var(--gift-2)); border: var(--gift-border); filter: brightness(1.12); box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+}
+.gift-lid::before { content: ""; position: absolute; left: 44.5%; width: 11%; top: 0; bottom: 0; background: var(--ribbon); }
+.gift-bow { position: absolute; left: 50%; bottom: 96%; width: 38%; height: 70%; translate: -50% 0; }
+.gift-bow::before, .gift-bow::after {
+  content: ""; position: absolute; bottom: 0; width: 52%; height: 78%; border: clamp(4px, 1.4cqmin, 7px) solid var(--ribbon); background: transparent;
+}
+.gift-bow::before { left: 0; border-radius: 80% 80% 10% 80%; transform: rotate(-20deg); transform-origin: 100% 100%; }
+.gift-bow::after { right: 0; border-radius: 80% 80% 80% 10%; transform: rotate(20deg); transform-origin: 0 100%; }
+
+/* ---------- Mở quà ---------- */
+.stage[data-state="opening"] .intro-obj { animation: shake 0.45s ease-in-out; }
+.stage[data-state="opening"] .gift, .stage[data-state="opening"] .envelope { animation: none; }
+.stage[data-state="opening"] .gift-lid { animation: lidOff 0.7s var(--ease) 0.35s forwards; }
+.stage[data-state="opening"] .gift-glow { animation: glowBurst 0.9s ease-out 0.3s forwards; }
+.stage[data-state="opening"] .intro { animation: introOut 0.35s ease-in 0.62s forwards; }
+@keyframes shake {
+  0%, 100% { transform: rotate(0); } 20% { transform: rotate(-6deg) scale(1.03); } 40% { transform: rotate(6deg) scale(1.03); }
+  60% { transform: rotate(-4deg); } 80% { transform: rotate(3deg); }
+}
+@keyframes lidOff { to { transform: translate(-34%, -190%) rotate(-38deg); opacity: 0; } }
+@keyframes glowBurst { 0% { opacity: 0.4; transform: scale(1); } 60% { opacity: 1; } 100% { opacity: 0; transform: scale(2.6); } }
+@keyframes introOut { to { opacity: 0; transform: scale(1.04); } }
+
+/* ==========================================================
+   Phong bì
+   ========================================================== */
+.envelope { height: 70%; margin-top: 15%; perspective: 700px; }
+.env-back { position: absolute; inset: 0; border-radius: 6%; background: var(--env-2); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.2); }
+.env-letter {
+  position: absolute; left: 9%; right: 9%; top: 8%; height: 78%; padding: 12% 10% 0; border-radius: 5%; background: #fff;
+  display: flex; flex-direction: column; gap: 10%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); z-index: 1;
+}
+.env-letter .line { display: block; height: 5%; min-height: 3px; border-radius: 99px; background: var(--env-1); opacity: 0.8; }
+.env-letter .line.short { width: 60%; }
+.env-front { position: absolute; inset: 0; z-index: 2; border-radius: 6%; background: var(--env-1); clip-path: polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%); filter: drop-shadow(0 -2px 3px rgba(0, 0, 0, 0.12)); }
+.env-flap { position: absolute; left: 0; right: 0; top: 0; height: 56%; z-index: 3; background: var(--env-3); clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: 50% 0; border-radius: 6% 6% 0 0; }
+.env-seal {
+  position: absolute; left: 50%; top: 48%; z-index: 4; width: 17%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%;
+  display: grid; place-items: center; background: var(--seal); color: #fff; font-size: clamp(0.8rem, 3.6cqmin, 1.5rem); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+.stage[data-state="opening"] .env-seal { animation: sealOff 0.3s ease-in forwards; }
+.stage[data-state="opening"] .env-flap { animation: flapOpen 0.5s var(--ease) 0.2s forwards; }
+.stage[data-state="opening"] .env-letter { animation: letterUp 0.6s var(--ease) 0.5s forwards; }
+@keyframes sealOff { to { opacity: 0; transform: scale(0.4); } }
+@keyframes flapOpen { 0% { transform: rotateX(0); z-index: 3; } 49% { z-index: 3; } 50% { z-index: 0; } 100% { transform: rotateX(180deg); z-index: 0; } }
+@keyframes letterUp { to { transform: translateY(-46%); z-index: 3; } }
+
+/* ---------- Giảm chuyển động ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .stage .btn-open { animation: none; }
+}

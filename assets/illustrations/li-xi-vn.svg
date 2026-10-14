@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="14 34 218 196" width="218" height="196" role="img" aria-label="Bao lì xì đỏ với hoa mai vàng">
+  <defs>
+    <linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e53545"/><stop offset=".55" stop-color="#c3182b"/><stop offset="1" stop-color="#9a0e20"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffe9a0"/><stop offset=".5" stop-color="#f3bd35"/><stop offset="1" stop-color="#d8970f"/></linearGradient>
+    <radialGradient id="shine" cx=".3" cy=".2" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".28"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+    <!-- Hoa mai: 5 cánh tròn màu vàng, nhụy cam -->
+    <g id="mai">
+      <g fill="#ffd13a" stroke="#eba20c" stroke-width=".9">
+        <circle cx="0" cy="-8.2" r="6.2"/><circle cx="7.8" cy="-2.5" r="6.2"/><circle cx="4.8" cy="6.6" r="6.2"/>
+        <circle cx="-4.8" cy="6.6" r="6.2"/><circle cx="-7.8" cy="-2.5" r="6.2"/>
+      </g>
+      <circle r="3.6" fill="#f08a0c"/>
+      <g fill="#fff3b0"><circle cx="0" cy="-1.6" r=".9"/><circle cx="1.6" cy="0" r=".9"/><circle cx="0" cy="1.6" r=".9"/><circle cx="-1.6" cy="0" r=".9"/></g>
+    </g>
+    <g id="bud"><circle r="4" fill="#ffc21f" stroke="#eba20c" stroke-width=".8"/><circle r="1.6" fill="#f08a0c"/></g>
+  </defs>
+
+  <!-- bóng đổ -->
+  <ellipse cx="112" cy="222" rx="62" ry="9" fill="#5a0a14" opacity=".28" filter="url(#soft)"/>
+
+  <!-- cành mai phía sau -->
+  <g fill="none" stroke="#6a3a1d" stroke-linecap="round">
+    <path d="M178 196 C 196 158, 190 112, 166 74" stroke-width="4.5"/>
+    <path d="M187 142 C 202 134, 212 122, 214 106" stroke-width="3"/>
+    <path d="M176 100 C 168 90, 160 86, 150 84" stroke-width="2.6"/>
+    <path d="M190 168 C 204 166, 214 160, 220 150" stroke-width="2.6"/>
+  </g>
+  <use href="#mai" transform="translate(166 70) scale(1.15) rotate(8)"/>
+  <use href="#mai" transform="translate(214 102) scale(.95) rotate(-14)"/>
+  <use href="#mai" transform="translate(148 84) scale(.8) rotate(22)"/>
+  <use href="#mai" transform="translate(221 148) scale(.85)"/>
+  <use href="#bud" transform="translate(190 112)"/>
+  <use href="#bud" transform="translate(176 100) scale(.8)"/>
+  <use href="#bud" transform="translate(150 60) scale(.9)"/>
+
+  <!-- bao lì xì -->
+  <g transform="rotate(-6 110 140)">
+    <rect x="56" y="48" width="108" height="164" rx="12" fill="url(#red)"/>
+    <rect x="56" y="48" width="108" height="164" rx="12" fill="url(#shine)"/>
+    <rect x="56" y="48" width="108" height="164" rx="12" fill="none" stroke="#7d0c1c" stroke-width="1.5"/>
+    <!-- viền vàng kép -->
+    <rect x="64" y="56" width="92" height="148" rx="7" fill="none" stroke="url(#gold)" stroke-width="2"/>
+    <rect x="69" y="61" width="82" height="138" rx="4" fill="none" stroke="url(#gold)" stroke-width=".9" stroke-dasharray="2.2 3"/>
+    <!-- họa tiết góc -->
+    <g fill="url(#gold)"><circle cx="76" cy="73" r="2.6"/><circle cx="144" cy="73" r="2.6"/><circle cx="76" cy="187" r="2.6"/><circle cx="144" cy="187" r="2.6"/></g>
+    <!-- huy chương hoa mai -->
+    <circle cx="110" cy="118" r="33" fill="#a90f22" stroke="url(#gold)" stroke-width="2.6"/>
+    <circle cx="110" cy="118" r="27.5" fill="none" stroke="#ffd96b" stroke-width=".9" stroke-dasharray="1.8 2.6"/>
+    <use href="#mai" transform="translate(110 118) scale(1.7)"/>
+    <!-- lá mai nhỏ hai bên huy chương -->
+    <g fill="url(#gold)" opacity=".95">
+      <path d="M72 152q10-6 18 2-8 7-18-2z"/><path d="M148 152q-10-6-18 2 8 7 18-2z"/>
+    </g>
+    <!-- sóng vàng phía dưới -->
+    <path d="M78 172q6-8 12 0t12 0 12 0 12 0 12 0" fill="none" stroke="url(#gold)" stroke-width="2" stroke-linecap="round"/>
+    <path d="M86 182q5-6 10 0t10 0 10 0 10 0 10 0" fill="none" stroke="url(#gold)" stroke-width="1.4" stroke-linecap="round" opacity=".8"/>
+  </g>
+
+  <!-- cánh hoa rơi -->
+  <g fill="#ffd13a" opacity=".9">
+    <ellipse cx="38" cy="86" rx="5" ry="3.4" transform="rotate(-30 38 86)"/>
+    <ellipse cx="26" cy="140" rx="4" ry="2.8" transform="rotate(20 26 140)"/>
+    <ellipse cx="46" cy="192" rx="4.4" ry="3" transform="rotate(-15 46 192)"/>
+    <ellipse cx="206" cy="196" rx="4" ry="2.8" transform="rotate(35 206 196)"/>
+  </g>
+</svg>
