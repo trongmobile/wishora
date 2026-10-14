@@ -7,6 +7,7 @@ import { nextOccurrence, formatDate, countdownLabel } from './calendar.js';
 import { goBack, routeHref, navigate } from './router.js';
 import { exportGif, gifFileName } from './gif-export.js';
 import { enhanceSelect } from './dropdown.js';
+import { track } from './analytics.js';
 import * as music from './music.js';
 
 const $ = (sel) => document.querySelector(sel);
@@ -324,6 +325,7 @@ export function initCreator() {
   gifBtn.addEventListener('click', async () => {
     const data = validate();
     if (!data) return;
+    track('gif-export');
     resetGif();
     const run = gifRun;
     gifBtn.disabled = true;
@@ -360,8 +362,11 @@ export function initCreator() {
     }
   });
 
+  $('#gif-download').addEventListener('click', () => track('gif-download'));
+
   gifShare.addEventListener('click', async () => {
     if (!gifFile) return;
+    track('share-gif');
     try {
       await navigator.share({ files: [gifFile], title: `Thiệp ${occasion.name}`, text: `Một lời chúc dành cho ${nameInput.value.trim()} 🎁` });
     } catch (err) {
@@ -372,6 +377,7 @@ export function initCreator() {
   shareUrl.addEventListener('focus', () => shareUrl.select());
 
   $('#btn-copy').addEventListener('click', async () => {
+    track('copy-link');
     if (await copyText(shareUrl.value)) showToast('Đã sao chép liên kết!');
     else {
       shareUrl.select();
@@ -383,6 +389,7 @@ export function initCreator() {
   if (typeof navigator.share === 'function') {
     btnShare.hidden = false;
     btnShare.addEventListener('click', async () => {
+      track('share');
       try {
         await navigator.share({
           title: `Thiệp ${occasion.name}`,

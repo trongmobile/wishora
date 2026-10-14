@@ -35,6 +35,7 @@ wishora/
 │   ├── occasion-engine.js  # truy vấn dịp: tìm kiếm, lọc, sắp tới, gợi ý
 │   ├── calendar.js         # tính ngày kế tiếp (cố định / âm lịch / theo quy tắc)
 │   ├── music.js            # nhạc Happy Birthday (Web Audio, chỉ dịp sinh nhật)
+│   ├── analytics.js        # đếm lượt nhấn nút (GoatCounter events)
 │   ├── fx.js               # hạt trang trí nền + confetti dùng chung (thiệp và hero)
 │   ├── dropdown.js         # dropdown tự dựng thay <select> (popover / bottom-sheet)
 │   ├── sfx.js              # hiệu ứng âm thanh (Web Audio)
@@ -125,7 +126,7 @@ python3 -m http.server 8000      # hoặc: npm start / npx serve .
 Mở `http://localhost:8000`. Dự án dùng ES modules nên **không mở bằng `file://`**.
 
 ```bash
-npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp (32 test)
+npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp (37 test)
 ```
 
 ## Triển khai
@@ -149,6 +150,23 @@ npm run build:pages -- --html   # chỉ sinh HTML, không cần trình duyệt
 ```
 
 Chạy lại mỗi khi sửa `index.html`, thêm/đổi dịp hoặc theme. `npm test` sẽ báo đỏ nếu trang tĩnh đã cũ hoặc thiếu ảnh. Gốc site (dùng cho `og:url`, `og:image`) lấy từ `og:url` trong `index.html` — đổi domain/tên repo thì sửa chỗ đó (và 2 URL ảnh) rồi build lại. Link cũ ở gốc site vẫn hoạt động, chỉ dùng ảnh xem trước chung.
+
+## Thống kê lượt truy cập và lượt nhấn
+
+Site dùng [GoatCounter](https://www.goatcounter.com) (không cookie, không lưu dữ liệu cá nhân; script nhúng trong `index.html`, tài khoản `hpbd.goatcounter.com` — đổi `data-goatcounter` nếu bạn dùng tài khoản khác). Lượt xem trang được đếm theo `/`, `/occasions`, `/create`, `/collections`, `/guide`, `/greeting` (link thiệp không bao giờ bị ghi kèm tên hay lời chúc).
+
+Lượt nhấn nút được đếm bằng *event* (`js/analytics.js`), xem trong GoatCounter ở bảng đường dẫn bằng cách bật hiển thị events:
+
+| Event (đường dẫn) | Khi nào |
+|---|---|
+| `click/create-card/<id dịp>` | nhấn "Tạo thiệp" trên thẻ dịp (Khám phá dịp lễ, Dịp nổi bật, Sắp đến ngày đặc biệt) — đếm riêng theo từng dịp |
+| `click/share` | nhấn "Chia sẻ…" |
+| `click/copy-link` | nhấn "Sao chép liên kết" |
+| `click/gif-download` | nhấn "Tải GIF về máy" |
+| `click/gif-export` | nhấn "Xuất GIF (điện thoại)" (bắt đầu tạo GIF) |
+| `click/share-gif` | nhấn "Gửi GIF…" |
+
+Event chỉ mang tên nút và id dịp (chữ, số, gạch ngang), không có tên người nhận, lời chúc hay link thiệp. Đây là số lần *nhấn* nút, không phải số lần chia sẻ/sao chép thành công. GoatCounter bỏ qua `localhost` và người dùng bật trình chặn quảng cáo, nên số liệu thấp hơn thực tế. Thêm event mới: khai báo trong `EVENTS` của `js/analytics.js` rồi gọi `track('<tên>')`.
 
 ## Giới hạn
 

@@ -5,6 +5,7 @@ import { FILTERS, search, upcoming, getEnabled } from './occasion-engine.js';
 import { countdownLabel, formatDate } from './calendar.js';
 import { routeHref, navigate } from './router.js';
 import { enhanceSelect } from './dropdown.js';
+import { track } from './analytics.js';
 import { getTheme } from './data/themes.js';
 import { ambientFragment, confettiFragment } from './fx.js';
 
@@ -56,8 +57,10 @@ export function occasionCard({ occasion: o, next }) {
   else if (o.dateType === 'none') when = 'Gửi bất cứ lúc nào';
   else if (o.dateType === 'rule') when = 'Chọn quốc gia để xem ngày';
   else when = 'Chưa có dữ liệu ngày chính xác';
-  foot.append(el('span', 'occ-date', when), link('Tạo thiệp', createHref(o.id), 'btn btn-ghost btn-sm'));
-  foot.lastChild.setAttribute('aria-label', `Tạo thiệp ${o.name}`);
+  const cta = link('Tạo thiệp', createHref(o.id), 'btn btn-ghost btn-sm');
+  cta.setAttribute('aria-label', `Tạo thiệp ${o.name}`);
+  cta.addEventListener('click', () => track('create-card', o.id));
+  foot.append(el('span', 'occ-date', when), cta);
 
   card.append(cover, body, foot);
   return card;
@@ -122,7 +125,9 @@ export function renderHome() {
     glyph.append(coverArt(o, 'up-emoji', 'up-img'));
     glyph.dataset.theme = o.cover.theme;
     glyph.setAttribute('aria-hidden', 'true');
-    li.append(glyph, mid, left, link('Tạo thiệp', createHref(o.id), 'btn btn-primary btn-sm'));
+    const cta = link('Tạo thiệp', createHref(o.id), 'btn btn-primary btn-sm');
+    cta.addEventListener('click', () => track('create-card', o.id));
+    li.append(glyph, mid, left, cta);
     list.append(li);
   });
   $('#upcoming-list').closest('section').hidden = items.length === 0;
