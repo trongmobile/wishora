@@ -167,6 +167,7 @@ main:focus { outline: none; }
 .prose p, .prose li { color: var(--c-muted); }
 .prose a:not(.btn) { color: var(--c-accent-dark); }
 .prose ol { padding-left: 1.2rem; }
+.prose .prose-cta { margin-top: var(--sp-6); }
 
 /* ---------- Form tạo thiệp mở rộng ---------- */
 .field small { color: var(--c-muted); font-weight: 400; }
