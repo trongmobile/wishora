@@ -188,7 +188,7 @@ Workflow `.github/workflows/weekly-seo.yml` chạy 8:00 sáng thứ Hai (giờ V
 2. Lời chúc được lọc lại (emoji, hashtag, tên Wishora, không dấu, ngoài 40–300 ký tự, trùng lời chúc cũ) rồi ghi vào `js/data/messages-auto.js`. `messages.js` nối file này sau lời chúc viết tay, nên lời chúc mới hiện trên trang `o/<dịp>/` (nội dung SEO) và trong gợi ý của form.
 3. Workflow chạy `npm run build:pages -- --html`, `npm test`, rồi mở PR kèm danh sách lời chúc, số liệu GoatCounter và caption gợi ý để đăng tay cho dịp gần nhất còn 3–10 ngày. Duyệt, sửa hoặc xóa lời chúc ngay trong PR rồi merge thì site tự deploy.
 
-Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/marketing/message-rules.md), được đưa nguyên văn vào prompt; sửa file đó để đổi giọng văn. Giọng văn của caption lấy từ mục "Bài đăng Facebook / Zalo" trong `wishora-marketing.md`.
+Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/marketing/message-rules.md), được đưa nguyên văn vào prompt; sửa file đó để đổi giọng văn. Giọng văn của caption nằm trong [`tools/marketing/caption-style.md`](tools/marketing/caption-style.md).
 
 **Cài đặt một lần** (repo trên GitHub):
 

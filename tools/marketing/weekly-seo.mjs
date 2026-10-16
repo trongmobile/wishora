@@ -118,7 +118,7 @@ if (target) {
   const url = `${site}o/${target.occasion.slug}/`;
   const withLink = (s) => (String(s).includes(url) ? String(s).trim() : `${String(s).trim()}\n${url}`);
   try {
-    const c = await gemini(captionPrompt(target, url, section(read('wishora-marketing.md'), '## Bài đăng Facebook / Zalo')), captionSchema);
+    const c = await gemini(captionPrompt(target, url, section(read('tools/marketing/caption-style.md'), '## Giọng văn')), captionSchema);
     caption = { ...target, long: withLink(c.long), short: withLink(c.short) };
   } catch (err) {
     caption = { ...target, error: err.message };

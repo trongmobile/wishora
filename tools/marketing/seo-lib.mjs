@@ -132,14 +132,14 @@ export function renderAutoFile(source, auto) {
   return `${source.slice(0, at)}export const AUTO_MESSAGES = ${JSON.stringify(auto, null, 2)};\n`;
 }
 
-/** Dịp gần nhất còn 3–10 ngày để đăng tay (wishora-marketing.md: đăng trước dịp 3–5 ngày). `list` đã sắp theo ngày. */
+/** Dịp gần nhất còn 3–10 ngày để đăng tay (đăng trước dịp 3–5 ngày). `list` đã sắp theo ngày. */
 export const captionTarget = (list) => list.find((x) => x.next && x.next.days >= 3 && x.next.days <= 10) ?? null;
 
 export function captionPrompt({ occasion, next }, url, styleGuide) {
   return [
     'Bạn viết bài đăng mạng xã hội giới thiệu Wishora, website tạo thiệp chúc mừng online miễn phí: chọn dịp, nhập tên người nhận, chọn lời chúc gợi ý theo mối quan hệ, rồi gửi thiệp bằng một đường link qua Zalo/Messenger. Người nhận mở link thấy hộp quà hoặc phong bì, bấm mở và xem lời chúc hiện ra cùng hiệu ứng. Không cài app, không đăng ký.',
     `## Dịp\n${occasion.name} — ${formatDate(next.date)} (còn ${next.days} ngày)\nMô tả: ${occasion.description}\nLink tạo thiệp cho dịp này: ${url}`,
-    `## Giọng văn mẫu (bài cho một dịp khác: chỉ học giọng văn và độ dài, không chép nội dung)\n${styleGuide}`,
+    `## Giọng văn\n${styleGuide}`,
     '## Cần viết\n- "long": bài cho nhóm Facebook, 60–120 từ, mở đầu bằng một câu chạm vào cảm xúc của dịp, vài dòng ✅ lợi ích, kết bằng link ở trên và 3–4 hashtag.\n- "short": bài cho Zalo, 1–2 câu, có link ở trên.\nViết như một người dùng giới thiệu công cụ hữu ích cho bạn bè: không giật tít, không hứa tính năng không có ở trên.',
     'Trả về JSON {"long": "...", "short": "..."}.',
   ].join('\n\n');
