@@ -17,6 +17,7 @@ const fmt = (n) => n.toLocaleString('vi-VN');
 /** Khởi tạo một lần; trả về { enter(occasionId) } để mở lại trang với dịp khác. */
 export function initCreator() {
   const form = $('#card-form');
+  const createTitle = $('#create-title');
   const occSelect = $('#occasion');
   const occNote = $('#occasion-note');
   const nameInput = $('#name');
@@ -168,20 +169,32 @@ export function initCreator() {
       b.type = 'button';
       b.className = 'suggest-item';
       b.textContent = text;
-      b.addEventListener('click', () => {
-        msgInput.value = text.slice(0, LIMITS.message);
-        msgInput.dispatchEvent(new Event('input', { bubbles: true }));
-        msgInput.focus();
-        showToast('Đã chọn lời chúc — bạn có thể chỉnh sửa tùy ý.');
-      });
+      b.addEventListener('click', () => useWish(text));
       suggestList.append(b);
     });
   }
+
+  function useWish(text, { scroll = false } = {}) {
+    msgInput.value = text.slice(0, LIMITS.message);
+    msgInput.dispatchEvent(new Event('input', { bubbles: true }));
+    msgInput.focus({ preventScroll: scroll });
+    if (scroll) msgInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('Đã chọn lời chúc — bạn có thể chỉnh sửa tùy ý.');
+  }
+
+  // "Dùng lời chúc này" trong khối lời chúc mẫu tĩnh của trang theo dịp (o/<dịp>/, nằm dưới form).
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest?.('[data-use-wish]');
+    if (btn) useWish(btn.parentElement.querySelector('p').textContent, { scroll: true });
+  });
 
   // ---------- Đổi dịp ----------
   function setOccasion(id, { syncUrl = false } = {}) {
     occasion = getOccasion(id) ?? getOccasion('birthday');
     occSelect.value = occasion.id;
+    createTitle.textContent = `Tạo thiệp ${occasion.name}`;
+    // Lời chúc mẫu tĩnh của trang o/<dịp>/ chỉ hiện khi đang tạo thiệp cho đúng dịp đó.
+    for (const s of document.querySelectorAll('.occ-seo')) s.hidden = s.dataset.occasion !== occasion.id;
     titleInput.placeholder = occasion.headline;
     // Giữ tên, tiêu đề và lời chúc người dùng đã nhập; chỉ đổi theme nếu không tương thích.
     if (!occasion.themeIds.includes(theme)) theme = defaultThemeFor(occasion);

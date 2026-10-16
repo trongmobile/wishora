@@ -49,6 +49,7 @@ wishora/
 ├── o/<dịp>/index.html      # trang tĩnh theo dịp (SINH RA, xem "Metadata theo dịp")
 ├── assets/illustrations/   # tranh SVG minh họa riêng (ví dụ bao lì xì Việt Nam với hoa mai cho Tết)
 ├── assets/og/              # og-image chung + ảnh OG theo dịp (SINH RA)
+├── sitemap.xml, robots.txt # SINH RA, xem "SEO"
 ├── tools/                  # build-pages.mjs (sinh trang + ảnh OG), gen-lunar.mjs
 ├── tests/                  # node:test
 └── package.json            # chỉ để chạy test (`"type": "module"`)
@@ -126,7 +127,7 @@ python3 -m http.server 8000      # hoặc: npm start / npx serve .
 Mở `http://localhost:8000`. Dự án dùng ES modules nên **không mở bằng `file://`**.
 
 ```bash
-npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp (37 test)
+npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO (40 test)
 ```
 
 ## Triển khai
@@ -149,7 +150,15 @@ npm run build:pages      # sinh o/*/index.html + assets/og/*.png (cần Chrome; 
 npm run build:pages -- --html   # chỉ sinh HTML, không cần trình duyệt
 ```
 
-Chạy lại mỗi khi sửa `index.html`, thêm/đổi dịp hoặc theme. `npm test` sẽ báo đỏ nếu trang tĩnh đã cũ hoặc thiếu ảnh. Gốc site (dùng cho `og:url`, `og:image`) lấy từ `og:url` trong `index.html` — đổi domain/tên repo thì sửa chỗ đó (và 2 URL ảnh) rồi build lại. Link cũ ở gốc site vẫn hoạt động, chỉ dùng ảnh xem trước chung.
+Chạy lại mỗi khi sửa `index.html`, thêm/đổi dịp hoặc theme. `npm test` sẽ báo đỏ nếu trang tĩnh đã cũ hoặc thiếu ảnh. Gốc site (dùng cho `og:url`, `og:image`, canonical, sitemap) lấy từ `og:url` trong `index.html` — đổi domain/tên repo thì sửa chỗ đó, 2 URL ảnh, `<link rel="canonical">` và các `url` trong JSON-LD (test sẽ báo nếu lệch) rồi build lại. Link cũ ở gốc site vẫn hoạt động, chỉ dùng ảnh xem trước chung.
+
+## SEO
+
+- **Trang theo dịp là trang đích cho Google.** Mỗi `o/<dịp>/` có `<title>` theo từ khóa (`Thiệp … online miễn phí — Wishora`), meta description, `<link rel="canonical">` trỏ về chính nó, JSON-LD `BreadcrumbList`, và **nội dung tĩnh ngay trong HTML**: tiêu đề `Tạo thiệp <dịp>` cùng khối "Lời chúc … hay, ý nghĩa" liệt kê toàn bộ lời chúc mẫu của dịp, nhóm theo người nhận ("… cho mẹ", "… cho đồng nghiệp"). Nút "Dùng lời chúc này" điền lời chúc vào form. Khối chỉ hiện khi form đang ở đúng dịp đó. `og:title`/`og:description` vẫn ngắn gọn vì người nhận thiệp thấy chúng trên Zalo/Facebook.
+- `js/app.js` không ghi đè tiêu đề SEO của trang dịp khi chạy JS (Google đọc tiêu đề sau khi render).
+- **Trang chủ**: canonical về gốc site, JSON-LD `WebSite` + `WebApplication`. Các trang `?page=…` dùng chung canonical của trang chủ. Chân trang có danh sách link tĩnh tới mọi trang dịp (vùng `occasion-links` trong `index.html`, do build sinh ra) để Google tìm thấy chúng.
+- **Link thiệp không được lập chỉ mục**: script đầu trang thêm `<meta name="robots" content="noindex">` và gỡ canonical khi URL có tham số thiệp (tên, lời chúc là nội dung riêng tư).
+- `npm run build:pages` sinh `sitemap.xml` (trang chủ + mọi trang dịp) và `robots.txt`. Khai báo `<gốc site>/sitemap.xml` trong Google Search Console. `robots.txt` chỉ có tác dụng khi site nằm ở gốc domain (domain riêng). Trên `<user>.github.io/<repo>/`, Google chỉ đọc `robots.txt` ở gốc `<user>.github.io`.
 
 ## Thống kê lượt truy cập và lượt nhấn
 
@@ -175,5 +184,5 @@ Event chỉ mang tên nút và id dịp (chữ, số, gạch ngang), không có 
 - **Metadata mạng xã hội chỉ riêng theo dịp, không riêng theo từng thiệp**: ảnh/tiêu đề xem trước là của dịp (ví dụ Tết, 20/10), không có tên người nhận hay lời chúc. Muốn theo từng thiệp cần edge function (Cloudflare Workers/Netlify Edge) — chưa làm.
 - Nhạc nền chỉ có cho dịp sinh nhật.
 - GIF: tối đa 256 màu nên nền gradient có thể thấy vạch màu nhẹ (đã dither); lời chúc quá dài sẽ được thu nhỏ chữ (tối thiểu 10px) rồi cắt bằng "…"; tạo GIF mất khoảng 1–3 giây trên máy tính, có thể lâu hơn trên điện thoại cũ.
-- Ngày âm lịch chỉ có trong khoảng đã xác minh (xem trên); không có mã QR; `og:url`/`og:image` đang trỏ domain GitHub Pages hiện tại.
+- Ngày âm lịch chỉ có trong khoảng đã xác minh (xem trên); không có mã QR; `og:url`/`og:image`/canonical đang trỏ domain GitHub Pages hiện tại.
 - Hình minh họa dùng emoji + CSS (không tải ảnh ngoài); hiển thị emoji phụ thuộc hệ điều hành.

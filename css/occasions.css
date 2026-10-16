@@ -169,6 +169,21 @@ main:focus { outline: none; }
 .prose ol { padding-left: 1.2rem; }
 .prose .prose-cta { margin-top: var(--sp-6); }
 
+/* ---------- Lời chúc mẫu tĩnh của trang theo dịp (o/<dịp>/, sinh bởi tools/pages-lib.mjs) ---------- */
+.occ-seo { margin-top: var(--sp-7); padding-top: var(--sp-5); border-top: 1px solid var(--c-line); }
+.occ-seo > h2:first-child { margin-top: 0; }
+.wish-list { list-style: none; padding: 0; margin: var(--sp-3) 0 0; display: grid; gap: var(--sp-2); }
+.wish-list li { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4); background: var(--c-surface); border: 1px solid var(--c-line); border-radius: var(--r-md); }
+.prose .wish-list p { color: var(--c-ink); font-size: 0.95rem; line-height: 1.55; }
+.wish-list .btn { flex: none; white-space: nowrap; }
+
+/* ---------- Chân trang: link tới mọi trang dịp (vùng occasion-links của index.html) ---------- */
+.footer-links { max-width: 1160px; margin: 0 auto var(--sp-5); display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--sp-4) var(--sp-5); text-align: left; }
+.fl-cat { font-weight: 700; color: var(--c-ink); margin-bottom: var(--sp-1); }
+.footer-links ul { list-style: none; padding: 0; margin: 0; }
+.footer-links a { display: inline-block; padding: 3px 0; color: var(--c-muted); text-decoration: none; }
+.footer-links a:hover { color: var(--c-accent-dark); text-decoration: underline; }
+
 /* ---------- Form tạo thiệp mở rộng ---------- */
 .field small { color: var(--c-muted); font-weight: 400; }
 .field-note { margin-top: var(--sp-1); color: var(--c-muted); font-size: 0.85rem; min-height: 1.3em; }
@@ -203,6 +218,9 @@ main:focus { outline: none; }
   .occ-grid { grid-template-columns: 1fr; }
   .collection-grid { grid-template-columns: 1fr 1fr; }
   .collection-card .theme-mini { height: 84px; }
+  .wish-list li { flex-direction: column; align-items: stretch; padding: var(--sp-3) var(--sp-3) var(--sp-1) var(--sp-4); }
+  .wish-list .btn { align-self: flex-end; }
+  .footer-links { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 380px) { .collection-grid { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .hv-chip { animation: none; } .hv-screen, .hv-screen.is-active .hv-panel, .hv-screen.is-active .hv-panel > * { animation: none; transition: none; } }

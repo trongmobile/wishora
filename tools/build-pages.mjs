@@ -1,7 +1,8 @@
 /**
  * Sinh trang tĩnh + ảnh OG cho từng dịp (hướng "prerender theo dịp").
  *   npm i          # lần đầu (playwright-core)
- *   npm run build:pages            # sinh o/<slug>/index.html và assets/og/<slug>.png
+ *   npm run build:pages            # sinh o/<slug>/index.html, assets/og/<slug>.png, sitemap.xml, robots.txt
+ *                                  # và cập nhật danh sách link tới các dịp ở chân trang index.html
  *   npm run build:pages -- --html  # chỉ sinh HTML, bỏ qua ảnh (không cần trình duyệt)
  * Cũng vẽ lại assets/og/og-image.png (ảnh chung) từ tools/og-home.html.
  * Cần Chrome/Chromium: đặt CHROME_PATH nếu không ở vị trí mặc định của macOS.
@@ -11,12 +12,18 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { OCCASIONS } from '../js/data/occasions.js';
-import { renderPage, ogHtml, pagePath, ogPath } from './pages-lib.mjs';
+import { renderPage, ogHtml, pagePath, ogPath, injectOccasionLinks, sitemapXml, robotsTxt } from './pages-lib.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const htmlOnly = process.argv.includes('--html');
-const template = readFileSync(resolve(root, 'index.html'), 'utf8');
 const list = OCCASIONS.filter((o) => o.enabled);
+
+// Cập nhật danh sách link tới các trang dịp ở chân trang index.html trước, vì index.html là khuôn của mọi trang dịp.
+const indexFile = resolve(root, 'index.html');
+const template = injectOccasionLinks(readFileSync(indexFile, 'utf8'), list);
+writeFileSync(indexFile, template);
+writeFileSync(resolve(root, 'sitemap.xml'), sitemapXml(template, list));
+writeFileSync(resolve(root, 'robots.txt'), robotsTxt(template));
 
 for (const o of list) {
   const file = resolve(root, pagePath(o));
@@ -31,7 +38,7 @@ for (const dir of existsSync(resolve(root, 'o')) ? readdirSync(resolve(root, 'o'
 for (const f of existsSync(resolve(root, 'assets/og')) ? readdirSync(resolve(root, 'assets/og')) : []) {
   if (f.endsWith('.png') && f !== 'og-image.png' && !slugs.has(f.slice(0, -4))) rmSync(resolve(root, 'assets/og', f));
 }
-console.log(`Đã sinh ${list.length} trang HTML trong o/`);
+console.log(`Đã sinh ${list.length} trang HTML trong o/, sitemap.xml, robots.txt`);
 
 if (!htmlOnly) {
   const { chromium } = await import('playwright-core');

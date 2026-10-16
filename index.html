@@ -6,10 +6,10 @@
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
-    <title>Wishora — A greeting for every special moment</title>
+    <title>Tạo thiệp chúc mừng online miễn phí cho mọi dịp — Wishora</title>
     <meta
       name="description"
-      content="Wishora — Gửi lời thương, trao niềm vui. Tạo thiệp chúc mừng cá nhân hóa cho sinh nhật, Tết, 8/3, 20/10, 20/11, Giáng sinh và mọi dịp đặc biệt, chia sẻ bằng một đường link."
+      content="Tạo thiệp chúc mừng online miễn phí cho sinh nhật, Tết, 8/3, 20/10, 20/11, Giáng sinh… Hơn 150 lời chúc hay, gửi bằng một đường link, không cần đăng ký."
     />
     <meta name="theme-color" content="#d62f5c" />
     <meta name="color-scheme" content="light" />
@@ -48,6 +48,33 @@
       name="twitter:image"
       content="https://trongmobile.github.io/wishora/assets/og/og-image.png"
     />
+    <!-- Trang theo dịp: build thay canonical bằng URL của dịp và JSON-LD bằng breadcrumb (tools/pages-lib.mjs). -->
+    <link rel="canonical" href="https://trongmobile.github.io/wishora/" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://trongmobile.github.io/wishora/#website",
+            "url": "https://trongmobile.github.io/wishora/",
+            "name": "Wishora",
+            "inLanguage": "vi"
+          },
+          {
+            "@type": "WebApplication",
+            "name": "Wishora",
+            "url": "https://trongmobile.github.io/wishora/",
+            "description": "Tạo thiệp chúc mừng online miễn phí cho mọi dịp và gửi bằng một đường link.",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "Web",
+            "inLanguage": "vi",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "VND" }
+          }
+        ]
+      }
+    </script>
     <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -83,6 +110,16 @@
             return q.has(k);
           });
         r.dataset.view = isCard ? "greeting" : "site";
+        if (isCard) {
+          // Thiệp chứa tên và lời chúc riêng: không cho máy tìm kiếm lập chỉ mục.
+          // Bỏ canonical để không vừa "noindex" vừa trỏ về trang dịp (tín hiệu mâu thuẫn).
+          var robots = document.createElement("meta");
+          robots.name = "robots";
+          robots.content = "noindex";
+          document.head.appendChild(robots);
+          var canonical = document.querySelector('link[rel="canonical"]');
+          if (canonical) canonical.remove();
+        }
         if (location.protocol === "file:") r.dataset.file = "1";
       })();
     </script>
@@ -770,10 +807,89 @@
               </button>
             </aside>
           </section>
+          <!-- occasion-content -->
         </div>
       </main>
 
       <footer class="site-footer">
+        <nav class="footer-links" aria-label="Thiệp theo dịp">
+          <!-- occasion-links:start · sinh bởi `npm run build:pages`, không sửa tay -->
+          <div class="fl-group">
+            <p class="fl-cat">Sinh nhật &amp; kỷ niệm</p>
+            <ul>
+              <li><a href="o/birthday/">Sinh nhật</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Tết &amp; năm mới</p>
+            <ul>
+              <li><a href="o/new-year/">Tết Dương lịch</a></li>
+              <li><a href="o/tet/">Tết Nguyên Đán</a></li>
+              <li><a href="o/giao-thua/">Giao thừa</a></li>
+              <li><a href="o/new-year-wish/">Chúc mừng năm mới</a></li>
+              <li><a href="o/khai-xuan/">Khai xuân đầu năm</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Ngày của phụ nữ</p>
+            <ul>
+              <li><a href="o/women-day-08-03/">Quốc tế Phụ nữ 8/3</a></li>
+              <li><a href="o/women-day-20-10/">Ngày Phụ nữ Việt Nam 20/10</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Gia đình &amp; tình thân</p>
+            <ul>
+              <li><a href="o/mothers-day/">Ngày của Mẹ</a></li>
+              <li><a href="o/fathers-day/">Ngày của Cha</a></li>
+              <li><a href="o/family-day-28-06/">Ngày Gia đình Việt Nam 28/6</a></li>
+              <li><a href="o/children-day-01-06/">Quốc tế Thiếu nhi 1/6</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Tình yêu &amp; tình bạn</p>
+            <ul>
+              <li><a href="o/valentine/">Valentine 14/2</a></li>
+              <li><a href="o/white-day/">White Day 14/3</a></li>
+              <li><a href="o/friendship-day-30-07/">Ngày Quốc tế Tình bạn 30/7</a></li>
+              <li><a href="o/anniversary-personal/">Ngày kỷ niệm cá nhân</a></li>
+              <li><a href="o/anniversary-love/">Kỷ niệm yêu nhau</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Ngày lễ Việt Nam</p>
+            <ul>
+              <li><a href="o/teachers-day-20-11/">Ngày Nhà giáo Việt Nam 20/11</a></li>
+              <li><a href="o/doctors-day-27-02/">Ngày Thầy thuốc Việt Nam 27/2</a></li>
+              <li><a href="o/entrepreneurs-day-13-10/">Ngày Doanh nhân Việt Nam 13/10</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Lễ hội quốc tế</p>
+            <ul>
+              <li><a href="o/christmas/">Giáng sinh 25/12</a></li>
+              <li><a href="o/halloween/">Halloween 31/10</a></li>
+              <li><a href="o/happiness-day-20-03/">Quốc tế Hạnh phúc 20/3</a></li>
+            </ul>
+          </div>
+          <div class="fl-group">
+            <p class="fl-cat">Dịp cá nhân hóa</p>
+            <ul>
+              <li><a href="o/graduation/">Chúc mừng tốt nghiệp</a></li>
+              <li><a href="o/promotion/">Chúc mừng thăng chức</a></li>
+              <li><a href="o/grand-opening/">Chúc mừng khai trương</a></li>
+              <li><a href="o/housewarming/">Chúc mừng tân gia</a></li>
+              <li><a href="o/newborn/">Chúc mừng em bé chào đời</a></li>
+              <li><a href="o/success/">Chúc mừng thành công</a></li>
+              <li><a href="o/thank-you/">Cảm ơn</a></li>
+              <li><a href="o/apology/">Xin lỗi</a></li>
+              <li><a href="o/get-well/">Chúc mau khỏe</a></li>
+              <li><a href="o/good-luck/">Chúc may mắn</a></li>
+              <li><a href="o/free-wish/">Lời chúc tự do</a></li>
+            </ul>
+          </div>
+          <!-- occasion-links:end -->
+        </nav>
         <p>
           <strong>Wishora</strong> — Gửi lời thương, trao niềm vui. Dữ liệu
           thiệp nằm hoàn toàn trong đường link, không lưu trên máy chủ.

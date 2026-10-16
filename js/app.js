@@ -4,12 +4,13 @@ import { mountCard } from './greeting.js';
 import { initCreator } from './creator.js';
 import { initRouter, routeHref, navigate } from './router.js';
 import { renderHome, renderOccasions, renderCollections } from './pages.js';
+import { getOccasion } from './occasion-engine.js';
 
 const root = document.documentElement;
 const $ = (sel) => document.querySelector(sel);
 
 const TITLES = {
-  home: 'Wishora — A greeting for every special moment',
+  home: 'Tạo thiệp chúc mừng online miễn phí cho mọi dịp — Wishora', // giữ khớp <title> của index.html
   occasions: 'Khám phá dịp lễ — Wishora',
   collections: 'Bộ sưu tập thiệp — Wishora',
   guide: 'Hướng dẫn — Wishora',
@@ -36,9 +37,17 @@ if (card.kind === 'card') {
 
   // Trang tĩnh theo dịp (/o/<dịp>/) mở trần, không kèm thiệp → vào thẳng form tạo thiệp của dịp đó.
   const landing = document.querySelector('meta[name="wishora-occasion"]')?.content;
+  const landingTitle = document.title; // tiêu đề SEO của trang tĩnh, Google đọc sau khi chạy JS nên không được ghi đè
   if (landing && !location.search && notice === '') {
     history.replaceState(null, '', new URL(routeHref('create', { occasion: landing }), document.baseURI));
   }
+  const pageTitle = (page, params) => {
+    if (page !== 'create') return TITLES[page];
+    const id = params.get('occasion');
+    if (landing && id === landing) return landingTitle;
+    const o = id && getOccasion(id);
+    return o ? `Tạo thiệp ${o.name} — Wishora` : TITLES.create;
+  };
 
   const creator = initCreator();
   const navToggle = $('#nav-toggle');
@@ -61,7 +70,7 @@ if (card.kind === 'card') {
       a.dataset.pageLink === page ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'),
     );
     root.dataset.page = page;
-    document.title = TITLES[page];
+    document.title = pageTitle(page, params);
 
     if (page === 'home') renderHome();
     if (page === 'occasions') renderOccasions(params);
