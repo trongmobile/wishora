@@ -2,7 +2,9 @@
  * Lời chúc mẫu. Cấu trúc: MESSAGES[occasionId] = { default: [...], <relationId>: [...] }.
  * Khi người dùng chọn mối quan hệ có danh sách riêng thì dùng danh sách đó, nếu không dùng `default`.
  * Thêm lời chúc: chỉ cần thêm chuỗi vào mảng tương ứng (xem README).
+ * Lời chúc viết tay ở đây; lời chúc do workflow SEO hằng tuần sinh nằm trong messages-auto.js và được nối vào sau.
  */
+import { AUTO_MESSAGES } from './messages-auto.js';
 
 /** Mối quan hệ với người nhận (dùng chung cho mọi dịp). */
 export const RELATIONS = Object.freeze({
@@ -30,7 +32,7 @@ export const RELATIONS = Object.freeze({
   everyone: 'Mọi người',
 });
 
-export const MESSAGES = Object.freeze({
+const HANDWRITTEN = {
   birthday: {
     default: [
       'Chúc mừng sinh nhật! Chúc bạn tuổi mới thật nhiều sức khỏe, niềm vui và những điều bất ngờ dễ thương.',
@@ -341,4 +343,18 @@ export const MESSAGES = Object.freeze({
       'Chỉ muốn nói rằng mình luôn nghĩ đến bạn và chúc bạn mọi điều tốt đẹp.',
     ],
   },
-});
+};
+
+/** Nối lời chúc `extra` vào sau `base` theo từng dịp và người nhận (không sửa hai đối tượng gốc). */
+export function mergeMessages(base, extra) {
+  const out = {};
+  for (const id of new Set([...Object.keys(base), ...Object.keys(extra)])) {
+    const a = base[id] ?? {};
+    const b = extra[id] ?? {};
+    out[id] = {};
+    for (const r of new Set([...Object.keys(a), ...Object.keys(b)])) out[id][r] = [...(a[r] ?? []), ...(b[r] ?? [])];
+  }
+  return out;
+}
+
+export const MESSAGES = Object.freeze(mergeMessages(HANDWRITTEN, AUTO_MESSAGES));

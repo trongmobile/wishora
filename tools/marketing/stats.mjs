@@ -1,6 +1,6 @@
 /**
  * Tóm tắt số liệu GoatCounter 7 ngày qua so với 7 ngày trước đó: lượt xem trang, lượt nhấn nút (event), nguồn truy cập.
- * Đầu vào cho agent SEO hằng tuần (tools/marketing/weekly-seo.md).
+ * Dùng trong nội dung PR của workflow SEO hằng tuần (tools/marketing/weekly-seo.mjs), chạy riêng cũng được.
  *   GOATCOUNTER_TOKEN=... node tools/marketing/stats.mjs
  * Token: đăng nhập GoatCounter → tên người dùng ở menu trên → API → tạo key có quyền đọc thống kê.
  * Site lấy từ data-goatcounter trong index.html (đặt GOATCOUNTER_SITE để ghi đè, ví dụ https://hpbd.goatcounter.com).

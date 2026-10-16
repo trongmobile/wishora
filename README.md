@@ -45,12 +45,14 @@ wishora/
 │       ├── occasions.js    # danh mục dịp lễ
 │       ├── themes.js       # cấu hình JS của theme
 │       ├── messages.js     # lời chúc mẫu + danh sách mối quan hệ
+│       ├── messages-auto.js  # lời chúc mẫu do workflow SEO hằng tuần sinh (xem "SEO hằng tuần")
 │       └── lunar-calendar.js  # bảng ngày âm lịch đã xác minh
 ├── o/<dịp>/index.html      # trang tĩnh theo dịp (SINH RA, xem "Metadata theo dịp")
 ├── assets/illustrations/   # tranh SVG minh họa riêng (ví dụ bao lì xì Việt Nam với hoa mai cho Tết)
 ├── assets/og/              # og-image chung + ảnh OG theo dịp (SINH RA)
 ├── sitemap.xml, robots.txt # SINH RA, xem "SEO"
 ├── tools/                  # build-pages.mjs (sinh trang + ảnh OG), gen-lunar.mjs
+│   └── marketing/          # SEO hằng tuần với Gemini, số liệu GoatCounter
 ├── tests/                  # node:test
 └── package.json            # chỉ để chạy test (`"type": "module"`)
 ```
@@ -127,7 +129,7 @@ python3 -m http.server 8000      # hoặc: npm start / npx serve .
 Mở `http://localhost:8000`. Dự án dùng ES modules nên **không mở bằng `file://`**.
 
 ```bash
-npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO, lời chúc mẫu, thống kê (41 test)
+npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO, lời chúc mẫu, thống kê, SEO hằng tuần (46 test)
 ```
 
 ## Triển khai
@@ -178,16 +180,31 @@ Lượt nhấn nút được đếm bằng *event* (`js/analytics.js`), xem tron
 
 Event chỉ mang tên nút và id dịp (chữ, số, gạch ngang), không có tên người nhận, lời chúc hay link thiệp. Đây là số lần *nhấn* nút, không phải số lần chia sẻ/sao chép thành công. GoatCounter bỏ qua `localhost` và người dùng bật trình chặn quảng cáo, nên số liệu thấp hơn thực tế. Thêm event mới: khai báo trong `EVENTS` của `js/analytics.js` rồi gọi `track('<tên>')`.
 
-## Agent SEO hằng tuần
+## SEO hằng tuần (GitHub Actions + Gemini)
 
-Một agent Claude Code chạy theo lịch trên cloud (routine) mỗi tuần: đọc dịp sắp tới và số liệu GoatCounter, thêm lời chúc mẫu cho vài dịp sắp tới (nội dung SEO của trang `o/<dịp>/`), build, chạy test rồi mở PR kèm báo cáo và caption gợi ý để đăng tay. Cách làm việc của agent nằm trong [`tools/marketing/weekly-seo.md`](tools/marketing/weekly-seo.md); sửa file đó để đổi hành vi, không cần sửa routine.
+Workflow `.github/workflows/weekly-seo.yml` chạy 8:00 sáng thứ Hai (giờ VN), miễn phí: GitHub Actions cho repo public, Gemini API gói miễn phí.
+
+1. `tools/marketing/weekly-seo.mjs` chọn tối đa 3 dịp còn 5–45 ngày, ưu tiên dịp có người nhận mới có 0–1 lời chúc, rồi nhờ Gemini viết thêm lời chúc (tối đa 3 cho mỗi người nhận, 8 mỗi dịp, 20 mỗi lần; người nhận đã có 5 lời chúc, riêng `default` 6, thì thôi thêm).
+2. Lời chúc được lọc lại (emoji, hashtag, tên Wishora, không dấu, ngoài 40–300 ký tự, trùng lời chúc cũ) rồi ghi vào `js/data/messages-auto.js`. `messages.js` nối file này sau lời chúc viết tay, nên lời chúc mới hiện trên trang `o/<dịp>/` (nội dung SEO) và trong gợi ý của form.
+3. Workflow chạy `npm run build:pages -- --html`, `npm test`, rồi mở PR kèm danh sách lời chúc, số liệu GoatCounter và caption gợi ý để đăng tay cho dịp gần nhất còn 3–10 ngày. Duyệt, sửa hoặc xóa lời chúc ngay trong PR rồi merge thì site tự deploy.
+
+Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/marketing/message-rules.md), được đưa nguyên văn vào prompt; sửa file đó để đổi giọng văn. Giọng văn của caption lấy từ mục "Bài đăng Facebook / Zalo" trong `wishora-marketing.md`.
+
+**Cài đặt một lần** (repo trên GitHub):
+
+- Settings › Secrets and variables › Actions › secret `GEMINI_API_KEY`, lấy miễn phí tại [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Gói miễn phí được Google dùng dữ liệu gửi lên để cải thiện sản phẩm; ở đây chỉ gửi thông tin dịp và lời chúc mẫu vốn đã công khai.
+- Settings › Actions › General › Workflow permissions › bật "Allow GitHub Actions to create and approve pull requests".
+- Không bắt buộc: secret `GOATCOUNTER_TOKEN` (đưa số liệu vào PR), biến `GEMINI_MODEL` (mặc định `gemini-3.8-flash`).
+
+Chạy tay: tab Actions › Weekly SEO › Run workflow. Thử ở máy:
 
 ```bash
-node tools/marketing/upcoming.mjs 45                 # dịp trong 45 ngày tới + số lời chúc theo người nhận
-GOATCOUNTER_TOKEN=... node tools/marketing/stats.mjs # lượt xem, event, nguồn truy cập 7 ngày so với tuần trước
+node tools/marketing/weekly-seo.mjs --plan              # in kế hoạch, không gọi Gemini, không ghi file
+GEMINI_API_KEY=... node tools/marketing/weekly-seo.mjs  # ghi messages-auto.js và in nội dung PR
+GOATCOUNTER_TOKEN=... node tools/marketing/stats.mjs    # lượt xem, event, nguồn truy cập 7 ngày so với tuần trước
 ```
 
-`tests/data.test.js` chặn lời chúc trùng, quá dài/ngắn, sai id dịp hoặc dành cho người nhận không có trong `suggestedRecipients`.
+`tests/data.test.js` chặn lời chúc trùng, quá dài/ngắn, sai id dịp hoặc dành cho người nhận không có trong `suggestedRecipients`; `tests/marketing.test.js` kiểm tra phần chọn dịp, bộ lọc và nội dung PR.
 
 ## Giới hạn
 
