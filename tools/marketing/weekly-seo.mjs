@@ -4,7 +4,7 @@
  * caption đăng tay). Build trang, chạy test và mở PR là các bước sau trong workflow.
  *   node tools/marketing/weekly-seo.mjs --plan                         # chỉ in kế hoạch: không gọi Gemini, không ghi file
  *   GEMINI_API_KEY=... node tools/marketing/weekly-seo.mjs [--pr-body <file>]
- * GEMINI_MODEL đổi model (mặc định gemini-3.8-flash). Quy tắc viết lời chúc: tools/marketing/message-rules.md.
+ * Model: gemini-3.8-flash, lỗi hạn mức/quá tải thì thử gemini-3.5-flash-lite rồi gemini-2.5-flash; GEMINI_MODEL thêm model ưu tiên. Quy tắc viết lời chúc: tools/marketing/message-rules.md.
  * Không có dịp nào cần thêm, hoặc không lời chúc nào đạt yêu cầu → thoát 0 và không ghi gì (workflow sẽ không mở PR).
  */
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -31,7 +31,8 @@ function section(md, heading) {
 
 const args = process.argv.slice(2);
 const prBodyPath = args.includes('--pr-body') ? args[args.indexOf('--pr-body') + 1] : null;
-const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+// Hạn mức miễn phí tính riêng cho từng model: model đầu hết hạn mức/quá tải/không có thì thử model sau.
+const MODELS = [...new Set([process.env.GEMINI_MODEL, 'gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash'].filter(Boolean))];
 const site = siteUrl(read('index.html'));
 const list = upcoming(Infinity);
 const plan = planRun(list);
@@ -48,27 +49,44 @@ if (!key) {
   process.exit(1);
 }
 
+let model = MODELS[0]; // model dùng được gần nhất; các lần gọi sau bắt đầu từ đó
+
+/** Thời gian chờ Google gợi ý trong lỗi 429 (RetryInfo.retryDelay, ví dụ "37s"), tối đa 60 giây. */
+const retryDelayMs = (err) => {
+  const s = err?.error?.details?.find((d) => d.retryDelay)?.retryDelay;
+  return Math.min(60, Number.parseFloat(s) || 20) * 1000;
+};
+
 async function gemini(prompt, schema) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
   const body = JSON.stringify({
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: { temperature: 1, responseMimeType: 'application/json', responseSchema: schema },
   });
-  for (let attempt = 1; ; attempt++) {
-    const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body });
-    if (res.ok) {
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text ?? '').join('');
-      if (!text) throw new Error(`Gemini không trả nội dung: ${JSON.stringify(data).slice(0, 300)}`);
-      return JSON.parse(text);
+  const failures = [];
+  for (const m of MODELS.slice(MODELS.indexOf(model))) {
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = data.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text ?? '').join('');
+        if (!text) throw new Error(`Gemini ${m} không trả nội dung: ${JSON.stringify(data).slice(0, 300)}`);
+        model = m;
+        return JSON.parse(text);
+      }
+      const raw = await res.text();
+      let err = null;
+      try { err = JSON.parse(raw); } catch { /* không phải JSON */ }
+      const why = `${m}: HTTP ${res.status} ${err?.error?.status ?? ''} ${(err?.error?.message ?? raw).slice(0, 300)}`;
+      console.warn(`Gemini lỗi (lần ${attempt}) — ${why}`);
+      failures.push(why);
+      if (res.status === 404) break; // model không tồn tại hoặc key không dùng được model này → thử model sau
+      if (res.status !== 429 && res.status < 500) throw new Error(`Gemini ${why}`); // key sai, request sai: đổi model không giúp được
+      if (attempt === 1) await new Promise((r) => setTimeout(r, retryDelayMs(err)));
     }
-    // Gói miễn phí giới hạn số request mỗi phút: 429/5xx thì đợi rồi thử lại.
-    if (attempt < 3 && (res.status === 429 || res.status >= 500)) {
-      await new Promise((r) => setTimeout(r, 30_000 * attempt));
-      continue;
-    }
-    throw new Error(`Gemini ${MODEL}: HTTP ${res.status} ${(await res.text()).slice(0, 300)}`);
   }
+  throw new Error(`Gemini: mọi model đều lỗi\n${failures.join('\n')}`);
 }
 
 const rules = section(read('tools/marketing/message-rules.md'), '## Quy tắc');
@@ -107,6 +125,6 @@ if (target) {
   }
 }
 
-const body = prBody({ model: MODEL, site, results, stats, caption });
+const body = prBody({ model, site, results, stats, caption });
 if (prBodyPath) writeFileSync(prBodyPath, body);
 else console.log(`\n${body}`);

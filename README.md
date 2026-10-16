@@ -194,7 +194,7 @@ Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/
 
 - Settings › Secrets and variables › Actions › secret `GEMINI_API_KEY`, lấy miễn phí tại [aistudio.google.com/apikey](https://aistudio.google.com/apikey). Gói miễn phí được Google dùng dữ liệu gửi lên để cải thiện sản phẩm; ở đây chỉ gửi thông tin dịp và lời chúc mẫu vốn đã công khai.
 - Settings › Actions › General › Workflow permissions › bật "Allow GitHub Actions to create and approve pull requests".
-- Không bắt buộc: secret `GOATCOUNTER_TOKEN` (đưa số liệu vào PR), biến `GEMINI_MODEL` (mặc định `gemini-3.8-flash`).
+- Không bắt buộc: secret `GOATCOUNTER_TOKEN` (đưa số liệu vào PR), biến `GEMINI_MODEL` (model ưu tiên; mặc định `gemini-3.8-flash`, hết hạn mức hoặc quá tải thì tự thử `gemini-3.5-flash-lite` rồi `gemini-2.5-flash`).
 
 Chạy tay: tab Actions › Weekly SEO › Run workflow. Thử ở máy:
 
