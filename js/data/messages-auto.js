@@ -12,8 +12,8 @@ export const AUTO_MESSAGES = {
       "Halloween rộn ràng chúc gia đình mình luôn vui tươi, nhận được thật nhiều điều bất ngờ thú vị."
     ],
     "friend": [
-      "Chúc ông bạn đêm Halloween bị ma dọa chạy té khói nhưng bù lại hốt được núi kẹo ngon.",
-      "Tối nay nhớ hóa trang thật xuất sắc để đi dọa thiên hạ nhé, chúc ông một đêm Halloween cháy hết mình.",
+      "Chúc bạn hiền đêm Halloween bị ma dọa chạy té khói nhưng bù lại hốt được cả núi kẹo ngon.",
+      "Tối nay nhớ hóa trang thật xuất sắc để đi dọa thiên hạ nhé, chúc bạn một đêm Halloween cháy hết mình.",
       "Chúc bạn tôi Halloween không gặp ma nhưng gặp toàn vận may và đồ ăn ngon."
     ],
     "child": [
