@@ -7,6 +7,7 @@
  *   click/gif-export             nhấn "Xuất GIF (điện thoại)"
  *   click/gif-download           nhấn "Tải GIF về máy"
  *   click/share-gif              nhấn "Gửi GIF…"
+ *   click/make-own/<id dịp>      người nhận nhấn "Tạo thiệp cho người thân của bạn" trên thiệp được gửi
  * Không bao giờ gửi tên người nhận, lời chúc hay liên kết thiệp. Script GoatCounter chưa tải xong/bị chặn → bỏ qua, không lỗi.
  */
 export const EVENTS = Object.freeze({
@@ -16,6 +17,7 @@ export const EVENTS = Object.freeze({
   'gif-export': 'Nhấn Xuất GIF',
   'gif-download': 'Nhấn Tải GIF về máy',
   'share-gif': 'Nhấn Gửi GIF',
+  'make-own': 'Người nhận nhấn Tạo thiệp cho người thân',
 });
 
 /** @param {keyof typeof EVENTS} name @param {string} [detail] ví dụ id dịp */

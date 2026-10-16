@@ -8,6 +8,7 @@ import { getOccasion } from './occasion-engine.js';
 import * as music from './music.js';
 import * as sfx from './sfx.js';
 import { ambientFragment, confettiFragment } from './fx.js';
+import { track } from './analytics.js';
 
 const OPEN_MS = 900;
 const MAX_CONFETTI = 140;
@@ -264,6 +265,7 @@ export function mountCard(host, data, opts = {}) {
     }
     if (opts.setTitle && name) document.title = isBirthday ? `Happy Birthday ${name} 🎂` : `${headline} — ${name}`;
     makeOwn.href = `?page=create&occasion=${encodeURIComponent(occ.id)}`;
+    makeOwn.dataset.occasion = occ.id;
   }
 
   // ---------- Sự kiện ----------
@@ -272,6 +274,7 @@ export function mountCard(host, data, opts = {}) {
   btnAnim.addEventListener('click', () => setAnimations(!animOn));
   btnSound.addEventListener('click', () => setSound(!soundOn));
   btnMusic.addEventListener('click', music.toggle);
+  makeOwn.addEventListener('click', () => track('make-own', makeOwn.dataset.occasion));
   const unsubscribe = music.subscribe(syncControls);
 
   stage.dataset.anim = animOn ? 'on' : 'off';

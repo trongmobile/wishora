@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { OCCASIONS, CATEGORIES } from '../js/data/occasions.js';
 import { THEMES } from '../js/data/themes.js';
-import { RELATIONS } from '../js/data/messages.js';
+import { RELATIONS, MESSAGES } from '../js/data/messages.js';
 import { search, normalize, themesFor } from '../js/occasion-engine.js';
 import { readFileSync, existsSync } from 'node:fs';
 
@@ -20,6 +20,26 @@ test('mỗi dịp có theme tồn tại, lời chúc, mối quan hệ hợp lệ
     assert.ok(o.messageTemplates.default?.length >= 2, `${o.id}: thiếu lời chúc mặc định`);
     for (const r of o.suggestedRecipients) assert.ok(RELATIONS[r], `${o.id}: quan hệ ${r}`);
     for (const r of Object.keys(o.messageTemplates)) assert.ok(r === 'default' || RELATIONS[r], `${o.id}: lời chúc cho quan hệ lạ ${r}`);
+  }
+});
+
+// Agent SEO hằng tuần (tools/marketing/weekly-seo.md) thêm lời chúc vào messages.js — các quy tắc dưới đây chặn lỗi của nó.
+test('lời chúc mẫu: đúng dịp, đúng người nhận gợi ý, không trùng, độ dài hợp lý', () => {
+  for (const [id, byRelation] of Object.entries(MESSAGES)) {
+    const o = OCCASIONS.find((x) => x.id === id);
+    assert.ok(o, `messages.js có lời chúc cho dịp không tồn tại: ${id}`);
+    for (const r of Object.keys(byRelation)) {
+      assert.ok(r === 'default' || o.suggestedRecipients.includes(r), `${id}: "${r}" không nằm trong suggestedRecipients nên form không chọn được`);
+    }
+    const seen = new Set();
+    for (const m of Object.values(byRelation).flat()) {
+      const head = `${id}: "${m.slice(0, 40)}…"`;
+      assert.equal(m, m.trim(), `${head} thừa khoảng trắng đầu/cuối`);
+      assert.ok(m.length >= 20 && m.length <= 400, `${head} dài ${m.length} ký tự (cho phép 20–400)`);
+      assert.ok(!/[\u0000-\u001f\u007f]/.test(m), `${head} có ký tự điều khiển/xuống dòng`);
+      assert.ok(!seen.has(normalize(m)), `${head} bị trùng`);
+      seen.add(normalize(m));
+    }
   }
 });
 

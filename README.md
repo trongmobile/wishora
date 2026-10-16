@@ -127,7 +127,7 @@ python3 -m http.server 8000      # hoặc: npm start / npx serve .
 Mở `http://localhost:8000`. Dự án dùng ES modules nên **không mở bằng `file://`**.
 
 ```bash
-npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO (40 test)
+npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO, lời chúc mẫu, thống kê (41 test)
 ```
 
 ## Triển khai
@@ -174,8 +174,20 @@ Lượt nhấn nút được đếm bằng *event* (`js/analytics.js`), xem tron
 | `click/gif-download` | nhấn "Tải GIF về máy" |
 | `click/gif-export` | nhấn "Xuất GIF (điện thoại)" (bắt đầu tạo GIF) |
 | `click/share-gif` | nhấn "Gửi GIF…" |
+| `click/make-own/<id dịp>` | **người nhận** nhấn "Tạo thiệp cho người thân của bạn" ở cuối thiệp được gửi — đo vòng lan truyền (thiệp → người tạo mới) |
 
 Event chỉ mang tên nút và id dịp (chữ, số, gạch ngang), không có tên người nhận, lời chúc hay link thiệp. Đây là số lần *nhấn* nút, không phải số lần chia sẻ/sao chép thành công. GoatCounter bỏ qua `localhost` và người dùng bật trình chặn quảng cáo, nên số liệu thấp hơn thực tế. Thêm event mới: khai báo trong `EVENTS` của `js/analytics.js` rồi gọi `track('<tên>')`.
+
+## Agent SEO hằng tuần
+
+Một agent Claude Code chạy theo lịch trên cloud (routine) mỗi tuần: đọc dịp sắp tới và số liệu GoatCounter, thêm lời chúc mẫu cho vài dịp sắp tới (nội dung SEO của trang `o/<dịp>/`), build, chạy test rồi mở PR kèm báo cáo và caption gợi ý để đăng tay. Cách làm việc của agent nằm trong [`tools/marketing/weekly-seo.md`](tools/marketing/weekly-seo.md); sửa file đó để đổi hành vi, không cần sửa routine.
+
+```bash
+node tools/marketing/upcoming.mjs 45                 # dịp trong 45 ngày tới + số lời chúc theo người nhận
+GOATCOUNTER_TOKEN=... node tools/marketing/stats.mjs # lượt xem, event, nguồn truy cập 7 ngày so với tuần trước
+```
+
+`tests/data.test.js` chặn lời chúc trùng, quá dài/ngắn, sai id dịp hoặc dành cho người nhận không có trong `suggestedRecipients`.
 
 ## Giới hạn
 
