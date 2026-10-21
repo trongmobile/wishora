@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseCardUrl, buildCardUrl, validateCard, hasCardParams } from '../js/url-state.js';
+import { parseCardUrl, buildCardUrl, validateCard, hasCardParams, withCampaign } from '../js/url-state.js';
 
 const BASE = 'https://example.test/hpbd/?page=create';
 
@@ -84,4 +84,12 @@ test('effects: off tắt hiệu ứng động, mute tắt âm thanh; mặc đị
   assert.equal(new URL(url).searchParams.get('effects'), 'off,mute');
   assert.equal(new URL(buildCardUrl({ occasion: 'tet', name: 'a', message: 'b', theme: 'modern-lunar' }, BASE)).searchParams.has('effects'), false);
   assert.equal(parseCardUrl('?name=a&message=b&theme=rose').data.sound, true); // link sinh nhật cũ
+});
+
+test('withCampaign thêm utm_campaign và giữ nguyên dữ liệu thiệp', () => {
+  const url = buildCardUrl({ occasion: 'tet', name: 'Lan Phương', message: 'Chúc mừng', theme: 'tet-traditional' }, BASE);
+  const tagged = withCampaign(url, 'copy');
+  assert.equal(new URL(tagged).searchParams.get('utm_campaign'), 'copy');
+  assert.ok(!tagged.includes('+'));
+  assert.deepEqual(parseCardUrl(new URL(tagged).search), parseCardUrl(new URL(url).search));
 });

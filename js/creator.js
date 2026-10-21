@@ -1,6 +1,6 @@
 /** Trang tạo thiệp: chọn dịp, mối quan hệ, lời chúc gợi ý, theme tương thích, live preview, tạo & chia sẻ liên kết. */
 import { CATEGORIES, OCCASIONS } from './data/occasions.js';
-import { LIMITS, validateCard, buildCardUrl } from './url-state.js';
+import { LIMITS, validateCard, buildCardUrl, withCampaign } from './url-state.js';
 import { mountCard } from './greeting.js';
 import { getOccasion, themesFor, defaultThemeFor, suggestionsFor, relationsFor } from './occasion-engine.js';
 import { nextOccurrence, formatDate, countdownLabel } from './calendar.js';
@@ -393,7 +393,7 @@ export function initCreator() {
 
   $('#btn-copy').addEventListener('click', async () => {
     track('copy-link');
-    if (await copyText(shareUrl.value)) showToast('Đã sao chép liên kết!');
+    if (await copyText(withCampaign(shareUrl.value, 'copy'))) showToast('Đã sao chép liên kết!');
     else {
       shareUrl.select();
       showToast('Không thể tự sao chép — hãy nhấn Ctrl/Cmd + C.');
@@ -409,7 +409,7 @@ export function initCreator() {
         await navigator.share({
           title: `Thiệp ${occasion.name}`,
           text: `Một lời chúc dành cho ${nameInput.value.trim()} 🎁`,
-          url: shareUrl.value,
+          url: withCampaign(shareUrl.value, 'share'),
         });
       } catch (err) {
         if (err?.name !== 'AbortError') showToast('Không thể mở hộp thoại chia sẻ.');

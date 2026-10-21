@@ -120,3 +120,13 @@ export function buildCardUrl({ occasion = BIRTHDAY, name, message, theme, title 
   url.search = params.toString().replace(/\+/g, '%20');
   return url.toString();
 }
+
+/**
+ * Gắn utm_campaign vào link chia sẻ để GoatCounter (tab Campaigns) biết người nhận đến từ nút nào.
+ * Dùng utm_campaign thay vì utm_source: utm_source sẽ ghi đè referrer thật (Zalo, TikTok…).
+ */
+export function withCampaign(url, campaign) {
+  const u = new URL(url);
+  u.searchParams.set('utm_campaign', campaign);
+  return u.toString().replace(/\+/g, '%20');
+}
