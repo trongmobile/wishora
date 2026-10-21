@@ -509,6 +509,10 @@
   font-weight: 700;
 }
 
+/* Theme tự sinh bởi workflow SEO hằng tuần (js/data/themes-auto.js) */
+/* AUTO-THEMES:START — do tools/marketing/weekly-seo.mjs ghi, sửa tay được */
+/* AUTO-THEMES:END */
+
 /* ---------- Trang trí chung cho thiệp chúc mừng (data-kind="greeting") ---------- */
 .stage[data-kind="greeting"] .stage-art::before,
 .stage[data-kind="greeting"] .stage-art::after {

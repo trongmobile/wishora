@@ -12,6 +12,8 @@
  * ambient : hạt trang trí nền  (motion: rise | fall | twinkle | drift)
  * confetti: màu + ký tự dùng cho confetti khi mở thiệp
  */
+import { AUTO_THEMES } from './themes-auto.js';
+
 const BIRTHDAY_THEMES = [
   {
     id: 'rose',
@@ -207,7 +209,10 @@ const GREETING_THEMES = [
   }),
 ];
 
-export const THEMES = [...BIRTHDAY_THEMES, ...GREETING_THEMES];
+// Theme tự sinh (themes-auto.js): `occasionId` chỉ để gắn vào dịp trong occasions.js, không thuộc cấu hình theme.
+const AUTO_GREETING_THEMES = AUTO_THEMES.map(({ occasionId, ...t }) => ({ reducedMotion: rm, ...t }));
+
+export const THEMES = [...BIRTHDAY_THEMES, ...GREETING_THEMES, ...AUTO_GREETING_THEMES];
 export const BIRTHDAY_THEME_IDS = BIRTHDAY_THEMES.map((t) => t.id);
 
 export const THEME_GROUPS = Object.freeze({

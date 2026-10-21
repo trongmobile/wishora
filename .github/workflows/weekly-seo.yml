@@ -1,4 +1,4 @@
-# SEO hằng tuần: Gemini viết thêm lời chúc mẫu cho các dịp sắp tới, build trang, chạy test rồi mở PR để chủ site duyệt.
+# SEO hằng tuần: Gemini viết thêm lời chúc mẫu và thiết kế một theme thiệp mới cho các dịp sắp tới, build trang, chạy test rồi mở PR để chủ site duyệt.
 # Cần: secret GEMINI_API_KEY (miễn phí tại aistudio.google.com/apikey); Settings › Actions › General › bật
 # "Allow GitHub Actions to create and approve pull requests". Không bắt buộc: secret GOATCOUNTER_TOKEN (số liệu trong PR),
 # biến GEMINI_MODEL (đổi model). Chạy tay: tab Actions › Weekly SEO › Run workflow.
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Gemini viết lời chúc mới
+      - name: Gemini viết lời chúc và thiết kế theme mới
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
@@ -37,11 +37,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if git diff --quiet; then
-            echo "Không có lời chúc mới — không mở PR."
+            echo "Không có lời chúc hay theme mới — không mở PR."
             exit 0
           fi
-          # Chỉ cho phép thay đổi lời chúc tự sinh và trang dịp được build lại từ đó.
-          bad=$(git diff --name-only | grep -v -E '^(js/data/messages-auto\.js|o/[^/]+/index\.html)$' || true)
+          # Chỉ cho phép thay đổi lời chúc, theme tự sinh và trang dịp được build lại từ đó.
+          bad=$(git diff --name-only | grep -v -E '^(js/data/messages-auto\.js|js/data/themes-auto\.js|css/themes\.css|o/[^/]+/index\.html)$' || true)
           if [ -n "$bad" ]; then
             echo "::error::File ngoài phạm vi bị thay đổi: $bad"
             exit 1
@@ -51,9 +51,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add js/data/messages-auto.js o
-          git commit -m "SEO: thêm lời chúc mẫu tự sinh ($day)"
+          git add js/data/messages-auto.js js/data/themes-auto.js css/themes.css o
+          git commit -m "SEO: thêm lời chúc mẫu và theme tự sinh ($day)"
           git push -u origin "$branch"
           gh pr create --base main --head "$branch" \
-            --title "SEO tuần $(TZ=Asia/Ho_Chi_Minh date +%d/%m): thêm lời chúc mẫu" \
+            --title "SEO tuần $(TZ=Asia/Ho_Chi_Minh date +%d/%m): thêm lời chúc mẫu và theme" \
             --body-file "$RUNNER_TEMP/pr-body.md"

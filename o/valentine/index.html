@@ -659,60 +659,64 @@
                 <button
                   type="button"
                   class="btn btn-ghost btn-wide"
-                  id="btn-gif"
+                  id="btn-video"
                 >
-                  🎞️ Xuất GIF (điện thoại)
+                  🎬 Xuất video MP4 (điện thoại)
                 </button>
               </div>
 
               <section
-                id="gif-panel"
-                class="gif-panel"
+                id="video-panel"
+                class="video-panel"
                 aria-live="polite"
                 hidden
               >
-                <h3>Ảnh GIF thiệp</h3>
-                <div class="gif-progress" id="gif-progress-wrap">
+                <h3>Video thiệp</h3>
+                <div class="video-progress" id="video-progress-wrap">
                   <progress
-                    id="gif-progress"
+                    id="video-progress"
                     max="100"
                     value="0"
-                    aria-label="Tiến độ tạo GIF"
+                    aria-label="Tiến độ tạo video"
                   ></progress>
-                  <span id="gif-status">Đang tạo GIF…</span>
+                  <span id="video-status">Đang tạo video…</span>
                 </div>
-                <div class="gif-done" id="gif-done" hidden>
-                  <img
-                    id="gif-preview"
-                    class="gif-preview"
-                    alt="Xem trước ảnh GIF của thiệp"
+                <div class="video-done" id="video-done" hidden>
+                  <video
+                    id="video-preview"
+                    class="video-preview"
                     width="180"
                     height="320"
-                  />
-                  <div class="gif-side">
-                    <p id="gif-info" class="gif-info"></p>
+                    controls
+                    loop
+                    muted
+                    playsinline
+                    aria-label="Xem trước video của thiệp"
+                  ></video>
+                  <div class="video-side">
+                    <p id="video-info" class="video-info"></p>
                     <div class="result-actions">
                       <a
                         class="btn btn-primary"
-                        id="gif-download"
+                        id="video-download"
                         href="#"
-                        download="wishora.gif"
-                        >Tải GIF về máy</a
+                        download="wishora.mp4"
+                        >Tải video về máy</a
                       >
                       <button
                         type="button"
                         class="btn btn-ghost"
-                        id="gif-share"
+                        id="video-share"
                         hidden
                       >
-                        Gửi GIF…
+                        Gửi video…
                       </button>
                     </div>
-                    <p class="url-note gif-note">
-                      GIF được vẽ lại từ thiệp (bố cục, màu, chữ, hiệu ứng) ở
-                      khổ điện thoại 360×640, không có âm thanh. Gửi qua
-                      Zalo/Messenger nên chọn "gửi dạng tệp" để ảnh vẫn chuyển
-                      động.
+                    <p class="url-note video-note">
+                      Video được vẽ lại từ thiệp (bố cục, màu, chữ, hiệu ứng) ở
+                      khổ điện thoại 720×1280, dài khoảng 6 giây, không có âm
+                      thanh. Gửi qua Zalo/Messenger nên chọn "gửi dạng tệp" để
+                      giữ nguyên chất lượng.
                     </p>
                   </div>
                 </div>

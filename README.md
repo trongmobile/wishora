@@ -10,7 +10,7 @@
 - **Tạo thiệp**: chọn dịp → nhập người nhận → chọn mối quan hệ để nhận lời chúc gợi ý (sửa tự do) → tiêu đề tùy chọn → theme tương thích → live preview (điện thoại/máy tính, toàn màn hình) → tạo link, sao chép, chia sẻ.
 - **Hiệu ứng âm thanh** (`js/sfx.js`, Web Audio, không cần file): tiếng mở hộp quà/phong bì, rồi tiếng khi lời chúc hiện ra — mỗi tông có âm riêng (vui: chuông lấp lánh + pháo giấy; ấm áp: chuông nhẹ; lãng mạn: hạc cầm; trang trọng: chuông trầm, không pháo). Người gửi bật/tắt trong form (`effects=mute` trong link), người nhận có nút "Âm thanh" để tắt; chỉ phát sau khi người nhận bấm mở/phát lại (không tự phát). Live preview không phát tiếng, nghe thử bằng "Xem trước thiệp".
 - **Dropdown tự dựng** (`js/dropdown.js`): các ô chọn (Dịp chúc mừng, Tháng, Khu vực, Quốc gia) thay `<select>` gốc bằng danh sách có biểu tượng, dòng phụ (ngày/đếm ngược) và radio chọn; desktop là popover có ô tìm kiếm (không dấu cũng được), điện thoại là bottom-sheet. `<select>` gốc vẫn nằm ẩn trong DOM nên `.value`/`change` hoạt động như cũ. Bàn phím: ↑ ↓ Home End Enter Esc. Dùng cho select mới: `enhanceSelect(select)`; tuỳ chọn có `data-icon`, `data-theme`, `data-sub` sẽ hiện tương ứng.
-- **Xuất GIF khổ điện thoại** (`js/gif-export.js`): nút "Xuất GIF (điện thoại)" trong form tạo thiệp tạo ảnh GIF động 360×640 (~5 giây, 12 khung/giây, ~0,5–1,8 MB) ngay trên trình duyệt, rồi tải về hoặc gửi bằng Web Share (có trên điện thoại). GIF được **vẽ lại trên canvas** từ cấu hình theme/dịp (nền, khung chữ, font, hạt trang trí, confetti, câu chữ hiện lần lượt, ký tự trang trí; dịp trang trọng không confetti) — giống thiệp về màu/bố cục/kiểu chữ nhưng **không phải bản quay màn hình**: không có hộp quà/phong bì mở, hiệu ứng mờ kính và âm thanh. Mã hóa bằng [gifenc](https://github.com/mattdesl/gifenc) (MIT, đã đặt sẵn trong `js/vendor/`, không cần CDN). Khung đầu tiên (ảnh xem trước trong một số ứng dụng) là lúc chữ chưa hiện.
+- **Xuất video MP4 khổ điện thoại** (`js/video-export.js`): nút "Xuất video MP4 (điện thoại)" trong form tạo thiệp tạo video H.264 720×1280 (30 khung/giây, ~6 giây, ~1–2 MB) ngay trên trình duyệt, rồi tải về hoặc gửi bằng Web Share (có trên điện thoại). Video được **vẽ lại trên canvas** từ cấu hình theme/dịp (nền, khung chữ, font, hạt trang trí, confetti, câu chữ hiện lần lượt, ký tự trang trí; dịp trang trọng không confetti) — giống thiệp về màu/bố cục/kiểu chữ nhưng **không phải bản quay màn hình**: không có hộp quà/phong bì mở, hiệu ứng mờ kính và âm thanh. Mã hóa bằng WebCodecs (`VideoEncoder`, có trên Chrome/Edge 94+, Safari 16.4+, Firefox 130+) và đóng gói MP4 bằng [mp4-muxer](https://github.com/Vanilagy/mp4-muxer) (MIT, đã đặt sẵn trong `js/vendor/`, không cần CDN). Trình duyệt không có WebCodecs sẽ báo "chưa hỗ trợ tạo video".
 - Dịp trang trọng (20/11, 27/2, 13/10…) không dùng confetti/trái tim; dịp tình yêu chỉ có theme tình yêu khi người tạo chủ động chọn dịp đó; Tết có câu đối.
 - Tương thích ngược: link sinh nhật cũ `?name=…&message=…&theme=…[&anim=0]` vẫn mở đúng.
 - Hỗ trợ `prefers-reduced-motion`, bàn phím, skip link, `aria-current`, focus chuyển trang.
@@ -39,8 +39,8 @@ wishora/
 │   ├── fx.js               # hạt trang trí nền + confetti dùng chung (thiệp và hero)
 │   ├── dropdown.js         # dropdown tự dựng thay <select> (popover / bottom-sheet)
 │   ├── sfx.js              # hiệu ứng âm thanh (Web Audio)
-│   ├── gif-export.js       # xuất GIF khổ điện thoại (vẽ canvas + gifenc)
-│   ├── vendor/gifenc.esm.js  # thư viện mã hóa GIF (MIT)
+│   ├── video-export.js     # xuất video MP4 khổ điện thoại (vẽ canvas + WebCodecs + mp4-muxer)
+│   ├── vendor/mp4-muxer.esm.js  # thư viện đóng gói MP4 (MIT)
 │   └── data/
 │       ├── occasions.js    # danh mục dịp lễ
 │       ├── themes.js       # cấu hình JS của theme
@@ -173,9 +173,9 @@ Lượt nhấn nút được đếm bằng *event* (`js/analytics.js`), xem tron
 | `click/create-card/<id dịp>` | nhấn "Tạo thiệp" trên thẻ dịp (Khám phá dịp lễ, Dịp nổi bật, Sắp đến ngày đặc biệt) — đếm riêng theo từng dịp |
 | `click/share` | nhấn "Chia sẻ…" |
 | `click/copy-link` | nhấn "Sao chép liên kết" |
-| `click/gif-download` | nhấn "Tải GIF về máy" |
-| `click/gif-export` | nhấn "Xuất GIF (điện thoại)" (bắt đầu tạo GIF) |
-| `click/share-gif` | nhấn "Gửi GIF…" |
+| `click/video-download` | nhấn "Tải video về máy" |
+| `click/video-export` | nhấn "Xuất video MP4 (điện thoại)" (bắt đầu tạo video) |
+| `click/share-video` | nhấn "Gửi video…" |
 | `click/make-own/<id dịp>` | **người nhận** nhấn "Tạo thiệp cho người thân của bạn" ở cuối thiệp được gửi — đo vòng lan truyền (thiệp → người tạo mới) |
 
 Event chỉ mang tên nút và id dịp (chữ, số, gạch ngang), không có tên người nhận, lời chúc hay link thiệp. Đây là số lần *nhấn* nút, không phải số lần chia sẻ/sao chép thành công. GoatCounter bỏ qua `localhost` và người dùng bật trình chặn quảng cáo, nên số liệu thấp hơn thực tế. Thêm event mới: khai báo trong `EVENTS` của `js/analytics.js` rồi gọi `track('<tên>')`.
@@ -186,7 +186,8 @@ Workflow `.github/workflows/weekly-seo.yml` chạy 8:00 sáng thứ Hai (giờ V
 
 1. `tools/marketing/weekly-seo.mjs` chọn tối đa 3 dịp còn 5–45 ngày, ưu tiên dịp có người nhận mới có 0–1 lời chúc, rồi nhờ Gemini viết thêm lời chúc (tối đa 3 cho mỗi người nhận, 8 mỗi dịp, 20 mỗi lần; người nhận đã có 5 lời chúc, riêng `default` 6, thì thôi thêm).
 2. Lời chúc được lọc lại (emoji, hashtag, tên Wishora, không dấu, ngoài 40–300 ký tự, trùng lời chúc cũ) rồi ghi vào `js/data/messages-auto.js`. `messages.js` nối file này sau lời chúc viết tay, nên lời chúc mới hiện trên trang `o/<dịp>/` (nội dung SEO) và trong gợi ý của form.
-3. Workflow chạy `npm run build:pages -- --html`, `npm test`, rồi mở PR kèm danh sách lời chúc, số liệu GoatCounter và caption gợi ý để đăng tay cho dịp gần nhất còn 3–10 ngày. Duyệt, sửa hoặc xóa lời chúc ngay trong PR rồi merge thì site tự deploy.
+   Cùng lần chạy, script chọn một dịp còn 5–45 ngày đang có ít theme nhất (dưới 6) và nhờ Gemini thiết kế một theme mới cho dịp đó. Gemini chỉ trả tham số (màu, emoji, font trong danh sách, kiểu mở đầu); script kiểm tra (chữ đọc được: tương phản ≥ 4.5, màu `#rrggbb`, emoji hợp lệ, tên không trùng) rồi tự dựng cấu hình JS vào `js/data/themes-auto.js` và khối CSS vào `css/themes.css` (giữa `AUTO-THEMES:START/END`). `occasions.js` tự thêm id theme vào `themeIds` của dịp. Gu thiết kế nằm trong [`tools/marketing/theme-rules.md`](tools/marketing/theme-rules.md).
+3. Workflow chạy `npm run build:pages -- --html`, `npm test`, rồi mở PR kèm danh sách lời chúc, theme mới, số liệu GoatCounter và caption gợi ý để đăng tay cho dịp gần nhất còn 3–10 ngày. Duyệt, sửa hoặc xóa lời chúc ngay trong PR rồi merge thì site tự deploy.
 
 Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/marketing/message-rules.md), được đưa nguyên văn vào prompt; sửa file đó để đổi giọng văn. Giọng văn của caption nằm trong [`tools/marketing/caption-style.md`](tools/marketing/caption-style.md).
 
@@ -206,12 +207,18 @@ GOATCOUNTER_TOKEN=... node tools/marketing/stats.mjs    # lượt xem, event, ng
 
 `tests/data.test.js` chặn lời chúc trùng, quá dài/ngắn, sai id dịp hoặc dành cho người nhận không có trong `suggestedRecipients`; `tests/marketing.test.js` kiểm tra phần chọn dịp, bộ lọc và nội dung PR.
 
+### Video Reels/TikTok
+
+`node tools/marketing/record-video.mjs [id…]` quay video dọc 1080×1920 (mp4, khoảng 12 giây, có tiếng chuông thật của thiệp) cảnh người nhận mở thiệp, cho các clip khai báo trong `CLIPS` ở đầu file (dịp, người nhận, lời chúc, chữ mở đầu), rồi xuất ra `marketing-out/videos/` (không commit). Cần ffmpeg có libx264 (`brew install ffmpeg`, hoặc đặt `FFMPEG_PATH`) và Chrome (`CHROME_PATH`).
+
+`node tools/marketing/record-tutorial.mjs` quay video hướng dẫn khoảng 40 giây: gõ địa chỉ web, chọn dịp 20/10, nhập tên, chọn lời chúc gợi ý, chọn giao diện, tạo và sao chép link, rồi cảnh người nhận mở thiệp. Kết quả là `marketing-out/videos/huong-dan-20-10.mp4`. Chữ trên video, tên người nhận và giao diện là các hằng số ở đầu file. Script cần ffmpeg và Chrome giống như trên.
+
 ## Giới hạn
 
 - **URL dài**: lời chúc dài → link dài; có cảnh báo > 1.800 ký tự, một số app chat có thể cắt link.
 - **Ai có link đều xem được**, không thể thu hồi hay sửa thiệp đã gửi.
 - **Metadata mạng xã hội chỉ riêng theo dịp, không riêng theo từng thiệp**: ảnh/tiêu đề xem trước là của dịp (ví dụ Tết, 20/10), không có tên người nhận hay lời chúc. Muốn theo từng thiệp cần edge function (Cloudflare Workers/Netlify Edge) — chưa làm.
 - Nhạc nền chỉ có cho dịp sinh nhật.
-- GIF: tối đa 256 màu nên nền gradient có thể thấy vạch màu nhẹ (đã dither); lời chúc quá dài sẽ được thu nhỏ chữ (tối thiểu 10px) rồi cắt bằng "…"; tạo GIF mất khoảng 1–3 giây trên máy tính, có thể lâu hơn trên điện thoại cũ.
+- Video: lời chúc quá dài sẽ được thu nhỏ chữ (tối thiểu 10px) rồi cắt bằng "…"; tạo video mất dưới 1–3 giây trên máy tính, có thể lâu hơn trên điện thoại cũ; cần trình duyệt có WebCodecs.
 - Ngày âm lịch chỉ có trong khoảng đã xác minh (xem trên); không có mã QR; `og:url`/`og:image`/canonical đang trỏ domain GitHub Pages hiện tại.
 - Hình minh họa dùng emoji + CSS (không tải ảnh ngoài); hiển thị emoji phụ thuộc hệ điều hành.

@@ -155,11 +155,12 @@ export const captionSchema = {
  * Nội dung PR. results: [{ occasion, next, accepted, rejected }]; stats: markdown số liệu (hoặc lý do không có);
  * caption: { occasion, next, long, short } | { occasion, next, error } | null.
  */
-export function prBody({ model, site, results, stats, caption }) {
+export function prBody({ model, site, results, stats, caption, themeMd = '' }) {
   const total = results.reduce((s, r) => s + Object.values(r.accepted).flat().length, 0);
   const out = [
     `Workflow SEO hằng tuần nhờ Gemini (\`${model}\`) viết ${total} lời chúc mẫu mới cho các dịp sắp tới, thêm vào \`js/data/messages-auto.js\`. Lời chúc mẫu hiện trên trang của dịp (nội dung cho Google) và trong gợi ý của form tạo thiệp.`,
     'Đọc từng lời chúc bên dưới. Lời nào chưa ổn thì sửa hoặc xóa trong file đó ngay trên PR, rồi merge.',
+    ...(themeMd ? ['Workflow cũng nhờ Gemini thiết kế một theme thiệp mới cho dịp sắp tới (mục "Theme mới").'] : []),
     '## Lời chúc mới',
   ];
   for (const r of results) {
@@ -171,6 +172,7 @@ export function prBody({ model, site, results, stats, caption }) {
       out.push(`<details><summary>Tự động loại ${r.rejected.length} lời chúc</summary>\n\n${r.rejected.map((x) => `- (${x.reason}) ${x.message}`).join('\n')}\n</details>`);
     }
   }
+  if (themeMd) out.push('## Theme mới', themeMd);
   out.push('## Số liệu 7 ngày qua', stats);
   out.push('## Gợi ý đăng tay tuần này');
   if (!caption) out.push('_Không có dịp nào còn 3–10 ngày._');

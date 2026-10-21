@@ -1,11 +1,12 @@
 /**
  * Bước "viết" của workflow SEO hằng tuần (.github/workflows/weekly-seo.yml): chọn vài dịp sắp tới, nhờ Gemini viết thêm
- * lời chúc mẫu, lọc rồi ghi vào js/data/messages-auto.js, và soạn nội dung PR (lời chúc mới, số liệu GoatCounter,
- * caption đăng tay). Build trang, chạy test và mở PR là các bước sau trong workflow.
+ * lời chúc mẫu, lọc rồi ghi vào js/data/messages-auto.js; thiết kế thêm một theme thiệp cho dịp ít theme nhất (ghi vào
+ * js/data/themes-auto.js và css/themes.css); soạn nội dung PR (lời chúc và theme mới, số liệu GoatCounter, caption đăng tay). Build trang, chạy test và mở PR là các bước sau trong workflow.
  *   node tools/marketing/weekly-seo.mjs --plan                         # chỉ in kế hoạch: không gọi Gemini, không ghi file
  *   GEMINI_API_KEY=... node tools/marketing/weekly-seo.mjs [--pr-body <file>]
  * Model: gemini-3.8-flash, lỗi hạn mức/quá tải thì thử gemini-3.5-flash-lite rồi gemini-2.5-flash; GEMINI_MODEL thêm model ưu tiên. Quy tắc viết lời chúc: tools/marketing/message-rules.md.
- * Không có dịp nào cần thêm, hoặc không lời chúc nào đạt yêu cầu → thoát 0 và không ghi gì (workflow sẽ không mở PR).
+ * Quy tắc thiết kế theme: tools/marketing/theme-rules.md.
+ * Không có dịp nào cần thêm, hoặc không lời chúc/theme nào đạt yêu cầu → thoát 0 và không ghi gì (workflow sẽ không mở PR).
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -13,10 +14,15 @@ import { fileURLToPath } from 'node:url';
 import { upcoming } from '../../js/occasion-engine.js';
 import { mergeMessages } from '../../js/data/messages.js';
 import { AUTO_MESSAGES } from '../../js/data/messages-auto.js';
+import { AUTO_THEMES } from '../../js/data/themes-auto.js';
+import { THEMES } from '../../js/data/themes.js';
 import { siteUrl } from '../pages-lib.mjs';
 import {
   planRun, messagePrompt, messageSchema, acceptMessages, renderAutoFile, captionTarget, captionPrompt, captionSchema, prBody,
 } from './seo-lib.mjs';
+import {
+  pickThemeTarget, themePrompt, themeSchema, acceptTheme, insertThemeCss, renderThemesFile, themeSection,
+} from './theme-lib.mjs';
 
 const file = (p) => new URL(`../../${p}`, import.meta.url);
 const read = (p) => readFileSync(file(p), 'utf8');
@@ -41,7 +47,9 @@ console.log(plan.length ? 'Kế hoạch:' : 'Không có dịp nào cần thêm l
 for (const p of plan) {
   console.log(`- ${p.occasion.name} (còn ${p.next.days} ngày): ${p.wants.map((w) => `${w.relation} +${w.want} (đang có ${w.count})`).join(', ')}`);
 }
-if (args.includes('--plan') || !plan.length) process.exit(0);
+const themeTarget = pickThemeTarget(list);
+if (themeTarget) console.log(`Theme mới: ${themeTarget.occasion.name} (còn ${themeTarget.next.days} ngày, đang có ${themeTarget.occasion.themeIds.length} theme)`);
+if (args.includes('--plan') || (!plan.length && !themeTarget)) process.exit(0);
 
 const key = process.env.GEMINI_API_KEY;
 if (!key) {
@@ -98,11 +106,35 @@ for (const p of plan) {
   results.push({ ...p, accepted, rejected });
   console.log(`${p.occasion.id}: nhận ${Object.values(accepted).flat().length}, loại ${rejected.length}`);
 }
-if (!results.some((r) => Object.keys(r.accepted).length)) {
-  console.log('Không có lời chúc nào đạt yêu cầu — không ghi file.');
+const hasMessages = results.some((r) => Object.keys(r.accepted).length);
+
+let themeResult = null;
+let themes = AUTO_THEMES;
+if (themeTarget) {
+  try {
+    const raw = await gemini(themePrompt(themeTarget, THEMES, section(read('tools/marketing/theme-rules.md'), '## Quy tắc')), themeSchema);
+    const { theme, reason } = acceptTheme(raw, themeTarget, THEMES);
+    themeResult = { ...themeTarget, theme, reason };
+    if (theme) {
+      themes = [...AUTO_THEMES, theme];
+      console.log(`Theme: nhận "${theme.name}" (${theme.id}) cho ${themeTarget.occasion.id}`);
+    } else console.log(`Theme: loại — ${reason}`);
+  } catch (err) {
+    themeResult = { error: err.message };
+    console.warn(`Theme: ${err.message}`);
+  }
+}
+const hasTheme = themes !== AUTO_THEMES;
+
+if (!hasMessages && !hasTheme) {
+  console.log('Không có lời chúc hay theme nào đạt yêu cầu — không ghi file.');
   process.exit(0);
 }
-writeFileSync(file('js/data/messages-auto.js'), renderAutoFile(read('js/data/messages-auto.js'), auto));
+if (hasMessages) writeFileSync(file('js/data/messages-auto.js'), renderAutoFile(read('js/data/messages-auto.js'), auto));
+if (hasTheme) {
+  writeFileSync(file('js/data/themes-auto.js'), renderThemesFile(read('js/data/themes-auto.js'), themes));
+  writeFileSync(file('css/themes.css'), insertThemeCss(read('css/themes.css'), themes));
+}
 
 let stats;
 try {
@@ -125,6 +157,6 @@ if (target) {
   }
 }
 
-const body = prBody({ model, site, results, stats, caption });
+const body = prBody({ model, site, results, stats, caption, themeMd: themeResult ? themeSection(themeResult, site) : '' });
 if (prBodyPath) writeFileSync(prBodyPath, body);
 else console.log(`\n${body}`);

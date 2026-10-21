@@ -10,6 +10,7 @@
  * cover  : { glyph, theme, image? } — minh họa thẻ dịp: ký tự lớn trên nền theme, hoặc ảnh SVG riêng trong assets/illustrations/ (nếu có `image`)
  */
 import { MESSAGES } from './messages.js';
+import { AUTO_THEMES } from './themes-auto.js';
 
 export const CATEGORIES = Object.freeze({
   birthday: 'Sinh nhật & kỷ niệm',
@@ -52,6 +53,7 @@ const make = (o) => ({
   featured: false,
   enabled: true,
   ...o,
+  themeIds: [...o.themeIds, ...AUTO_THEMES.filter((t) => t.occasionId === o.id).map((t) => t.id)],
   messageTemplates: MESSAGES[o.id] ?? { default: [] },
 });
 

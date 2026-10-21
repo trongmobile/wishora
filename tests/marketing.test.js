@@ -82,3 +82,72 @@ test('prompt, caption và nội dung PR', () => {
     assert.ok(body.includes(s), s);
   }
 });
+
+// ---- Theme tự sinh ----
+import { pickThemeTarget, acceptTheme, renderThemeCss, insertThemeCss, renderThemesFile, themeSection, CSS_START, CSS_END, contrast } from '../tools/marketing/theme-lib.mjs';
+
+const themeRaw = (over = {}) => ({
+  name: 'Pumpkin Lantern', description: 'Cam bí ngô trên nền tím than, ấm và hơi huyền bí.', sample: 'Đêm Hội Ma Quái',
+  bgTop: '#2a1245', bgBottom: '#150826', ink: '#fff1dc', accent: '#ff7a18', accentSoft: '#ffb066',
+  font: 'Playfair Display', intro: 'gift', seal: '🎃', emoji: '🎃', divider: '✦',
+  decor: ['🎃', '🦇', '🕸️'], ambientChars: ['🎃', '🦇', '✨'], ambientCount: 14, ambientMotion: 'drift',
+  confettiColors: ['#ff7a18', '#8a3ffc', '#ffd166'], confettiChars: ['🎃'], confettiRatio: 0.3, ...over,
+});
+const hOcc = { ...occ('halloween', {}), category: 'international', enabled: true, themeIds: ['a', 'b', 'c'] };
+
+test('pickThemeTarget: dịp 5–45 ngày có ít theme nhất, bỏ dịp đã đủ theme', () => {
+  const few = { ...hOcc, id: 'few', themeIds: ['a', 'b'] };
+  const full = { ...hOcc, id: 'full', themeIds: ['a', 'b', 'c', 'd', 'e', 'f'] };
+  assert.equal(pickThemeTarget([at(hOcc, 10), at(few, 30), at(full, 6), at({ ...few, id: 'soon' }, 3)]).occasion.id, 'few');
+  assert.equal(pickThemeTarget([at(full, 6)]), null);
+});
+
+test('acceptTheme: nhận theme hợp lệ và sinh CSS đủ biến; dịp trang trọng không confetti', () => {
+  const { theme } = acceptTheme(themeRaw(), { occasion: hOcc }, []);
+  assert.equal(theme.id, 'pumpkin-lantern');
+  assert.equal(theme.group, 'intl');
+  assert.equal(theme.occasionId, 'halloween');
+  assert.deepEqual(theme.confetti.chars, ['🎃']);
+  const css = renderThemeCss(theme);
+  for (const v of ['--bg', '--ink', '--panel-bg', '--font-display', '--btn-bg', '--gift-1', '--env-1', '--emoji']) assert.ok(css.includes(v), v);
+  assert.ok(css.includes('[data-theme="pumpkin-lantern"] {'));
+  const solemn = acceptTheme(themeRaw(), { occasion: { ...hOcc, tone: 'solemn' } }, []).theme;
+  assert.equal(solemn.confetti, null);
+  assert.equal(solemn.ambient.motion, 'drift');
+});
+
+test('acceptTheme: loại theme chữ khó đọc, màu/emoji/font sai, tên trùng', () => {
+  const reason = (over, existing = []) => acceptTheme(themeRaw(over), { occasion: hOcc }, existing).reason;
+  assert.match(reason({ ink: '#3a2a55' }), /khó đọc/);
+  assert.match(reason({ accent: 'orange' }), /#rrggbb/);
+  assert.match(reason({ ambientChars: ['abc', '🎃', '🦇'] }), /emoji/);
+  assert.match(reason({ font: 'Comic Sans' }), /danh sách/);
+  assert.match(reason({ name: 'Pumpkin "Lantern"' }), /ký tự không cho phép/);
+  assert.match(reason({ description: 'Orange pumpkins on a dark purple background.' }), /tiếng Việt/);
+  assert.match(reason({}, [{ id: 'pumpkin-lantern', name: 'X' }]), /trùng/);
+  assert.match(acceptTheme(null, { occasion: hOcc }, []).reason, /độ dài/);
+  assert.ok(contrast('#000000', '#ffffff') > 20);
+});
+
+test('insertThemeCss / renderThemesFile: ghi giữa dấu, không chèn hai lần, bỏ tham số css', () => {
+  const { theme } = acceptTheme(themeRaw(), { occasion: hOcc }, []);
+  const source = `a {}\n${CSS_START}\n${CSS_END}\nb {}\n`;
+  const once = insertThemeCss(source, [theme]);
+  assert.ok(once.indexOf('[data-theme="pumpkin-lantern"] {') > once.indexOf(CSS_START));
+  assert.ok(once.indexOf('[data-theme="pumpkin-lantern"] {') < once.indexOf(CSS_END));
+  assert.equal(insertThemeCss(once, [theme]), once);
+  assert.throws(() => insertThemeCss('không có dấu', [theme]));
+  const file = renderThemesFile('// chú thích\nexport const AUTO_THEMES = [];\n', [theme]);
+  assert.ok(file.startsWith('// chú thích\n'));
+  assert.ok(!file.includes('"css"') && file.includes('"occasionId": "halloween"'));
+});
+
+test('prBody có mục Theme mới khi có theme', () => {
+  const { theme } = acceptTheme(themeRaw(), { occasion: hOcc }, []);
+  const md = themeSection({ occasion: hOcc, next: { date: '2026-10-31', days: 10 }, theme }, 'https://x.vn/');
+  assert.ok(md.includes('Pumpkin Lantern') && md.includes('https://x.vn/?page=create&occasion=halloween&theme=pumpkin-lantern') && md.includes('localhost:8000'));
+  const body = prBody({ model: 'm', site: 'https://x.vn/', results: [], stats: 's', caption: null, themeMd: md });
+  assert.ok(body.includes('## Theme mới'));
+  assert.ok(!prBody({ model: 'm', site: 's', results: [], stats: 's', caption: null }).includes('## Theme mới'));
+  assert.match(themeSection({ occasion: hOcc, next: { date: '2026-10-31', days: 10 }, reason: 'x' }, 's'), /bị loại: x/);
+});

@@ -5,7 +5,7 @@ import { mountCard } from './greeting.js';
 import { getOccasion, themesFor, defaultThemeFor, suggestionsFor, relationsFor } from './occasion-engine.js';
 import { nextOccurrence, formatDate, countdownLabel } from './calendar.js';
 import { goBack, routeHref, navigate } from './router.js';
-import { exportGif, gifFileName } from './gif-export.js';
+import { exportVideo, videoFileName } from './video-export.js';
 import { enhanceSelect } from './dropdown.js';
 import { track } from './analytics.js';
 import * as music from './music.js';
@@ -295,7 +295,7 @@ export function initCreator() {
   // ---------- Tạo liên kết ----------
   function hideResult() {
     result.hidden = true;
-    resetGif();
+    resetVideo();
   }
 
   form.addEventListener('submit', (e) => {
@@ -314,74 +314,76 @@ export function initCreator() {
     result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   });
 
-  // ---------- Xuất GIF (khổ điện thoại) ----------
-  const gifBtn = $('#btn-gif');
-  const gifPanel = $('#gif-panel');
-  const gifProgress = $('#gif-progress');
-  const gifStatus = $('#gif-status');
-  const gifDone = $('#gif-done');
-  const gifShare = $('#gif-share');
-  let gifUrl = '';
-  let gifFile = null;
-  let gifRun = 0;
+  // ---------- Xuất video MP4 (khổ điện thoại) ----------
+  const videoBtn = $('#btn-video');
+  const videoPanel = $('#video-panel');
+  const videoProgress = $('#video-progress');
+  const videoStatus = $('#video-status');
+  const videoDone = $('#video-done');
+  const videoShare = $('#video-share');
+  let videoUrl = '';
+  let videoFile = null;
+  let videoRun = 0;
 
-  function resetGif() {
-    gifRun++; // hủy kết quả của lần chạy đang dở (nếu có)
-    if (gifUrl) URL.revokeObjectURL(gifUrl);
-    gifUrl = '';
-    gifFile = null;
-    gifPanel.hidden = true;
-    gifDone.hidden = true;
-    gifBtn.disabled = false;
+  function resetVideo() {
+    videoRun++; // hủy kết quả của lần chạy đang dở (nếu có)
+    if (videoUrl) URL.revokeObjectURL(videoUrl);
+    videoUrl = '';
+    videoFile = null;
+    videoPanel.hidden = true;
+    videoDone.hidden = true;
+    videoBtn.disabled = false;
   }
 
-  gifBtn.addEventListener('click', async () => {
+  videoBtn.addEventListener('click', async () => {
     const data = validate();
     if (!data) return;
-    track('gif-export');
-    resetGif();
-    const run = gifRun;
-    gifBtn.disabled = true;
-    gifPanel.hidden = false;
-    $('#gif-progress-wrap').hidden = false;
-    gifProgress.value = 0;
-    gifStatus.textContent = 'Đang tạo GIF…';
-    gifPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    track('video-export');
+    resetVideo();
+    const run = videoRun;
+    videoBtn.disabled = true;
+    videoPanel.hidden = false;
+    $('#video-progress-wrap').hidden = false;
+    videoProgress.value = 0;
+    videoStatus.textContent = 'Đang tạo video…';
+    videoPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     try {
-      const out = await exportGif(data, {
+      const out = await exportVideo(data, {
         onProgress: (f) => {
-          if (run === gifRun) {
-            gifProgress.value = Math.round(f * 100);
-            gifStatus.textContent = `Đang tạo GIF… ${Math.round(f * 100)}%`;
+          if (run === videoRun) {
+            videoProgress.value = Math.round(f * 100);
+            videoStatus.textContent = `Đang tạo video… ${Math.round(f * 100)}%`;
           }
         },
       });
-      if (run !== gifRun) return;
-      gifFile = new File([out.blob], gifFileName(data.occasion, data.name), { type: 'image/gif' });
-      gifUrl = URL.createObjectURL(out.blob);
-      $('#gif-preview').src = gifUrl;
-      $('#gif-download').href = gifUrl;
-      $('#gif-download').download = gifFile.name;
-      $('#gif-info').textContent = `${out.width}×${out.height} · ${out.frames} khung hình · ${(out.bytes / 1024 / 1024).toFixed(2)} MB`;
-      gifShare.hidden = !(navigator.canShare?.({ files: [gifFile] }) ?? false);
-      $('#gif-progress-wrap').hidden = true;
-      gifDone.hidden = false;
-      gifBtn.disabled = false;
+      if (run !== videoRun) return;
+      videoFile = new File([out.blob], videoFileName(data.occasion, data.name), { type: 'video/mp4' });
+      videoUrl = URL.createObjectURL(out.blob);
+      $('#video-preview').src = videoUrl;
+      $('#video-download').href = videoUrl;
+      $('#video-download').download = videoFile.name;
+      $('#video-info').textContent = `${out.width}×${out.height} · ${Math.round(out.seconds)} giây · ${(out.bytes / 1024 / 1024).toFixed(2)} MB`;
+      videoShare.hidden = !(navigator.canShare?.({ files: [videoFile] }) ?? false);
+      $('#video-progress-wrap').hidden = true;
+      videoDone.hidden = false;
+      videoBtn.disabled = false;
     } catch (err) {
-      if (run !== gifRun) return;
+      if (run !== videoRun) return;
       console.error(err);
-      gifStatus.textContent = 'Không thể tạo GIF trên thiết bị này. Hãy thử lại hoặc dùng trình duyệt khác.';
-      gifBtn.disabled = false;
+      videoStatus.textContent = err?.message === 'unsupported'
+        ? 'Trình duyệt này chưa hỗ trợ tạo video. Hãy dùng Chrome, Edge hoặc Safari bản mới.'
+        : 'Không thể tạo video trên thiết bị này. Hãy thử lại hoặc dùng Chrome, Edge hoặc Safari bản mới.';
+      videoBtn.disabled = false;
     }
   });
 
-  $('#gif-download').addEventListener('click', () => track('gif-download'));
+  $('#video-download').addEventListener('click', () => track('video-download'));
 
-  gifShare.addEventListener('click', async () => {
-    if (!gifFile) return;
-    track('share-gif');
+  videoShare.addEventListener('click', async () => {
+    if (!videoFile) return;
+    track('share-video');
     try {
-      await navigator.share({ files: [gifFile], title: `Thiệp ${occasion.name}`, text: `Một lời chúc dành cho ${nameInput.value.trim()} 🎁` });
+      await navigator.share({ files: [videoFile], title: `Thiệp ${occasion.name}`, text: `Một lời chúc dành cho ${nameInput.value.trim()} 🎁` });
     } catch (err) {
       if (err?.name !== 'AbortError') showToast('Không thể mở hộp thoại chia sẻ.');
     }

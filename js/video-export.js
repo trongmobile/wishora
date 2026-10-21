@@ -1,20 +1,24 @@
 /**
- * Xuất thiệp thành ảnh GIF động kích thước điện thoại (360×640) ngay trên trình duyệt — không cần máy chủ.
+ * Xuất thiệp thành video MP4 (H.264) khổ điện thoại 720×1280 ngay trên trình duyệt — không cần máy chủ.
  *
- * GIF được VẼ LẠI trên canvas từ chính cấu hình theme/dịp (màu nền, khung chữ, font, hạt trang trí,
+ * Video được VẼ LẠI trên canvas từ chính cấu hình theme/dịp (màu nền, khung chữ, font, hạt trang trí,
  * confetti, ký tự trang trí) chứ không phải quay màn hình, nên giống thiệp về màu sắc/bố cục/kiểu chữ
  * nhưng không giống từng điểm ảnh (không có hộp quà/phong bì mở, hiệu ứng mờ kính, âm thanh).
- * Mã hóa bằng gifenc (js/vendor/gifenc.esm.js): bảng màu chung 255 màu + dither nhẹ + chỉ ghi phần ảnh thay đổi.
+ * Mã hóa bằng WebCodecs (VideoEncoder, H.264) và đóng gói MP4 bằng mp4-muxer (js/vendor/mp4-muxer.esm.js).
  */
-import { GIFEncoder, quantize, applyPalette } from './vendor/gifenc.esm.js';
+import { Muxer, ArrayBufferTarget } from './vendor/mp4-muxer.esm.js';
 import { getTheme } from './data/themes.js';
 import { getOccasion } from './occasion-engine.js';
 
-export const GIF_WIDTH = 360;
-export const GIF_HEIGHT = 640;
-const FPS = 12;
-const DURATION = 5; // giây
-const LAST_FRAME_HOLD_MS = 1200;
+export const VIDEO_WIDTH = 360; // khổ vẽ (px logic); video thật là VIDEO_SCALE lần
+export const VIDEO_HEIGHT = 640;
+const VIDEO_SCALE = 2;
+const FPS = 30;
+const DURATION = 5; // giây: hoạt cảnh
+const HOLD = 1.2; // giây: giữ khung cuối
+const BITRATE = 2_500_000;
+// Thử lần lượt: High 4.0, Main 4.0, Baseline 3.1 (thiết bị nào hỗ trợ cái nào dùng cái đó).
+const CODECS = ['avc1.640028', 'avc1.4d0028', 'avc1.42001f'];
 
 // ------------------------------------------------------------------ Phân tích CSS (hàm thuần, có test)
 
@@ -221,17 +225,18 @@ function drawSpaced(ctx, text, cx, y, spacing) {
 // ------------------------------------------------------------------ Renderer
 
 /**
- * Tạo renderer: `await r.ready()` rồi `r.draw(t)` (t giây) trả về canvas. Dùng chung cho xuất GIF và kiểm thử.
+ * Tạo renderer: `await r.ready()` rồi `r.draw(t)` (t giây) trả về canvas. Dùng chung cho xuất video và kiểm thử.
  * @param {{occasion:string,name:string,message:string,theme:string,title?:string}} data
  */
-export function createGifRenderer(data, { width = GIF_WIDTH, height = GIF_HEIGHT } = {}) {
+export function createCardRenderer(data, { width = VIDEO_WIDTH, height = VIDEO_HEIGHT, scale = 1 } = {}) {
   const theme = getTheme(data.theme);
   const occ = getOccasion(data.occasion) ?? getOccasion('birthday');
   const tk = readTokens(theme.id);
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  canvas.width = width * scale;
+  canvas.height = height * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(scale, 0, 0, scale, 0, 0); // mọi lệnh vẽ dùng toạ độ logic width×height
   const tools = makeTextTools(ctx);
   const rnd = mulberry32(hashSeed(`${data.occasion}|${data.theme}|${data.name}`));
 
@@ -563,7 +568,7 @@ export function createGifRenderer(data, { width = GIF_WIDTH, height = GIF_HEIGHT
       L = layout();
     },
     draw(t) {
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
       ctx.clearRect(0, 0, width, height);
       drawBackground();
       drawDecor(t);
@@ -577,81 +582,72 @@ export function createGifRenderer(data, { width = GIF_WIDTH, height = GIF_HEIGHT
   };
 }
 
-// ------------------------------------------------------------------ Mã hóa GIF
-
-const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-
-/** Dither có thứ tự (Bayer 4×4) nhẹ để giảm vạch màu ở nền gradient. Làm trên bản sao. */
-function ditherCopy(rgba, w, h, strength = 5) {
-  const out = new Uint8ClampedArray(rgba);
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const o = ((BAYER[(y & 3) * 4 + (x & 3)] - 7.5) / 7.5) * strength;
-      const i = (y * w + x) * 4;
-      out[i] += o;
-      out[i + 1] += o;
-      out[i + 2] += o;
-    }
-  }
-  return out;
-}
+// ------------------------------------------------------------------ Mã hóa MP4
 
 const tick = () => new Promise((r) => setTimeout(r, 0));
 
+/** Trình duyệt có WebCodecs (Chrome/Edge 94+, Safari 16.4+, Firefox 130+) để mã hóa H.264 không. */
+export const videoSupported = () => typeof VideoEncoder !== 'undefined' && typeof VideoFrame !== 'undefined';
+
+async function pickCodec(width, height) {
+  for (const codec of CODECS) {
+    try {
+      const cfg = { codec, width, height, bitrate: BITRATE, framerate: FPS };
+      if ((await VideoEncoder.isConfigSupported(cfg)).supported) return cfg;
+    } catch {
+      /* thử codec kế tiếp */
+    }
+  }
+  return null;
+}
+
 /**
- * Xuất GIF. Trả về { blob, width, height, frames, bytes }.
+ * Xuất video MP4. Trả về { blob, width, height, frames, seconds, bytes }.
  * @param {object} data  { occasion, name, message, theme, title? }
  * @param {{onProgress?:(fraction:number)=>void, signal?:AbortSignal}} opts
  */
-export async function exportGif(data, { onProgress, signal } = {}) {
-  const r = createGifRenderer(data);
+export async function exportVideo(data, { onProgress, signal } = {}) {
+  if (!videoSupported()) throw new Error('unsupported');
+  const r = createCardRenderer(data, { scale: VIDEO_SCALE });
   await r.ready();
-  const { width: w, height: h } = r;
-  const total = Math.round(DURATION * FPS);
-  const delay = Math.round(1000 / FPS);
-  const frameAt = (i) => r.draw(i / FPS).getContext('2d').getImageData(0, 0, w, h).data;
+  const w = r.width * VIDEO_SCALE;
+  const h = r.height * VIDEO_SCALE;
+  const config = await pickCodec(w, h);
+  if (!config) throw new Error('unsupported');
 
-  // Bảng màu chung lấy mẫu ở 3 thời điểm (có confetti và đủ chữ) — màu ổn định giữa các khung hình.
-  const samples = [Math.round(total * 0.22), Math.round(total * 0.4), Math.round(total * 0.85)].map((i) => ditherCopy(frameAt(i), w, h));
-  const merged = new Uint8ClampedArray(samples.reduce((n, s) => n + s.length, 0));
-  let off = 0;
-  for (const s of samples) {
-    merged.set(s, off);
-    off += s.length;
-  }
-  const colors = quantize(merged, 255);
-  const transparentIndex = colors.length; // chỉ số dành riêng: "giữ nguyên điểm ảnh của khung trước"
-  const palette = [...colors, [0, 0, 0]];
+  const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: 'avc', width: w, height: h }, fastStart: 'in-memory' });
+  let failure = null;
+  const encoder = new VideoEncoder({
+    output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+    error: (e) => { failure = e; },
+  });
+  encoder.configure(config);
 
-  const enc = GIFEncoder();
-  let prev = null;
-  for (let i = 0; i < total; i++) {
-    if (signal?.aborted) throw new DOMException('Đã hủy', 'AbortError');
-    const idx = applyPalette(ditherCopy(frameAt(i), w, h), colors);
-    let frame = idx;
-    if (prev) {
-      frame = new Uint8Array(idx);
-      for (let p = 0; p < idx.length; p++) if (idx[p] === prev[p]) frame[p] = transparentIndex;
+  const total = Math.round((DURATION + HOLD) * FPS);
+  try {
+    for (let i = 0; i < total; i++) {
+      if (signal?.aborted) throw new DOMException('Đã hủy', 'AbortError');
+      if (failure) throw failure;
+      const canvas = r.draw(Math.min(i / FPS, DURATION));
+      const frame = new VideoFrame(canvas, { timestamp: Math.round((i * 1e6) / FPS), duration: Math.round(1e6 / FPS) });
+      encoder.encode(frame, { keyFrame: i % FPS === 0 });
+      frame.close();
+      onProgress?.((i + 1) / total);
+      while (encoder.encodeQueueSize > 6) await tick(); // đừng dồn khung hình vào hàng đợi của bộ mã hóa
+      if (i % 3 === 2) await tick();
     }
-    enc.writeFrame(frame, w, h, {
-      palette: i === 0 ? palette : undefined,
-      delay: i === total - 1 ? LAST_FRAME_HOLD_MS : delay,
-      repeat: 0,
-      transparent: i > 0,
-      transparentIndex,
-      dispose: 1,
-    });
-    prev = idx;
-    onProgress?.((i + 1) / total);
-    if (i % 2 === 1) await tick();
+    await encoder.flush();
+    if (failure) throw failure;
+  } finally {
+    if (encoder.state !== 'closed') encoder.close();
   }
-  enc.finish();
-  const bytes = enc.bytes();
-  return { blob: new Blob([bytes], { type: 'image/gif' }), width: w, height: h, frames: total, bytes: bytes.length };
+  muxer.finalize();
+  const { buffer } = muxer.target;
+  return { blob: new Blob([buffer], { type: 'video/mp4' }), width: w, height: h, frames: total, seconds: total / FPS, bytes: buffer.byteLength };
 }
 
-/** Tên file gợi ý: wishora-<dịp>-<tên không dấu>.gif */
-export function gifFileName(occasionId, name) {
+/** Tên file gợi ý: wishora-<dịp>-<tên không dấu>.mp4 */
+export function videoFileName(occasionId, name) {
   const slug = String(name)
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
@@ -660,5 +656,5 @@ export function gifFileName(occasionId, name) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
     .slice(0, 24);
-  return `wishora-${occasionId}${slug ? `-${slug}` : ''}.gif`;
+  return `wishora-${occasionId}${slug ? `-${slug}` : ''}.mp4`;
 }

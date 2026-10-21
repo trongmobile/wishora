@@ -3,3 +3,6 @@ node_modules/
 tools/.og-tmp.html
 
 wishora-marketing.md
+marketing-out/
+tools/marketing/record-video.mjs
+tools/marketing/record-tutorial.mjs

@@ -4,9 +4,9 @@
  *   click/create-card/<id dịp>   nhấn "Tạo thiệp" trên thẻ dịp (Khám phá, Dịp nổi bật, Sắp đến ngày đặc biệt)
  *   click/share                  nhấn "Chia sẻ…" (hộp thoại chia sẻ của thiết bị)
  *   click/copy-link              nhấn "Sao chép liên kết"
- *   click/gif-export             nhấn "Xuất GIF (điện thoại)"
- *   click/gif-download           nhấn "Tải GIF về máy"
- *   click/share-gif              nhấn "Gửi GIF…"
+ *   click/video-export           nhấn "Xuất video MP4 (điện thoại)"
+ *   click/video-download         nhấn "Tải video về máy"
+ *   click/share-video            nhấn "Gửi video…"
  *   click/make-own/<id dịp>      người nhận nhấn "Tạo thiệp cho người thân của bạn" trên thiệp được gửi
  * Không bao giờ gửi tên người nhận, lời chúc hay liên kết thiệp. Script GoatCounter chưa tải xong/bị chặn → bỏ qua, không lỗi.
  */
@@ -14,9 +14,9 @@ export const EVENTS = Object.freeze({
   'create-card': 'Nhấn Tạo thiệp trên thẻ dịp',
   share: 'Nhấn Chia sẻ',
   'copy-link': 'Nhấn Sao chép liên kết',
-  'gif-export': 'Nhấn Xuất GIF',
-  'gif-download': 'Nhấn Tải GIF về máy',
-  'share-gif': 'Nhấn Gửi GIF',
+  'video-export': 'Nhấn Xuất video',
+  'video-download': 'Nhấn Tải video về máy',
+  'share-video': 'Nhấn Gửi video',
   'make-own': 'Người nhận nhấn Tạo thiệp cho người thân',
 });
 

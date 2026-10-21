@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { splitTopLevel, gradientStops, baseGradient, hardShadow, gifFileName } from '../js/gif-export.js';
-import { GIFEncoder, quantize, applyPalette } from '../js/vendor/gifenc.esm.js';
+import { splitTopLevel, gradientStops, baseGradient, hardShadow, videoFileName } from '../js/video-export.js';
+import { Muxer, ArrayBufferTarget } from '../js/vendor/mp4-muxer.esm.js';
 import { THEMES } from '../js/data/themes.js';
 import { readFileSync } from 'node:fs';
 
@@ -26,26 +26,14 @@ test('phân tích gradient / bóng đổ', () => {
   assert.equal(hardShadow('0 24px 60px rgba(0,0,0,.4)'), null);
 });
 
-test('tên file GIF không dấu, an toàn', () => {
-  assert.equal(gifFileName('women-day-20-10', 'Mẹ yêu 🌸'), 'wishora-women-day-20-10-me-yeu.gif');
-  assert.equal(gifFileName('tet', '🌸🌸'), 'wishora-tet.gif');
-  assert.equal(gifFileName('tet', 'Đặng Thị / ..'), 'wishora-tet-dang-thi.gif');
+test('tên file video không dấu, an toàn', () => {
+  assert.equal(videoFileName('women-day-20-10', 'Mẹ yêu 🌸'), 'wishora-women-day-20-10-me-yeu.mp4');
+  assert.equal(videoFileName('tet', '🌸🌸'), 'wishora-tet.mp4');
+  assert.equal(videoFileName('tet', 'Đặng Thị / ..'), 'wishora-tet-dang-thi.mp4');
 });
 
-test('bộ mã hóa GIF (gifenc) tạo file GIF89a hợp lệ, lặp vô hạn, có nhiều khung hình', () => {
-  const w = 8, h = 8;
-  const make = (r) => {
-    const px = new Uint8ClampedArray(w * h * 4);
-    for (let i = 0; i < w * h; i++) px.set([r, 40, 90, 255], i * 4);
-    return px;
-  };
-  const palette = quantize(make(200), 16);
-  const enc = GIFEncoder();
-  for (const r of [200, 100]) enc.writeFrame(applyPalette(make(r), palette), w, h, { palette, delay: 100, repeat: 0 });
-  enc.finish();
-  const b = enc.bytes();
-  assert.equal(String.fromCharCode(...b.slice(0, 6)), 'GIF89a');
-  assert.equal(b.at(-1), 0x3b);
-  assert.equal(String.fromCharCode(...b.slice(b.indexOf(0x4e), b.indexOf(0x4e) + 11)), 'NETSCAPE2.0');
-  assert.equal([...b].filter((x, i, a) => x === 0x21 && a[i + 1] === 0xf9).length, 2);
+test('thư viện đóng gói MP4 (mp4-muxer) đã vendor sẵn, dựng được Muxer', () => {
+  const muxer = new Muxer({ target: new ArrayBufferTarget(), video: { codec: 'avc', width: 720, height: 1280 }, fastStart: 'in-memory' });
+  assert.equal(typeof muxer.addVideoChunk, 'function');
+  assert.equal(typeof muxer.finalize, 'function');
 });
