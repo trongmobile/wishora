@@ -129,7 +129,7 @@ python3 -m http.server 8000      # hoặc: npm start / npx serve .
 Mở `http://localhost:8000`. Dự án dùng ES modules nên **không mở bằng `file://`**.
 
 ```bash
-npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO, lời chúc mẫu, thống kê, SEO hằng tuần (46 test)
+npm test      # node --test tests/*.test.js: lịch, URL, dữ liệu, tìm kiếm, trang tĩnh theo dịp, SEO, lời chúc mẫu, thống kê, SEO hằng tuần (53 test)
 ```
 
 ## Triển khai
@@ -184,10 +184,10 @@ Event chỉ mang tên nút và id dịp (chữ, số, gạch ngang), không có 
 
 Workflow `.github/workflows/weekly-seo.yml` chạy 8:00 sáng thứ Hai (giờ VN), miễn phí: GitHub Actions cho repo public, Gemini API gói miễn phí.
 
-1. `tools/marketing/weekly-seo.mjs` chọn tối đa 3 dịp còn 5–45 ngày, ưu tiên dịp có người nhận mới có 0–1 lời chúc, rồi nhờ Gemini viết thêm lời chúc (tối đa 3 cho mỗi người nhận, 8 mỗi dịp, 20 mỗi lần; người nhận đã có 5 lời chúc, riêng `default` 6, thì thôi thêm).
+1. `tools/marketing/weekly-seo.mjs` chọn tối đa 3 dịp còn 5–90 ngày (Google cần vài tuần để lập chỉ mục nên nội dung mùa lễ phải lên sớm). Dịp còn trong 45 ngày được làm trước, ưu tiên dịp có người nhận mới có 0–1 lời chúc; dịp xa hơn chỉ nhận phần hạn mức còn dư. Rồi nhờ Gemini viết thêm lời chúc (tối đa 3 cho mỗi người nhận, 8 mỗi dịp, 20 mỗi lần; người nhận đã có 5 lời chúc, riêng `default` 6, thì thôi thêm).
 2. Lời chúc được lọc lại (emoji, hashtag, tên Wishora, không dấu, ngoài 40–300 ký tự, trùng lời chúc cũ) rồi ghi vào `js/data/messages-auto.js`. `messages.js` nối file này sau lời chúc viết tay, nên lời chúc mới hiện trên trang `o/<dịp>/` (nội dung SEO) và trong gợi ý của form.
-   Cùng lần chạy, script chọn một dịp còn 5–45 ngày đang có ít theme nhất (dưới 6) và nhờ Gemini thiết kế một theme mới cho dịp đó. Gemini chỉ trả tham số (màu, emoji, font trong danh sách, kiểu mở đầu); script kiểm tra (chữ đọc được: tương phản ≥ 4.5, màu `#rrggbb`, emoji hợp lệ, tên không trùng) rồi tự dựng cấu hình JS vào `js/data/themes-auto.js` và khối CSS vào `css/themes.css` (giữa `AUTO-THEMES:START/END`). `occasions.js` tự thêm id theme vào `themeIds` của dịp. Gu thiết kế nằm trong [`tools/marketing/theme-rules.md`](tools/marketing/theme-rules.md).
-3. Workflow chạy `npm run build:pages -- --html`, `npm test`, rồi mở PR kèm danh sách lời chúc, theme mới, số liệu GoatCounter và caption gợi ý để đăng tay cho dịp gần nhất còn 3–10 ngày. Duyệt, sửa hoặc xóa lời chúc ngay trong PR rồi merge thì site tự deploy.
+   Cùng lần chạy, script chọn một dịp còn 5–90 ngày (dịp trong 45 ngày xét trước) đang có ít theme nhất (dưới 6) và nhờ Gemini thiết kế một theme mới cho dịp đó. Gemini chỉ trả tham số (màu, emoji, font trong danh sách, kiểu mở đầu); script kiểm tra (chữ đọc được: tương phản ≥ 4.5, màu `#rrggbb`, emoji hợp lệ, tên không trùng) rồi tự dựng cấu hình JS vào `js/data/themes-auto.js` và khối CSS vào `css/themes.css` (giữa `AUTO-THEMES:START/END`). `occasions.js` tự thêm id theme vào `themeIds` của dịp. Gu thiết kế nằm trong [`tools/marketing/theme-rules.md`](tools/marketing/theme-rules.md).
+3. Workflow chạy `npm run build:pages -- --html` (ngoài trang dịp còn làm mới danh sách link tĩnh tới 6 dịp sắp đến ở `index.html`, để Google thấy ngay trang Halloween, 20/11… từ trang chủ), `npm test`, rồi mở PR (chỉ khi có lời chúc hoặc theme mới) kèm danh sách lời chúc, theme mới, số liệu GoatCounter và caption gợi ý để đăng tay cho dịp gần nhất còn 3–10 ngày. Duyệt, sửa hoặc xóa lời chúc ngay trong PR rồi merge thì site tự deploy.
 
 Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/marketing/message-rules.md), được đưa nguyên văn vào prompt; sửa file đó để đổi giọng văn. Giọng văn của caption nằm trong [`tools/marketing/caption-style.md`](tools/marketing/caption-style.md).
 

@@ -4,7 +4,7 @@
  * (js/data/themes-auto.js) và khối CSS (css/themes.css). Gemini chỉ chọn màu, emoji, font trong danh sách có sẵn;
  * CSS do template ở đây viết ra nên không có chuyện Gemini chèn CSS tùy ý vào site.
  */
-import { LIMITS } from './seo-lib.mjs';
+import { LIMITS, isFar } from './seo-lib.mjs';
 import { normalize } from '../../js/occasion-engine.js';
 import { formatDate } from '../../js/calendar.js';
 
@@ -32,12 +32,13 @@ export const groupFor = (occasion) => GROUP_BY_CATEGORY[occasion.category] ?? 'g
 
 /**
  * Chọn dịp để thêm theme từ kết quả upcoming(): dịp còn minDays–maxDays ngày, đang có ít theme nhất
- * (dưới THEME_LIMITS.target), rồi tới dịp gần hơn. Trả về { occasion, next } hoặc null.
+ * (dưới THEME_LIMITS.target), rồi tới dịp gần hơn; dịp còn trong nearDays ngày luôn được xét trước dịp xa hơn.
+ * Trả về { occasion, next } hoặc null.
  */
 export function pickThemeTarget(list, limits = THEME_LIMITS) {
   return list
     .filter((x) => x.next && x.occasion.enabled && x.next.days >= LIMITS.minDays && x.next.days <= LIMITS.maxDays && x.occasion.themeIds.length < limits.target)
-    .sort((a, b) => a.occasion.themeIds.length - b.occasion.themeIds.length || a.next.days - b.next.days)[0] ?? null;
+    .sort((a, b) => isFar(a) - isFar(b) || a.occasion.themeIds.length - b.occasion.themeIds.length || a.next.days - b.next.days)[0] ?? null;
 }
 
 export function themePrompt({ occasion, next }, existing, rules) {

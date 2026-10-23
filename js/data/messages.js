@@ -254,6 +254,24 @@ const HANDWRITTEN = {
     ],
     child: ['Chúc con yêu một đêm Halloween thật vui, nhận được thật nhiều kẹo và đừng ăn hết một lần nhé!'],
     friend: ['Halloween vui vẻ! Cùng nhau hóa trang thật kinh dị rồi đi xin kẹo thôi nào!'],
+    lover: [
+      'Đêm Halloween này không cần hóa trang gì cả, chỉ cần có người ở bên là mọi điều rùng rợn đều hóa thành ngọt ngào. Chúc mình một đêm thật vui nhé!',
+      'Nếu đêm nay có ma xuất hiện thì cứ nắm tay nhau thật chặt nhé. Halloween vui vẻ, cảm ơn vì luôn khiến những ngày bình thường của mình trở nên đặc biệt.',
+      'Người ta đi xin kẹo đêm Halloween, còn mình chỉ xin một điều: được ở bên nhau thật lâu. Chúc người thương một đêm hóa trang đáng nhớ và thật nhiều tiếng cười.',
+      'Hóa thành ma cà rồng hay phù thủy cũng được, miễn là cùng nhau đi hết đêm Halloween này. Chúc hai đứa mình một buổi tối thật đáng yêu và đầy kẹo ngọt.',
+    ],
+    bestfriend: [
+      'Halloween năm nay nhớ rủ nhau hóa trang chung một chủ đề cho ra dáng bộ đôi nhé. Chúc bạn thân một đêm quẩy hết mình và gom được nhiều kẹo hơn cả mình!',
+      'Cảm ơn vì lúc nào cũng cùng mình làm mấy trò điên rồ, kể cả đêm Halloween. Chúc bạn thân hóa trang thật chất và đừng quên chừa cho mình vài cái kẹo nhé!',
+      'Bạn thân ơi, đêm nay ai dọa ai còn chưa biết đâu, nhưng chắc chắn mình sẽ là người đi cạnh bạn cho đỡ sợ. Halloween vui nha!',
+      'Chúc cặp bài trùng của nhau một đêm Halloween không con ma nào dám lại gần, chỉ có tiếng cười và một đống ảnh hóa trang để trêu nhau cả năm.',
+    ],
+    colleague: [
+      'Chúc bạn một ngày Halloween thật vui, deadline đừng đáng sợ hơn ma và cà phê luôn đủ đầy để cả nhóm cùng vượt qua tuần làm việc này.',
+      'Halloween này chúc cả văn phòng ít họp, nhiều kẹo và không ai bị con ma báo cáo cuối tháng đuổi theo. Cảm ơn bạn vì luôn là đồng nghiệp đáng mến!',
+      'Chúc bạn có một buổi tối Halloween nhẹ nhàng sau giờ làm, hóa trang thật duyên và được nghỉ ngơi thoải mái bên người thân.',
+      'Một chút bí ngô cho bàn làm việc, một chút kẹo cho tinh thần. Chúc bạn Halloween vui vẻ và tràn đầy năng lượng cho những ngày sắp tới.',
+    ],
   },
   'happiness-day-20-03': {
     default: [

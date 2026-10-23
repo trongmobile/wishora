@@ -36,12 +36,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if git diff --quiet; then
+          # index.html đổi mỗi tuần (danh sách dịp sắp đến) nên không đủ để mở PR; nó đi kèm khi có lời chúc/theme mới.
+          if git diff --quiet -- js/data/messages-auto.js js/data/themes-auto.js css/themes.css; then
             echo "Không có lời chúc hay theme mới — không mở PR."
             exit 0
           fi
-          # Chỉ cho phép thay đổi lời chúc, theme tự sinh và trang dịp được build lại từ đó.
-          bad=$(git diff --name-only | grep -v -E '^(js/data/messages-auto\.js|js/data/themes-auto\.js|css/themes\.css|o/[^/]+/index\.html)$' || true)
+          # Chỉ cho phép thay đổi lời chúc, theme tự sinh, trang dịp và trang chủ được build lại từ đó.
+          bad=$(git diff --name-only | grep -v -E '^(js/data/messages-auto\.js|js/data/themes-auto\.js|css/themes\.css|index\.html|o/[^/]+/index\.html)$' || true)
           if [ -n "$bad" ]; then
             echo "::error::File ngoài phạm vi bị thay đổi: $bad"
             exit 1
@@ -51,7 +52,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add js/data/messages-auto.js js/data/themes-auto.js css/themes.css o
+          git add js/data/messages-auto.js js/data/themes-auto.js css/themes.css index.html o
           git commit -m "SEO: thêm lời chúc mẫu và theme tự sinh ($day)"
           git push -u origin "$branch"
           gh pr create --base main --head "$branch" \

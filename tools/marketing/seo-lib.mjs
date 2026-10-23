@@ -8,7 +8,8 @@ import { formatDate } from '../../js/calendar.js';
 
 export const LIMITS = Object.freeze({
   minDays: 5, // dịp còn ít ngày hơn thì Google không kịp lập chỉ mục
-  maxDays: 45,
+  maxDays: 90, // Google cần vài tuần để lập chỉ mục trang mới: nội dung mùa lễ phải lên từ 2–3 tháng trước
+  nearDays: 45, // dịp còn trong ngần này ngày được làm trước; dịp xa hơn (tới maxDays) chỉ nhận phần hạn mức còn dư
   occasions: 3, // số dịp mỗi lần chạy
   perRelation: 3, // số lời chúc thêm tối đa cho một người nhận mỗi lần
   perOccasion: 8,
@@ -31,9 +32,13 @@ export function wantsFor(occasion, limits = LIMITS) {
     .sort((a, b) => a.count - b.count);
 }
 
+/** 1 nếu dịp còn quá nearDays ngày (xếp sau mọi dịp gần), ngược lại 0. */
+export const isFar = (x, limits = LIMITS) => (x.next.days > limits.nearDays ? 1 : 0);
+
 /**
- * Chọn dịp cho lần chạy từ kết quả upcoming(): dịp còn minDays–maxDays ngày, ưu tiên dịp có người nhận
- * mới có 0–1 lời chúc, rồi tới dịp gần hơn. Trả về [{ occasion, next, wants: [{ relation, count, want }] }].
+ * Chọn dịp cho lần chạy từ kết quả upcoming(): dịp còn minDays–maxDays ngày. Dịp còn trong nearDays ngày được làm trước
+ * (ưu tiên dịp có người nhận mới có 0–1 lời chúc, rồi tới dịp gần hơn); dịp xa hơn lấy phần hạn mức còn dư, gần trước.
+ * Trả về [{ occasion, next, wants: [{ relation, count, want }] }].
  */
 export function planRun(list, limits = LIMITS) {
   const hasGap = (x) => (x.wants.some((w) => w.count <= 1) ? 1 : 0);
@@ -41,7 +46,7 @@ export function planRun(list, limits = LIMITS) {
     .filter((x) => x.next && x.next.days >= limits.minDays && x.next.days <= limits.maxDays)
     .map((x) => ({ ...x, wants: wantsFor(x.occasion, limits) }))
     .filter((x) => x.wants.length)
-    .sort((a, b) => hasGap(b) - hasGap(a) || a.next.days - b.next.days);
+    .sort((a, b) => isFar(a, limits) - isFar(b, limits) || (isFar(a, limits) ? 0 : hasGap(b) - hasGap(a)) || a.next.days - b.next.days);
   const plan = [];
   let left = limits.total;
   for (const x of candidates) {

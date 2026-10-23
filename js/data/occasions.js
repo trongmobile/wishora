@@ -237,8 +237,8 @@ export const OCCASIONS = [
     id: 'halloween', name: 'Halloween 31/10', category: 'international', ...fixed(10, 31), region: ['international'],
     description: 'Bí ngô, dơi bay và những lời chúc vui nhộn đêm Halloween.',
     headline: 'Happy Halloween', introTitle: 'Trick or Treat!', openLabel: 'Mở món quà', tone: 'festive',
-    keywords: ['halloween', '31/10', 'bi ngo', 'ma'],
-    themeIds: ['halloween-magic', 'colorful-celebration', 'cozy-autumn'], suggestedRecipients: ['friend', 'child', 'family'],
+    keywords: ['halloween', '31/10', 'bi ngo', 'ma', 'hoa trang', 'trick or treat'],
+    themeIds: ['halloween-magic', 'colorful-celebration', 'cozy-autumn'], suggestedRecipients: ['friend', 'bestfriend', 'lover', 'colleague', 'child', 'family'],
     cover: { glyph: '🎃', theme: 'halloween-magic' },
   }),
   make({

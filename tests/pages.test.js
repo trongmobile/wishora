@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { OCCASIONS } from '../js/data/occasions.js';
-import { renderPage, pagePath, ogPath, siteUrl, injectOccasionLinks, sitemapXml, robotsTxt, wishPhrase, seoTitle } from '../tools/pages-lib.mjs';
+import { renderPage, pagePath, ogPath, siteUrl, injectOccasionLinks, injectUpcomingLinks, upcomingLinks, sitemapXml, robotsTxt, wishPhrase, seoTitle } from '../tools/pages-lib.mjs';
+import { upcoming } from '../js/occasion-engine.js';
 import { shareBase, buildCardUrl, parseCardUrl } from '../js/url-state.js';
 
 const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
@@ -59,6 +60,25 @@ test('index.html: link tới mọi trang dịp, sitemap.xml và robots.txt khớ
   for (const o of enabled) assert.ok(template.includes(`<a href="o/${o.slug}/">`), o.id);
   assert.equal(read('sitemap.xml'), sitemapXml(template, enabled));
   assert.equal(read('robots.txt'), robotsTxt(template));
+});
+
+test('trang chủ có link tĩnh tới dịp sắp đến; trang dịp để trống vùng này để không đổi theo tuần', () => {
+  const items = upcoming(6, { today: '2026-10-23' });
+  assert.deepEqual(items.slice(0, 2).map((x) => x.occasion.id), ['halloween', 'teachers-day-20-11']);
+  const out = injectUpcomingLinks(template, items);
+  const region = out.match(/<!-- upcoming-links:start[^>]*-->([\s\S]*?)<!-- upcoming-links:end -->/)[1];
+  assert.equal([...region.matchAll(/<li class="upcoming-item">/g)].length, items.length);
+  for (const { occasion: o } of items) assert.ok(region.includes(`<a href="o/${o.slug}/">${o.name}</a>`), `thiếu link tới ${o.slug}`);
+  assert.ok(region.includes('Thứ bảy, 31/10/2026'), 'ngày của dịp');
+  assert.ok(!/ngày nữa|còn \d+ ngày/.test(region), 'không ghi số ngày còn lại vào HTML tĩnh (sẽ cũ)');
+  assert.equal(injectUpcomingLinks(out, items), out, 'chạy lại không đổi');
+  assert.equal(injectUpcomingLinks(out, []), injectUpcomingLinks(template, []), 'danh sách rỗng đưa vùng về trạng thái ban đầu');
+  assert.equal(upcomingLinks([]), '');
+
+  // Trang chủ đang commit: mọi link trong vùng này trỏ tới một dịp có thật (nội dung cụ thể đổi theo ngày build).
+  const live = template.match(/<!-- upcoming-links:start[^>]*-->([\s\S]*?)<!-- upcoming-links:end -->/)[1];
+  for (const [, slug] of live.matchAll(/<a href="o\/([^/]+)\/">/g)) assert.ok(enabled.some((o) => o.slug === slug), `link tới dịp không có: ${slug}`);
+  for (const o of enabled) assert.ok(!read(pagePath(o)).includes('upcoming-item"'), `${o.id}: trang dịp không được mang danh sách sắp đến`);
 });
 
 test('index.html: canonical, JSON-LD và tiêu đề dùng đúng gốc site', () => {

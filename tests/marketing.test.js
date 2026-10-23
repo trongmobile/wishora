@@ -9,11 +9,12 @@ const occ = (id, messageTemplates, suggestedRecipients = ['friend', 'family']) =
 const at = (occasion, days) => ({ occasion, next: { date: '2026-11-01', days } });
 const msgs = (n, tag) => Array.from({ length: n }, (_, i) => `Lời chúc ${tag} số ${i} thật dài cho đủ độ dài tối thiểu nhé`);
 
-test('planRun: chỉ chọn dịp còn 5–45 ngày, ưu tiên dịp có người nhận thiếu lời chúc, giới hạn số lượng', () => {
+test('planRun: chỉ chọn dịp còn 5–90 ngày, dịp trong 45 ngày làm trước (người nhận thiếu lời chúc trước), giới hạn số lượng', () => {
   const full = occ('full', { default: msgs(2, 'a'), friend: msgs(2, 'b'), family: msgs(2, 'c') }); // còn thiếu nhưng không có chỗ trống
   const gap = occ('gap', { default: msgs(2, 'd') }); // friend, family chưa có lời chúc nào
-  const plan = planRun([at(full, 10), at(gap, 30), at(occ('soon', {}), 3), at(occ('far', {}), 60)]);
-  assert.deepEqual(plan.map((p) => p.occasion.id), ['gap', 'full']);
+  // 'far' (60 ngày) trống hoàn toàn nhưng vẫn xếp sau mọi dịp trong 45 ngày; 'toofar' (100 ngày) và 'soon' (3 ngày) bị loại.
+  const plan = planRun([at(occ('far', {}), 60), at(full, 10), at(gap, 30), at(occ('soon', {}), 3), at(occ('toofar', {}), 100)]);
+  assert.deepEqual(plan.map((p) => p.occasion.id), ['gap', 'full', 'far']);
   assert.deepEqual(plan[0].wants.map((w) => [w.relation, w.want]), [['friend', 3], ['family', 3], ['default', 2]]); // ít lời chúc nhất trước
   assert.ok(plan.every((p) => p.wants.reduce((s, w) => s + w.want, 0) <= LIMITS.perOccasion));
 
@@ -95,11 +96,15 @@ const themeRaw = (over = {}) => ({
 });
 const hOcc = { ...occ('halloween', {}), category: 'international', enabled: true, themeIds: ['a', 'b', 'c'] };
 
-test('pickThemeTarget: dịp 5–45 ngày có ít theme nhất, bỏ dịp đã đủ theme', () => {
+test('pickThemeTarget: dịp 5–90 ngày có ít theme nhất, dịp trong 45 ngày được xét trước, bỏ dịp đã đủ theme', () => {
   const few = { ...hOcc, id: 'few', themeIds: ['a', 'b'] };
   const full = { ...hOcc, id: 'full', themeIds: ['a', 'b', 'c', 'd', 'e', 'f'] };
   assert.equal(pickThemeTarget([at(hOcc, 10), at(few, 30), at(full, 6), at({ ...few, id: 'soon' }, 3)]).occasion.id, 'few');
   assert.equal(pickThemeTarget([at(full, 6)]), null);
+  const fewer = { ...hOcc, id: 'fewer', themeIds: ['a'] };
+  assert.equal(pickThemeTarget([at(fewer, 70), at(hOcc, 10)]).occasion.id, 'halloween', 'dịp gần trước dù dịp xa có ít theme hơn');
+  assert.equal(pickThemeTarget([at(fewer, 70)]).occasion.id, 'fewer', 'không có dịp gần thì làm dịp xa');
+  assert.equal(pickThemeTarget([at(fewer, 100)]), null, 'quá 90 ngày thì chưa làm');
 });
 
 test('acceptTheme: nhận theme hợp lệ và sinh CSS đủ biến; dịp trang trọng không confetti', () => {

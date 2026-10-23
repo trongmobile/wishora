@@ -2,6 +2,7 @@
 import { getTheme } from '../js/data/themes.js';
 import { CATEGORIES } from '../js/data/occasions.js';
 import { RELATIONS } from '../js/data/messages.js';
+import { formatDate } from '../js/calendar.js';
 
 export const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -114,7 +115,35 @@ export function renderPage(template, o) {
   h = swap(h, '<div data-page="create" hidden>', '<div data-page="create">');
   h = swap(h, '<h1 id="create-title" tabindex="-1">Tạo thiệp của bạn</h1>', `<h1 id="create-title" tabindex="-1">Tạo thiệp ${esc(o.name)}</h1>`);
   h = swap(h, '<!-- occasion-content -->', occasionContent(o));
-  return h;
+  // Danh sách "sắp đến" phụ thuộc ngày build: để trống ở trang dịp (đang ẩn) để các trang này không đổi theo tuần.
+  return injectUpcomingLinks(h, []);
+}
+
+// ---------------------------------------------------------------- Link tĩnh tới dịp sắp đến (trang chủ)
+const UPCOMING_RE = /(<!-- upcoming-links:start[^>]*-->)[\s\S]*?(\n[ \t]*<!-- upcoming-links:end -->)/;
+
+/**
+ * Các dịp sắp đến dưới dạng link thường (`<a href="o/<dịp>/">`) trong HTML của trang chủ. Danh sách trong HTML là do JS dựng nên Google
+ * không chắc đọc được; link tĩnh từ trang chủ báo cho Google biết dịp nào đang đến gần. Cùng khung với renderHome (js/pages.js)
+ * để không nháy khi JS thay vào. Không ghi số ngày còn lại vì HTML tĩnh sẽ cũ trước lần build kế tiếp. `items`: kết quả upcoming().
+ */
+export function upcomingLinks(items) {
+  return items
+    .map(({ occasion: o, next }) => {
+      const art = o.cover.image ? `<img class="up-img" src="${esc(o.cover.image)}" alt="" width="120" height="120" decoding="async" />` : `<span class="up-emoji">${esc(o.cover.glyph)}</span>`;
+      return `              <li class="upcoming-item">
+                <span class="up-glyph" data-theme="${esc(o.cover.theme)}" aria-hidden="true">${art}</span>
+                <div class="up-info"><h3><a href="o/${esc(o.slug)}/">${esc(o.name)}</a></h3><p>${esc(formatDate(next.date))}</p></div>
+                <a class="btn btn-primary btn-sm" href="o/${esc(o.slug)}/">Tạo thiệp</a>
+              </li>`;
+    })
+    .join('\n');
+}
+
+/** Ghi lại vùng upcoming-links trong index.html (giữ nguyên phần còn lại). */
+export function injectUpcomingLinks(template, items) {
+  if (!UPCOMING_RE.test(template)) throw new Error('index.html thiếu vùng upcoming-links');
+  return template.replace(UPCOMING_RE, (_, start, end) => `${start}${items.length ? `\n${upcomingLinks(items)}` : ''}${end}`);
 }
 
 // ---------------------------------------------------------------- Liên kết tới mọi trang dịp (chân trang của index.html)

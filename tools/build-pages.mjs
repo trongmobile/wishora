@@ -4,6 +4,7 @@
  *   npm run build:pages            # sinh o/<slug>/index.html, assets/og/<slug>.png, sitemap.xml, robots.txt
  *                                  # và cập nhật danh sách link tới các dịp ở chân trang index.html
  *   npm run build:pages -- --html  # chỉ sinh HTML, bỏ qua ảnh (không cần trình duyệt)
+ * index.html còn có danh sách link tới dịp sắp đến tính theo ngày chạy lệnh: workflow SEO hằng tuần build lại mỗi tuần.
  * Cũng vẽ lại assets/og/og-image.png (ảnh chung) từ tools/og-home.html.
  * Cần Chrome/Chromium: đặt CHROME_PATH nếu không ở vị trí mặc định của macOS.
  * Chạy lại mỗi khi sửa index.html, danh sách dịp hoặc theme, rồi commit kết quả.
@@ -12,7 +13,8 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { OCCASIONS } from '../js/data/occasions.js';
-import { renderPage, ogHtml, pagePath, ogPath, injectOccasionLinks, sitemapXml, robotsTxt } from './pages-lib.mjs';
+import { upcoming } from '../js/occasion-engine.js';
+import { renderPage, ogHtml, pagePath, ogPath, injectOccasionLinks, injectUpcomingLinks, sitemapXml, robotsTxt } from './pages-lib.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const htmlOnly = process.argv.includes('--html');
@@ -21,7 +23,8 @@ const list = OCCASIONS.filter((o) => o.enabled);
 // Cập nhật danh sách link tới các trang dịp ở chân trang index.html trước, vì index.html là khuôn của mọi trang dịp.
 const indexFile = resolve(root, 'index.html');
 const template = injectOccasionLinks(readFileSync(indexFile, 'utf8'), list);
-writeFileSync(indexFile, template);
+// Link tĩnh tới 6 dịp sắp đến (cùng số với danh sách JS ở trang chủ); phụ thuộc ngày build nên chỉ trang chủ có, renderPage để trống.
+writeFileSync(indexFile, injectUpcomingLinks(template, upcoming(6)));
 writeFileSync(resolve(root, 'sitemap.xml'), sitemapXml(template, list));
 writeFileSync(resolve(root, 'robots.txt'), robotsTxt(template));
 
