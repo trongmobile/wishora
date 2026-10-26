@@ -511,6 +511,19 @@
 
 /* Theme tự sinh bởi workflow SEO hằng tuần (js/data/themes-auto.js) */
 /* AUTO-THEMES:START — do tools/marketing/weekly-seo.mjs ghi, sửa tay được */
+/* Spooky Night */
+[data-theme="spooky-night"] {
+  --bg: linear-gradient(160deg, #110b26, #1f143d);
+  --ink: #f2f0ff; --ink-soft: #b1adc2; --accent: #ff6b18;
+  --panel-bg: rgba(22, 14, 43, 0.66); --panel-border: 1px solid rgba(255, 107, 24, 0.5); --panel-radius: 28px;
+  --panel-shadow: 0 24px 60px rgba(255, 107, 24, 0.3), inset 0 0 0 6px rgba(255, 255, 255, 0.06);
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --btn-bg: linear-gradient(135deg, #ff6b18, #ff8038); --btn-ink: #1a1a1a; --btn-shadow: 0 10px 26px rgba(255, 107, 24, 0.4);
+  --name-color: #ff6b18;
+  --divider-glyph: "✦"; --emoji: "🎃";
+  --gift-1: #ff9a52; --gift-2: #ff6b18; --ribbon: #ffffff; --gift-border: 0; --glow: rgba(255, 154, 82, 0.9);
+  --env-1: #ff9a52; --env-2: #ff6b18; --env-3: #ffbd8f; --seal: #cc5613;
+}
 /* AUTO-THEMES:END */
 
 /* ---------- Trang trí chung cho thiệp chúc mừng (data-kind="greeting") ---------- */
