@@ -14,6 +14,8 @@
  */
 import { AUTO_THEMES } from './themes-auto.js';
 
+const b = (id, name, description, colors, intro, extra) => ({ id, name, description, colors, intro, ...extra });
+
 const BIRTHDAY_THEMES = [
   {
     id: 'rose',
@@ -69,7 +71,55 @@ const BIRTHDAY_THEMES = [
     ambient: { chars: ['🌸', '🌼', '🍃', '🌿', '🌷'], count: 16, motion: 'fall' },
     confetti: { colors: ['#8fc58a', '#ffb3c6', '#fff3b0', '#3f7d4e'], chars: ['🌸', '🍃'], charRatio: 0.5 },
   },
-].map((t) => ({ group: 'birthday', sample: 'Happy Birthday', ...t }));
+  b('neon-arcade', 'Neon Arcade', 'Nền tím đen, viền neon hồng và xanh như máy game thùng.', ['#1a0b3d', '#ff2bd6', '#22e6ff'], 'gift', {
+    sample: 'Level Up Tuổi Mới', decor: ['🎮', '👾', '🕹️'],
+    ambient: { chars: ['⚡', '👾', '🎮', '✦', '★'], count: 22, motion: 'twinkle' }, confetti: { colors: ['#ff2bd6', '#22e6ff', '#fff25a', '#8b5cff'], chars: ['⚡', '👾'], charRatio: 0.2 },
+  }),
+  b('sunset-beach', 'Sunset Beach', 'Hoàng hôn cam hồng trên biển, cọ xanh và nắng ấm mùa hè.', ['#ffb36b', '#ff5f7e', '#ffe7b8'], 'gift', {
+    sample: 'Hè Rực Rỡ Tuổi Mới', decor: ['🌴', '🐚', '☀️'],
+    ambient: { chars: ['🌴', '🐚', '☀️', '🍹', '🌺'], count: 14, motion: 'drift' }, confetti: { colors: ['#ff5f7e', '#ffb36b', '#ffe066', '#2ec4b6'], chars: ['🌺', '☀️'], charRatio: 0.2 },
+  }),
+  b('ocean-splash', 'Ocean Splash', 'Xanh biển và bọt nước mát lành, cá nhỏ bơi lượn.', ['#bfeeff', '#1a8fcf', '#eaffff'], 'gift', {
+    sample: 'Tuổi Mới Tràn Sóng Vui', decor: ['🐠', '🫧', '🐚'],
+    ambient: { chars: ['🫧', '🐠', '🐟', '🌊', '🐚'], count: 18, motion: 'rise' }, confetti: { colors: ['#1a8fcf', '#5fd3ff', '#ffffff', '#2ec4b6'], chars: ['🫧', '🐠'], charRatio: 0.25 },
+  }),
+  b('strawberry-cake', 'Strawberry Cake', 'Kem dâu hồng ngọt ngào, bánh kem và những quả dâu tươi.', ['#ffd6e0', '#e8456b', '#fff6f2'], 'envelope', {
+    sample: 'Ngọt Ngào Ngày Sinh', decor: ['🍰', '🍓', '🧁'],
+    ambient: { chars: ['🍓', '🧁', '🍰', '🎂', '🍬'], count: 14, motion: 'fall' }, confetti: { colors: ['#e8456b', '#ffb3c6', '#fff3b0', '#ffffff'], chars: ['🍓', '🧁'], charRatio: 0.25 },
+  }),
+  b('dino-party', 'Dino Party', 'Xanh lá khủng long, dấu chân và lá cây cho bé thích phiêu lưu.', ['#c9ee9a', '#2f9e44', '#fff7d1'], 'gift', {
+    sample: 'Gầm Gừ Chúc Mừng', decor: ['🦕', '🌴', '🥚'],
+    ambient: { chars: ['🦕', '🦖', '🌿', '🥚', '🌴'], count: 12, motion: 'drift' }, confetti: { colors: ['#2f9e44', '#9be15d', '#ffd43b', '#ff922b'], chars: ['🦖', '🌿'], charRatio: 0.2 },
+  }),
+  b('vintage-paper', 'Vintage Paper', 'Giấy kraft ngả vàng, tem thư và nét chữ xưa nhẹ nhàng.', ['#ead9b8', '#8a5a2b', '#f8efd9'], 'envelope', {
+    sample: 'Thư Mừng Sinh Nhật', decor: ['📜', '🕰️', '🖋️'],
+    ambient: { chars: ['📜', '🖋️', '🕰️', '🍂'], count: 10, motion: 'drift' }, confetti: { colors: ['#8a5a2b', '#c9a66b', '#f3e2bd', '#b5532f'], chars: [], charRatio: 0 },
+  }),
+  b('rose-champagne', 'Rose Champagne', 'Hồng vàng champagne óng ánh, ly cụng và bong bóng li ti.', ['#f7d9cf', '#b76e79', '#fff3ee'], 'gift', {
+    sample: 'Cạn Ly Mừng Tuổi Mới', decor: ['🥂', '✨', '🍾'],
+    ambient: { chars: ['🥂', '✨', '🫧', '🍾'], count: 16, motion: 'rise' }, confetti: { colors: ['#b76e79', '#f4c7b8', '#e8c27a', '#ffffff'], chars: ['✨'], charRatio: 0.2 },
+  }),
+  b('unicorn-dream', 'Unicorn Dream', 'Kỳ lân và cầu vồng pastel, lung linh như giấc mơ.', ['#ffc8f0', '#9b7bff', '#c9f4ff'], 'gift', {
+    sample: 'Giấc Mơ Kỳ Diệu', decor: ['🦄', '🌈', '⭐'],
+    ambient: { chars: ['🦄', '🌈', '⭐', '☁️', '💖'], count: 14, motion: 'drift' }, confetti: { colors: ['#ff8fd8', '#9b7bff', '#7de3ff', '#ffe27a', '#8cf2b0'], chars: ['🦄', '🌈'], charRatio: 0.2 },
+  }),
+  b('honey-bee', 'Honey Bee', 'Vàng mật ong ấm áp, ong nhỏ và hoa hướng dương.', ['#ffe48a', '#e09a00', '#fff9e0'], 'envelope', {
+    sample: 'Ngọt Như Mật Ong', decor: ['🐝', '🌻', '🍯'],
+    ambient: { chars: ['🐝', '🌻', '🍯', '🌼'], count: 12, motion: 'drift' }, confetti: { colors: ['#e09a00', '#ffd43b', '#ffffff', '#5c3b00'], chars: ['🐝', '🌻'], charRatio: 0.2 },
+  }),
+  b('paper-minimal', 'Paper Minimal', 'Trắng ngà tối giản, nét đen thanh lịch và chấm màu tinh tế.', ['#f6f4ef', '#1f1f1f', '#ffffff'], 'envelope', {
+    sample: 'Sinh Nhật Vui', decor: ['', '', '✦'],
+    ambient: { chars: ['✦', '·', '○', '✧'], count: 12, motion: 'drift' }, confetti: { colors: ['#1f1f1f', '#ff5a36', '#ffd166', '#6bb7ff'], chars: [], charRatio: 0 },
+  }),
+  b('pizza-party', 'Pizza Party', 'Đỏ cà chua và vàng phô mai, bữa tiệc vui nhộn cho hội bạn.', ['#ffd45c', '#d9381e', '#fff3c4'], 'gift', {
+    sample: 'Tiệc Sinh Nhật Nóng Hổi', decor: ['🍕', '🧀', '🍅'],
+    ambient: { chars: ['🍕', '🧀', '🍅', '🍟', '🥤'], count: 14, motion: 'fall' }, confetti: { colors: ['#d9381e', '#ffd45c', '#5aa02c', '#ffffff'], chars: ['🍕'], charRatio: 0.2 },
+  }),
+  b('winter-frost', 'Winter Frost', 'Xanh băng và bông tuyết, hợp sinh nhật mùa đông se lạnh.', ['#dff1ff', '#4a8fd1', '#f6fbff'], 'envelope', {
+    sample: 'Sinh Nhật Mùa Đông', decor: ['❄️', '⛄', '✨'],
+    ambient: { chars: ['❄️', '❅', '❆', '✨'], count: 22, motion: 'fall' }, confetti: { colors: ['#4a8fd1', '#bfe3ff', '#ffffff', '#c4b5fd'], chars: ['❄️'], charRatio: 0.2 },
+  }),
+].map((t) => ({ group: 'birthday', sample: 'Happy Birthday', reducedMotion: { staticAmbient: true }, seal: '🎂', ...t }));
 
 const NONE = null;
 const rm = { staticAmbient: true };

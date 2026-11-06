@@ -38,12 +38,69 @@ const HANDWRITTEN = {
       'Chúc mừng sinh nhật! Chúc bạn tuổi mới thật nhiều sức khỏe, niềm vui và những điều bất ngờ dễ thương.',
       'Sinh nhật vui vẻ nhé! Mong mọi ước mơ của bạn sẽ dần trở thành sự thật trong năm tới.',
       'Thêm một tuổi mới, thêm thật nhiều hạnh phúc. Chúc bạn luôn rạng rỡ và được yêu thương!',
+      'Hôm nay là ngày của bạn! Chúc bạn một tuổi mới bình an, may mắn và luôn có người thương ở bên.',
+      'Chúc mừng sinh nhật! Mong tuổi mới của bạn nhẹ nhàng như một buổi sáng đẹp trời và ngọt ngào như chiếc bánh kem.',
+      'Gửi bạn một cái ôm thật chặt nhân ngày sinh nhật. Chúc bạn mọi điều tốt đẹp nhất sẽ đến trong năm nay!',
     ],
-    mother: ['Chúc mừng sinh nhật mẹ yêu! Con chúc mẹ luôn khỏe mạnh, bình an và mãi mỉm cười thật tươi. Con yêu mẹ rất nhiều.'],
-    father: ['Chúc mừng sinh nhật ba! Cảm ơn ba đã luôn là chỗ dựa vững chắc của con. Chúc ba thật nhiều sức khỏe và niềm vui.'],
-    lover: ['Chúc mừng sinh nhật người em/anh thương nhất! Cảm ơn vì đã xuất hiện trong cuộc đời mình. Mình sẽ luôn ở bên cạnh bạn.'],
-    friend: ['Sinh nhật vui nhé bạn hiền! Chúc bạn tuổi mới đẹp hơn, giàu hơn và bớt deadline hơn. Nhớ khao tụi mình nha!'],
-    colleague: ['Chúc mừng sinh nhật! Chúc bạn tuổi mới nhiều sức khỏe, công việc thuận lợi và luôn giữ được nụ cười như hôm nay.'],
+    mother: [
+      'Chúc mừng sinh nhật mẹ yêu! Con chúc mẹ luôn khỏe mạnh, bình an và mãi mỉm cười thật tươi. Con yêu mẹ rất nhiều.',
+      'Mẹ ơi, cảm ơn mẹ đã hy sinh biết bao điều cho con. Sinh nhật này con chỉ mong mẹ thật vui, thật khỏe và thật trẻ đẹp.',
+      'Chúc mẹ sinh nhật vui vẻ! Mong mẹ luôn bình yên bên gia đình, và nụ cười của mẹ sẽ mãi là điều đẹp nhất với con.',
+    ],
+    father: [
+      'Chúc mừng sinh nhật ba! Cảm ơn ba đã luôn là chỗ dựa vững chắc của con. Chúc ba thật nhiều sức khỏe và niềm vui.',
+      'Ba ơi, tuổi mới chúc ba luôn khỏe mạnh, thảnh thơi và bớt lo toan. Con luôn tự hào vì có ba.',
+      'Sinh nhật ba, con chúc ba mạnh khỏe, vui vẻ và mãi là người hùng thầm lặng của cả nhà.',
+    ],
+    parents: [
+      'Hôm nay là sinh nhật ba/mẹ, con chúc ba mẹ luôn mạnh khỏe, bình an và vui vẻ bên con cháu. Con thương ba mẹ nhiều lắm.',
+    ],
+    grandparents: [
+      'Cháu chúc ông bà sinh nhật vui vẻ, sống lâu trăm tuổi, luôn khỏe mạnh và hạnh phúc bên con cháu.',
+      'Nhân ngày sinh nhật ông bà, cháu kính chúc ông bà thật nhiều sức khỏe, ăn ngon ngủ yên và luôn mỉm cười.',
+    ],
+    child: [
+      'Chúc mừng sinh nhật con yêu! Ba mẹ mong con luôn khỏe mạnh, vui vẻ và lớn lên thật hạnh phúc. Con là món quà tuyệt vời nhất của ba mẹ.',
+      'Sinh nhật vui nhé con! Chúc con thêm một tuổi mới ngoan ngoãn, tự tin và luôn giữ nụ cười thật tươi.',
+    ],
+    sibling: [
+      'Chúc mừng sinh nhật anh/chị/em! Cảm ơn vì luôn bên cạnh mình. Chúc tuổi mới nhiều niềm vui và thật nhiều may mắn nhé!',
+      'Sinh nhật vui vẻ nhé! Dù có lúc cãi nhau, mình vẫn luôn thương và tự hào về bạn. Chúc bạn tuổi mới thật rực rỡ.',
+    ],
+    wife: [
+      'Chúc mừng sinh nhật vợ yêu! Cảm ơn em đã luôn yêu thương và chăm lo cho gia đình. Chúc em luôn xinh đẹp, khỏe mạnh và hạnh phúc.',
+      'Sinh nhật em, anh chỉ mong em thật vui. Cảm ơn em đã ở bên anh, anh yêu em nhiều hơn mỗi ngày.',
+    ],
+    husband: [
+      'Chúc mừng sinh nhật chồng yêu! Cảm ơn anh đã luôn là bờ vai vững chắc của em. Chúc anh thật nhiều sức khỏe và thành công.',
+      'Sinh nhật anh, em chúc anh tuổi mới bình an, bớt mệt mỏi và luôn có em bên cạnh. Em yêu anh!',
+    ],
+    lover: [
+      'Chúc mừng sinh nhật người em/anh thương nhất! Cảm ơn vì đã xuất hiện trong cuộc đời mình. Mình sẽ luôn ở bên cạnh bạn.',
+      'Sinh nhật vui nhé người thương! Mong tuổi mới của bạn luôn tràn đầy nụ cười, và mình sẽ cùng bạn đi thật xa.',
+      'Hôm nay là ngày đặc biệt vì có một người đặc biệt ra đời. Chúc mừng sinh nhật, mình yêu bạn rất nhiều!',
+    ],
+    friend: [
+      'Sinh nhật vui nhé bạn hiền! Chúc bạn tuổi mới đẹp hơn, giàu hơn và bớt deadline hơn. Nhớ khao tụi mình nha!',
+      'Chúc mừng sinh nhật bạn! Mong tuổi mới bạn gặp nhiều may mắn, làm gì cũng thuận và luôn vui vẻ như hôm nay.',
+    ],
+    bestfriend: [
+      'Chúc mừng sinh nhật bạn thân! Cảm ơn vì luôn nghe mình than thở và cùng mình quậy. Tuổi mới vẫn quậy tiếp nhé!',
+      'Sinh nhật mày, tao chúc mày tuổi mới xinh hơn, giàu hơn và vẫn là đứa bạn thân tuyệt vời của tao. Thương nhiều!',
+    ],
+    colleague: [
+      'Chúc mừng sinh nhật! Chúc bạn tuổi mới nhiều sức khỏe, công việc thuận lợi và luôn giữ được nụ cười như hôm nay.',
+      'Sinh nhật vui vẻ nhé! Cảm ơn bạn đã luôn đồng hành cùng team. Chúc bạn tuổi mới thăng tiến và nhiều niềm vui.',
+    ],
+    boss: [
+      'Kính chúc sếp sinh nhật vui vẻ, nhiều sức khỏe và thành công. Cảm ơn sếp đã luôn dẫn dắt và tin tưởng cả nhóm.',
+    ],
+    teacher: [
+      'Em kính chúc thầy/cô sinh nhật vui vẻ, nhiều sức khỏe và hạnh phúc. Cảm ơn thầy/cô đã dạy dỗ em nên người.',
+    ],
+    partner: [
+      'Nhân ngày sinh nhật, kính chúc anh/chị sức khỏe dồi dào, công việc thuận lợi. Rất mong tiếp tục được hợp tác lâu dài.',
+    ],
   },
 
   // ----- Tết & năm mới -----

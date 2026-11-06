@@ -510,6 +510,174 @@
 }
 
 /* Theme tự sinh bởi workflow SEO hằng tuần (js/data/themes-auto.js) */
+
+/* ============ THEME SINH NHẬT BỔ SUNG ============ */
+/* Neon Arcade */
+[data-theme="neon-arcade"] {
+  --bg: linear-gradient(rgba(34, 230, 255, 0.07) 1px, transparent 1px) 0 0 / 100% 36px, linear-gradient(90deg, rgba(255, 43, 214, 0.07) 1px, transparent 1px) 0 0 / 36px 100%, linear-gradient(180deg, #1a0b3d, #0a0420);
+  --ink: #f4eaff; --ink-soft: #c7a8ff; --accent: #22e6ff;
+  --panel-bg: rgba(20, 8, 52, 0.75); --panel-border: 2px solid #ff2bd6; --panel-radius: 10px;
+  --panel-shadow: 0 0 0 2px rgba(34, 230, 255, 0.5), 0 0 34px rgba(255, 43, 214, 0.55), 0 24px 60px rgba(0, 0, 0, 0.6);
+  --font-display: "Space Grotesk", system-ui, sans-serif; --hb-transform: uppercase; --hb-spacing: 0.24em;
+  --btn-bg: linear-gradient(135deg, #ff2bd6, #8b5cff); --btn-ink: #fff; --btn-shadow: 0 0 26px rgba(255, 43, 214, 0.7); --btn-radius: 8px;
+  --name-fill: linear-gradient(120deg, #22e6ff, #ff2bd6); --name-fill-color: transparent;
+  --divider-glyph: "▲"; --emoji: "🎮"; --amb-color: #8ff3ff;
+  --gift-1: #3a1a7a; --gift-2: #1d0b45; --ribbon: #22e6ff; --gift-border: 2px solid #ff2bd6; --glow: rgba(255, 43, 214, 0.85);
+  --step-from: translateY(14px) scale(0.94);
+}
+
+/* Sunset Beach */
+[data-theme="sunset-beach"] {
+  --bg: radial-gradient(60% 40% at 50% 62%, #fff1a8 0%, rgba(255, 220, 120, 0) 70%), linear-gradient(180deg, #ff8a5c 0%, #ff5f7e 52%, #8c3b8f 100%);
+  --ink: #4a1730; --ink-soft: #7a2d4e; --accent: #d93a5c;
+  --panel-bg: rgba(255, 248, 238, 0.86); --panel-border: 1px solid rgba(255, 255, 255, 0.95); --panel-radius: 30px;
+  --panel-shadow: 0 24px 60px rgba(140, 59, 143, 0.4), inset 0 0 0 6px rgba(255, 214, 190, 0.5);
+  --font-display: "Pacifico", cursive;
+  --btn-bg: linear-gradient(135deg, #ff7a3d, #d93a5c); --btn-ink: #fff; --btn-shadow: 0 10px 26px rgba(217, 58, 92, 0.45);
+  --name-color: #d93a5c; --divider-glyph: "☀"; --emoji: "🌴";
+  --gift-1: #ffc36b; --gift-2: #ff7a3d; --ribbon: #fff; --glow: rgba(255, 230, 150, 0.9);
+}
+.stage[data-theme="sunset-beach"] .stage-art::before {
+  content: ""; position: absolute; left: -10%; right: -10%; bottom: 0; height: 22%;
+  background: repeating-radial-gradient(ellipse at 50% 120%, rgba(255, 255, 255, 0.28) 0 6px, transparent 6px 18px); opacity: 0.7;
+}
+.stage[data-theme="sunset-beach"] .made, .stage[data-theme="sunset-beach"] .make-own { color: #fff; }
+
+/* Ocean Splash */
+[data-theme="ocean-splash"] {
+  --bg: radial-gradient(rgba(255, 255, 255, 0.5) 3px, transparent 4px) 0 0 / 70px 70px, linear-gradient(180deg, #c8f1ff, #5fc3ee 60%, #1a8fcf);
+  --ink: #0b3556; --ink-soft: #1d5f8f; --accent: #0d79b8;
+  --panel-bg: rgba(255, 255, 255, 0.78); --panel-border: 1px solid rgba(255, 255, 255, 0.95); --panel-radius: 36px;
+  --panel-shadow: 0 24px 60px rgba(13, 121, 184, 0.35), inset 0 0 0 6px rgba(200, 241, 255, 0.7);
+  --font-display: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: linear-gradient(135deg, #1aa6e0, #0d79b8); --btn-ink: #fff; --btn-shadow: 0 10px 26px rgba(13, 121, 184, 0.45);
+  --name-fill: linear-gradient(135deg, #0d79b8, #2ec4b6); --name-fill-color: transparent;
+  --divider-glyph: "❀"; --emoji: "🐠";
+  --gift-1: #7fd6ff; --gift-2: #1aa6e0; --ribbon: #fff; --glow: rgba(255, 255, 255, 0.95);
+}
+.stage[data-theme="ocean-splash"] .stage-art::after {
+  content: ""; position: absolute; left: -10%; right: -10%; bottom: -4%; height: 18%;
+  background: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.55) 0 14px, transparent 15px) 0 0 / 56px 28px repeat-x; opacity: 0.8;
+}
+
+/* Strawberry Cake */
+[data-theme="strawberry-cake"] {
+  --bg: radial-gradient(rgba(232, 69, 107, 0.16) 2.5px, transparent 3px) 0 0 / 34px 34px, linear-gradient(180deg, #fff1ea, #ffd6e0 70%, #ffb8cb);
+  --ink: #5a1830; --ink-soft: #8d3552; --accent: #e8456b;
+  --panel-bg: rgba(255, 255, 255, 0.9); --panel-border: 3px dashed #f2879f; --panel-radius: 32px;
+  --panel-shadow: 0 18px 44px rgba(232, 69, 107, 0.28);
+  --font-display: "Pacifico", cursive; --font-body: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: linear-gradient(135deg, #f0597e, #d63a60); --btn-ink: #fff; --btn-shadow: 0 10px 24px rgba(232, 69, 107, 0.4);
+  --name-color: #e8456b; --divider-glyph: "♥"; --emoji: "🍓";
+  --env-1: #ffc7d4; --env-2: #f2879f; --env-3: #ffe0e8; --seal: #d63a60; --glow: rgba(255, 170, 190, 0.9);
+}
+
+/* Dino Party */
+[data-theme="dino-party"] {
+  --bg: radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.45) 0 40px, transparent 41px), radial-gradient(circle at 85% 80%, rgba(47, 158, 68, 0.3) 0 70px, transparent 71px), linear-gradient(170deg, #d9f5a8, #8fd16a);
+  --ink: #1e3d14; --ink-soft: #3b6b27; --accent: #2f9e44;
+  --panel-bg: #fffbe6; --panel-border: 4px solid #2f6b2a; --panel-radius: 26px; --panel-shadow: 8px 8px 0 #2f6b2a;
+  --font-display: "Pacifico", cursive; --font-body: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: #ffd43b; --btn-ink: #1e3d14; --btn-border: 3px solid #2f6b2a; --btn-shadow: 4px 4px 0 #2f6b2a;
+  --name-color: #2f9e44; --name-shadow: 2px 2px 0 #ffd43b; --divider-glyph: "★"; --emoji: "🦕";
+  --gift-1: #ff922b; --gift-2: #e8590c; --ribbon: #ffd43b; --gift-border: 3px solid #2f6b2a; --glow: rgba(255, 255, 255, 0.9);
+  --step-from: scale(0.5) rotate(6deg); --step-ease: cubic-bezier(0.34, 1.56, 0.64, 1); --step-dur: 0.7s;
+}
+.stage[data-theme="dino-party"] .panel { transform: rotate(1deg); }
+.stage[data-theme="dino-party"] .made, .stage[data-theme="dino-party"] .make-own { color: #1e3d14; }
+
+/* Vintage Paper */
+[data-theme="vintage-paper"] {
+  --bg: radial-gradient(120% 90% at 50% 40%, #f8efd9 0%, #ead9b8 70%, #cdb68a 100%);
+  --ink: #3e2a14; --ink-soft: #6f5030; --accent: #8a5a2b;
+  --panel-bg: rgba(252, 246, 230, 0.92); --panel-border: 2px double #8a5a2b; --panel-radius: 4px;
+  --panel-shadow: 0 18px 44px rgba(90, 60, 20, 0.35), inset 0 0 40px rgba(180, 140, 80, 0.2);
+  --font-display: "Playfair Display", Georgia, serif; --font-body: "Lora", "Be Vietnam Pro", Georgia, serif; --hb-spacing: 0.08em;
+  --btn-bg: linear-gradient(135deg, #a36a33, #7a4a20); --btn-ink: #fff6e3; --btn-shadow: 0 8px 22px rgba(90, 60, 20, 0.4); --btn-radius: 4px;
+  --name-color: #8a5a2b; --divider-glyph: "❦"; --emoji: "📜";
+  --env-1: #e6cf9f; --env-2: #c9a66b; --env-3: #f3e2bd; --seal: #8e2a1f; --glow: rgba(255, 235, 190, 0.9);
+  --step-dur: 1s;
+}
+.stage[data-theme="vintage-paper"] .made, .stage[data-theme="vintage-paper"] .make-own { color: #3e2a14; }
+
+/* Rose Champagne */
+[data-theme="rose-champagne"] {
+  --bg: radial-gradient(90% 60% at 50% 0%, #fff6ef 0%, rgba(255, 246, 239, 0) 70%), linear-gradient(180deg, #f7d9cf, #e8b4a6 100%);
+  --ink: #4a2630; --ink-soft: #7a4553; --accent: #b76e79;
+  --panel-bg: rgba(255, 250, 246, 0.82); --panel-border: 1px solid #e0b9a8; --panel-radius: 18px;
+  --panel-shadow: 0 24px 60px rgba(183, 110, 121, 0.35), inset 0 0 0 5px rgba(232, 194, 122, 0.25);
+  --font-display: "Cormorant Garamond", Georgia, serif; --font-body: "Lora", "Be Vietnam Pro", Georgia, serif;
+  --hb-transform: uppercase; --hb-spacing: 0.3em;
+  --btn-bg: linear-gradient(135deg, #e0a496, #b76e79); --btn-ink: #fff; --btn-shadow: 0 10px 26px rgba(183, 110, 121, 0.45);
+  --name-fill: linear-gradient(180deg, #d99a8c, #9c4f5d); --name-fill-color: transparent; --divider-glyph: "✦"; --emoji: "🥂";
+  --gift-1: #f4c7b8; --gift-2: #b76e79; --ribbon: #e8c27a; --glow: rgba(255, 220, 190, 0.9);
+}
+
+/* Unicorn Dream */
+[data-theme="unicorn-dream"] {
+  --bg: radial-gradient(70% 40% at 15% 10%, rgba(255, 255, 255, 0.7), transparent 70%), linear-gradient(160deg, #ffc8f0 0%, #d7c4ff 45%, #c9f4ff 100%);
+  --ink: #4a2a6e; --ink-soft: #75499f; --accent: #9b5bff;
+  --panel-bg: rgba(255, 255, 255, 0.8); --panel-border: 3px solid transparent; --panel-radius: 34px;
+  --panel-shadow: 0 0 0 3px #ff8fd8, 0 0 0 6px #ffe27a, 0 0 0 9px #7de3ff, 0 22px 50px rgba(155, 91, 255, 0.35);
+  --font-display: "Pacifico", cursive; --font-body: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: linear-gradient(135deg, #ff8fd8, #9b7bff 55%, #7de3ff); --btn-ink: #fff; --btn-shadow: 0 10px 26px rgba(155, 123, 255, 0.45);
+  --name-fill: linear-gradient(120deg, #ff6fcf, #9b7bff 50%, #29b6f6); --name-fill-color: transparent; --divider-glyph: "★"; --emoji: "🦄";
+  --gift-1: #ffb3ea; --gift-2: #b794ff; --ribbon: #fff; --glow: rgba(255, 255, 255, 0.95);
+}
+.stage[data-theme="unicorn-dream"] .stage-art::before {
+  content: ""; position: absolute; left: 50%; top: -8%; width: 130%; aspect-ratio: 2 / 1; transform: translateX(-50%); border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: repeating-radial-gradient(circle at 50% 100%, transparent 0 60%, rgba(255, 120, 200, 0.4) 60% 63%, rgba(255, 226, 122, 0.4) 63% 66%, rgba(125, 227, 255, 0.4) 66% 69%, transparent 69%); opacity: 0.8;
+}
+
+/* Honey Bee */
+[data-theme="honey-bee"] {
+  --bg: repeating-linear-gradient(60deg, rgba(224, 154, 0, 0.1) 0 2px, transparent 2px 30px), repeating-linear-gradient(-60deg, rgba(224, 154, 0, 0.1) 0 2px, transparent 2px 30px), linear-gradient(180deg, #fff3b0, #ffd95c);
+  --ink: #4a3000; --ink-soft: #7a5200; --accent: #c98200;
+  --panel-bg: rgba(255, 253, 240, 0.92); --panel-border: 3px solid #e09a00; --panel-radius: 28px; --panel-shadow: 0 18px 44px rgba(201, 130, 0, 0.35);
+  --font-display: "Quicksand", "Be Vietnam Pro", sans-serif; --btn-bg: linear-gradient(135deg, #ffb703, #e09a00); --btn-ink: #3a2400; --btn-shadow: 0 10px 24px rgba(224, 154, 0, 0.45);
+  --name-color: #c98200; --divider-glyph: "⬢"; --emoji: "🐝";
+  --env-1: #ffe48a; --env-2: #e09a00; --env-3: #fff0b3; --seal: #8a5a00; --glow: rgba(255, 240, 160, 0.95);
+}
+.stage[data-theme="honey-bee"] .made, .stage[data-theme="honey-bee"] .make-own { color: #4a3000; }
+
+/* Paper Minimal */
+[data-theme="paper-minimal"] {
+  --bg: linear-gradient(180deg, #f6f4ef, #ebe7dd);
+  --ink: #1f1f1f; --ink-soft: #55524b; --accent: #1f1f1f;
+  --panel-bg: #ffffff; --panel-border: 1.5px solid #1f1f1f; --panel-radius: 2px; --panel-shadow: 10px 10px 0 #ff5a36;
+  --font-display: "Space Grotesk", system-ui, sans-serif; --hb-transform: uppercase; --hb-spacing: 0.3em; --title-spacing: -0.01em;
+  --btn-bg: #1f1f1f; --btn-ink: #fff; --btn-shadow: 5px 5px 0 #ff5a36; --btn-radius: 2px;
+  --name-color: #1f1f1f; --divider-glyph: "—"; --emoji: "✦";
+  --env-1: #ffffff; --env-2: #1f1f1f; --env-3: #f2efe6; --seal: #ff5a36; --glow: rgba(255, 90, 54, 0.35);
+  --step-from: translateY(8px); --step-dur: 0.6s;
+}
+.stage[data-theme="paper-minimal"] .made, .stage[data-theme="paper-minimal"] .make-own { color: #1f1f1f; }
+
+/* Pizza Party */
+[data-theme="pizza-party"] {
+  --bg: repeating-conic-gradient(#ffd45c 0 25%, #ffe08a 0 50%) 0 0 / 56px 56px;
+  --ink: #3a1208; --ink-soft: #7a2a14; --accent: #d9381e;
+  --panel-bg: #fffaf0; --panel-border: 4px solid #d9381e; --panel-radius: 24px; --panel-shadow: 8px 8px 0 #7a1f10;
+  --font-display: "Pacifico", cursive; --font-body: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: #d9381e; --btn-ink: #fff; --btn-border: 3px solid #7a1f10; --btn-shadow: 5px 5px 0 #7a1f10;
+  --name-color: #d9381e; --name-shadow: 2px 2px 0 #ffd45c; --divider-glyph: "🍕"; --emoji: "🍕";
+  --gift-1: #fff; --gift-2: #f1e2c0; --ribbon: #d9381e; --gift-border: 3px solid #7a1f10; --glow: rgba(255, 255, 255, 0.9);
+  --step-from: scale(0.5) rotate(-6deg); --step-ease: cubic-bezier(0.34, 1.56, 0.64, 1); --step-dur: 0.7s;
+}
+.stage[data-theme="pizza-party"] .panel { transform: rotate(-1deg); }
+.stage[data-theme="pizza-party"] .made, .stage[data-theme="pizza-party"] .make-own { color: #3a1208; }
+
+/* Winter Frost */
+[data-theme="winter-frost"] {
+  --bg: radial-gradient(80% 50% at 50% 0%, #ffffff 0%, rgba(255, 255, 255, 0) 70%), linear-gradient(180deg, #dff1ff, #a9d3f5);
+  --ink: #12365e; --ink-soft: #2c5d93; --accent: #2f74c0;
+  --panel-bg: rgba(255, 255, 255, 0.72); --panel-border: 1px solid rgba(255, 255, 255, 0.95); --panel-radius: 30px;
+  --panel-shadow: 0 24px 60px rgba(47, 116, 192, 0.3), inset 0 0 0 6px rgba(223, 241, 255, 0.8);
+  --font-display: "Dancing Script", cursive; --btn-bg: linear-gradient(135deg, #5aa5ea, #2f74c0); --btn-ink: #fff; --btn-shadow: 0 10px 26px rgba(47, 116, 192, 0.4);
+  --name-fill: linear-gradient(135deg, #2f74c0, #7a6cf0); --name-fill-color: transparent; --divider-glyph: "❅"; --emoji: "❄️";
+  --env-1: #cfe7ff; --env-2: #7fb4ea; --env-3: #eaf5ff; --seal: #2f74c0; --glow: rgba(255, 255, 255, 0.95);
+}
+
 /* AUTO-THEMES:START — do tools/marketing/weekly-seo.mjs ghi, sửa tay được */
 /* Spooky Night */
 [data-theme="spooky-night"] {

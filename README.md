@@ -5,7 +5,7 @@
 ## Tính năng
 
 - **Trang chủ đa dịp**: hero, "Sắp đến ngày đặc biệt" (đếm ngược theo ngày hiện tại, múi giờ `Asia/Ho_Chi_Minh`), dịp nổi bật, bộ sưu tập theme.
-- **34 dịp** chia thành 8 danh mục, **35 theme** (6 theme sinh nhật cũ được giữ nguyên + 29 theme mới), mỗi dịp có lời chúc, tiêu đề, nút mở thiệp và tông (vui / trang trọng / lãng mạn) riêng.
+- **34 dịp** chia thành 8 danh mục, **47 theme** (18 theme sinh nhật gồm 6 theme cũ + 12 theme mới: Neon Arcade, Sunset Beach, Ocean Splash, Strawberry Cake, Dino Party, Vintage Paper, Rose Champagne, Unicorn Dream, Honey Bee, Paper Minimal, Pizza Party, Winter Frost; cùng 29 theme cho dịp khác), mỗi dịp có lời chúc, tiêu đề, nút mở thiệp và tông (vui / trang trọng / lãng mạn) riêng.
 - **Khám phá dịp lễ**: tìm kiếm có dấu/không dấu, lọc theo danh mục, tháng, khu vực, quốc gia (cho Ngày của Mẹ/Cha).
 - **Tạo thiệp**: chọn dịp → nhập người nhận → chọn mối quan hệ để nhận lời chúc gợi ý (sửa tự do) → tiêu đề tùy chọn → theme tương thích → live preview (điện thoại/máy tính, toàn màn hình) → tạo link, sao chép, chia sẻ.
 - **Hiệu ứng âm thanh** (`js/sfx.js`, Web Audio, không cần file): tiếng mở hộp quà/phong bì, rồi tiếng khi lời chúc hiện ra — mỗi tông có âm riêng (vui: chuông lấp lánh + pháo giấy; ấm áp: chuông nhẹ; lãng mạn: hạc cầm; trang trọng: chuông trầm, không pháo). Người gửi bật/tắt trong form (`effects=mute` trong link), người nhận có nút "Âm thanh" để tắt; chỉ phát sau khi người nhận bấm mở/phát lại (không tự phát). Live preview không phát tiếng, nghe thử bằng "Xem trước thiệp".

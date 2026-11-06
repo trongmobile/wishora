@@ -26,7 +26,11 @@ export const CATEGORIES = Object.freeze({
 export const COUNTRIES = Object.freeze({ VN: 'Việt Nam', US: 'Hoa Kỳ', CA: 'Canada', AU: 'Úc' });
 export const DEFAULT_COUNTRY = 'VN';
 
-const BIRTHDAY_THEMES = ['rose', 'galaxy', 'candy', 'gold', 'pastel', 'floral'];
+const BIRTHDAY_THEMES = [
+  'rose', 'galaxy', 'candy', 'gold', 'pastel', 'floral',
+  'neon-arcade', 'sunset-beach', 'ocean-splash', 'strawberry-cake', 'dino-party', 'vintage-paper',
+  'rose-champagne', 'unicorn-dream', 'honey-bee', 'paper-minimal', 'pizza-party', 'winter-frost',
+];
 const TET = ['tet-traditional', 'golden-prosperity', 'spring-blossom', 'modern-lunar'];
 const WOMEN = ['elegant-pink', 'floral-garden', 'soft-lavender', 'blooming-flowers', 'minimalist-appreciation'];
 const LOVE = ['romantic-rose', 'love-letter', 'pastel-hearts', 'dreamy-night', 'friendship-memories'];
@@ -64,7 +68,7 @@ export const OCCASIONS = [
     description: 'Mở quà, bánh sinh nhật, confetti — thiệp sinh nhật cá nhân hóa.',
     headline: 'Happy Birthday', introTitle: 'A Special Surprise For You', openLabel: 'Mở món quà', signoff: 'Made with love ❤️',
     tone: 'festive', music: true, featured: true, keywords: ['birthday', 'wishora', 'sinh nhat', 'tuoi moi'],
-    themeIds: BIRTHDAY_THEMES, suggestedRecipients: ['mother', 'father', 'lover', 'friend', 'colleague'],
+    themeIds: BIRTHDAY_THEMES, suggestedRecipients: ['mother', 'father', 'parents', 'grandparents', 'child', 'sibling', 'wife', 'husband', 'lover', 'friend', 'bestfriend', 'colleague', 'boss', 'teacher', 'partner'],
     cover: { glyph: '🎂', theme: 'candy' },
   }),
 
