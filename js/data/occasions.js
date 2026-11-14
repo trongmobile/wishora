@@ -208,7 +208,10 @@ export const OCCASIONS = [
     description: 'Gửi lời tri ân đến thầy cô, giảng viên và những người làm nghề giáo.',
     headline: 'Tri Ân Thầy Cô', introTitle: 'Gửi Người Lái Đò', signoff: SOLEMN_SIGNOFF, tone: 'solemn', featured: true,
     keywords: ['nha giao', '20/11', 'thay co', 'giao vien', 'giang vien'],
-    themeIds: ['education-knowledge', 'vietnamese-heritage', 'gratitude-respect'],
+    themeIds: [
+      'education-knowledge', 'vietnamese-heritage', 'gratitude-respect',
+      'chalkboard-class', 'daisy-gratitude', 'ink-calligraphy', 'riverside-ferry', 'sunflower-thanks',
+    ],
     suggestedRecipients: ['teacher', 'homeroom', 'lecturer', 'edu', 'friend'], cover: { glyph: '📚', theme: 'education-knowledge' },
   }),
   make({

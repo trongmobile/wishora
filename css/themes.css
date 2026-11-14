@@ -387,6 +387,61 @@
   --env-1: #3b5a9a; --env-2: #243b6b; --env-3: #4a6bb0; --seal: #b8902b;
   --btn-radius: 6px;
 }
+/* ---- Nhà giáo 20/11 ---- */
+[data-theme="chalkboard-class"] {
+  --bg: radial-gradient(120% 80% at 50% 0%, #2f5d4a 0%, #1d3b2e 55%, #12261d 100%);
+  --ink: #f6f1e3; --ink-soft: #c9d9c4; --accent: #f4d35e;
+  --panel-bg: rgba(246,241,227,.07); --panel-border: 2px dashed rgba(246,241,227,.45); --panel-radius: 10px; --panel-shadow: 0 0 0 7px #8b5e34, 0 24px 60px rgba(0,0,0,.5);
+  --font-display: "Dancing Script", cursive; --font-body: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: linear-gradient(135deg,#f9e083,#f4d35e); --btn-ink: #12261d; --btn-shadow: 0 8px 22px rgba(244,211,94,.3);
+  --name-color: #f4d35e;
+  --divider-glyph: "✎"; --emoji: "✏️";
+  --env-1: #3f7a5f; --env-2: #2a5a43; --env-3: #5a9a7e; --seal: #f4d35e;
+  --btn-radius: 10px;
+}
+[data-theme="daisy-gratitude"] {
+  --bg: radial-gradient(120% 80% at 50% 0%, #ffffff 0%, #eef7ea 55%, #d6ecd0 100%);
+  --ink: #25402f; --ink-soft: #476552; --accent: #2f7d4f;
+  --panel-bg: rgba(255,255,255,.9); --panel-border: 1px solid rgba(47,125,79,.25); --panel-radius: 22px; --panel-shadow: 0 20px 50px rgba(47,125,79,.2), inset 0 0 0 6px rgba(255,255,255,.7);
+  --font-display: "Quicksand", "Be Vietnam Pro", sans-serif;
+  --btn-bg: linear-gradient(135deg,#2f7d4f,#256a40); --btn-ink: #fff; --btn-shadow: 0 8px 22px rgba(47,125,79,.3);
+  --name-color: #2f7d4f;
+  --divider-glyph: "✿"; --emoji: "🌼";
+  --env-1: #bfe3c0; --env-2: #5aa876; --env-3: #e4f4e1; --seal: #e8b923;
+}
+[data-theme="ink-calligraphy"] {
+  --bg: radial-gradient(120% 80% at 50% 0%, #fbf6ea 0%, #efe3c8 100%);
+  --ink: #1c1814; --ink-soft: #5c5247; --accent: #b3202a;
+  --panel-bg: rgba(255,252,243,.92); --panel-border: 1px solid rgba(28,24,20,.3); --panel-radius: 4px; --panel-shadow: 0 18px 44px rgba(28,24,20,.18), inset 0 0 0 7px rgba(255,252,243,.92), inset 0 0 0 8px rgba(179,32,42,.5);
+  --font-display: "Cormorant Garamond", Georgia, serif; --font-body: "Lora", Georgia, serif;
+  --btn-bg: linear-gradient(135deg,#2b2520,#1c1814); --btn-ink: #fbf6ea; --btn-shadow: 0 8px 22px rgba(28,24,20,.3);
+  --name-color: #b3202a;
+  --divider-glyph: "◆"; --emoji: "🖌️";
+  --env-1: #3a322b; --env-2: #1c1814; --env-3: #54483d; --seal: #b3202a;
+  --btn-radius: 4px; --hb-transform: uppercase; --hb-spacing: 0.22em;
+}
+[data-theme="riverside-ferry"] {
+  --bg: linear-gradient(180deg, #ffe9d0 0%, #ffd2b3 38%, #bfe4e6 100%);
+  --ink: #12394a; --ink-soft: #3d6573; --accent: #c45a26;
+  --panel-bg: rgba(255,255,255,.78); --panel-border: 1px solid rgba(255,255,255,.95); --panel-radius: 20px; --panel-shadow: 0 22px 54px rgba(18,57,74,.2), inset 0 0 0 6px rgba(255,255,255,.5);
+  --font-display: "Playfair Display", Georgia, serif;
+  --btn-bg: linear-gradient(135deg,#b8501f,#a8461b); --btn-ink: #fff; --btn-shadow: 0 8px 22px rgba(168,70,27,.35);
+  --name-color: #b04a1a;
+  --divider-glyph: "✧"; --emoji: "🛶";
+  --env-1: #9fd3d8; --env-2: #3f93a0; --env-3: #cdeaec; --seal: #c45a26;
+  --btn-radius: 12px;
+}
+[data-theme="sunflower-thanks"] {
+  --bg: radial-gradient(120% 80% at 50% 0%, #fff6c9 0%, #ffe38a 60%, #f6c445 100%);
+  --ink: #4a2f05; --ink-soft: #664510; --accent: #7a4e0c;
+  --panel-bg: rgba(255,253,240,.9); --panel-border: 1px solid rgba(122,78,12,.25); --panel-radius: 16px; --panel-shadow: 0 20px 48px rgba(122,78,12,.25), inset 0 0 0 6px rgba(255,255,255,.55);
+  --font-display: "Lora", Georgia, serif;
+  --btn-bg: linear-gradient(135deg,#8a5a10,#6b430a); --btn-ink: #fff6d6; --btn-shadow: 0 8px 22px rgba(107,67,10,.35);
+  --name-color: #7a4e0c;
+  --divider-glyph: "❀"; --emoji: "🌻";
+  --env-1: #ffd54f; --env-2: #d98f00; --env-3: #ffe58f; --seal: #5b3a0b;
+  --btn-radius: 10px;
+}
 [data-theme="christmas-wonderland"] {
   --bg: radial-gradient(120% 80% at 50% 0%, #167a4d 0%, #0f5132 55%, #082b1b 100%);
   --ink: #fff3d6; --ink-soft: #ffd1a8; --accent: #f5c542;

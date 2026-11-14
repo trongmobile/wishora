@@ -209,6 +209,27 @@ const GREETING_THEMES = [
     seal: '✎', sample: 'Tôn Sư Trọng Đạo', decor: ['📚', '🎓', '✎'],
     ambient: amb(['✦', '📖', '✎'], 10, 'drift'), confetti: NONE,
   }),
+  // ---- Nhà giáo 20/11 ----
+  g('vietnam', 'chalkboard-class', 'Chalkboard Class', 'Bảng xanh rêu và nét phấn vàng, gợi nhớ những giờ học năm xưa.', ['#2f5d4a', '#f4d35e', '#12261d'], 'envelope', {
+    seal: '✎', sample: 'Cảm Ơn Thầy Cô', decor: ['✏️', '🍎', '📏'],
+    ambient: amb(['✏️', '📏', '✦', '·'], 10, 'drift'), confetti: NONE,
+  }),
+  g('vietnam', 'daisy-gratitude', 'Daisy Gratitude', 'Cúc họa mi trắng trên nền xanh lá nhạt, bó hoa tặng thầy cô.', ['#ffffff', '#2f7d4f', '#d6ecd0'], 'envelope', {
+    seal: '❀', sample: 'Gửi Thầy Cô Yêu Quý', decor: ['🌼', '🌿', '🌼'],
+    ambient: amb(['🌼', '🌿', '🍃', '✦'], 10, 'drift'), confetti: NONE,
+  }),
+  g('vietnam', 'ink-calligraphy', 'Ink Calligraphy', 'Giấy dó ngả vàng, mực đen và ấn đỏ, đậm chất thư pháp.', ['#fbf6ea', '#b3202a', '#efe3c8'], 'envelope', {
+    seal: '✦', sample: 'Nhất Tự Vi Sư', decor: ['🖌️', '📜', '🖋️'],
+    ambient: amb(['🖋️', '✦', '·'], 8, 'drift'), confetti: NONE,
+  }),
+  g('vietnam', 'riverside-ferry', 'Riverside Ferry', 'Bình minh cam đào trên dòng sông xanh ngọc, chuyến đò của người thầy.', ['#ffe9d0', '#c45a26', '#bfe4e6'], 'envelope', {
+    seal: '✦', sample: 'Người Lái Đò Thầm Lặng', decor: ['🛶', '🌾', '☀️'],
+    ambient: amb(['🌾', '🛶', '☁️', '✦'], 10, 'drift'), confetti: NONE,
+  }),
+  g('vietnam', 'sunflower-thanks', 'Sunflower Thanks', 'Vàng hướng dương ấm áp, luôn hướng về thầy cô với lòng biết ơn.', ['#fff6c9', '#7a4e0c', '#f6c445'], 'envelope', {
+    seal: '❀', sample: 'Hướng Về Thầy Cô', decor: ['🌻', '🌿', '🌻'],
+    ambient: amb(['🌻', '🍃', '✦', '·'], 10, 'drift'), confetti: NONE,
+  }),
 
   // ---- Lễ hội quốc tế ----
   g('intl', 'christmas-wonderland', 'Christmas Wonderland', 'Tuyết rơi, cây thông và ánh đèn lấp lánh.', ['#0f5132', '#c0392b', '#fff3d6'], 'gift', {
