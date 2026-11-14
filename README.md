@@ -197,6 +197,8 @@ Cách viết lời chúc nằm trong [`tools/marketing/message-rules.md`](tools/
 - Settings › Actions › General › Workflow permissions › bật "Allow GitHub Actions to create and approve pull requests".
 - Không bắt buộc: secret `GOATCOUNTER_TOKEN` (đưa số liệu vào PR), biến `GEMINI_MODEL` (model ưu tiên; mặc định `gemini-3.8-flash`, hết hạn mức hoặc quá tải thì tự thử `gemini-3.5-flash-lite` rồi `gemini-2.5-flash`).
 
+Khi Gemini trục trặc (`tools/marketing/gemini.mjs`): request quá 90 giây, lỗi mạng, hết hạn mức hay quá tải thì script thử lại rồi đổi sang model kế tiếp, tổng cộng không quá 9 phút; model từ chối request (HTTP 4xx, ví dụ model mới đặt trong `GEMINI_MODEL` không nhận tham số cũ) thì đổi model ngay. Dịp, theme hay caption nào vẫn lỗi thì bị bỏ qua, phần còn lại vẫn vào PR (PR ghi rõ phần lỗi, lần chạy có cảnh báo). Không thêm được gì thì lần chạy báo lỗi, lý do hiện ngay ở trang của lần chạy (mục Annotations), không cần mở log.
+
 Chạy tay: tab Actions › Weekly SEO › Run workflow. Thử ở máy:
 
 ```bash

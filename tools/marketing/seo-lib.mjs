@@ -157,7 +157,7 @@ export const captionSchema = {
 };
 
 /**
- * Nội dung PR. results: [{ occasion, next, accepted, rejected }]; stats: markdown số liệu (hoặc lý do không có);
+ * Nội dung PR. results: [{ occasion, next, accepted, rejected, error? }] (error: Gemini lỗi ở dịp đó); stats: markdown số liệu (hoặc lý do không có);
  * caption: { occasion, next, long, short } | { occasion, next, error } | null.
  */
 export function prBody({ model, site, results, stats, caption, themeMd = '' }) {
@@ -172,7 +172,8 @@ export function prBody({ model, site, results, stats, caption, themeMd = '' }) {
     out.push(`### ${r.occasion.name} — ${formatDate(r.next.date)}, còn ${r.next.days} ngày · [trang dịp](${site}o/${r.occasion.slug}/)`);
     const groups = Object.entries(r.accepted);
     for (const [relation, list] of groups) out.push(`**${relationLabel(relation)}**\n${list.map((m) => `- ${m}`).join('\n')}`);
-    if (!groups.length) out.push('_Không có lời chúc nào đạt yêu cầu._');
+    if (r.error) out.push(`_Gemini lỗi nên tuần này chưa có lời chúc cho dịp này; lần chạy sau sẽ thử lại._\n\n\`\`\`text\n${r.error}\n\`\`\``);
+    else if (!groups.length) out.push('_Không có lời chúc nào đạt yêu cầu._');
     if (r.rejected.length) {
       out.push(`<details><summary>Tự động loại ${r.rejected.length} lời chúc</summary>\n\n${r.rejected.map((x) => `- (${x.reason}) ${x.message}`).join('\n')}\n</details>`);
     }

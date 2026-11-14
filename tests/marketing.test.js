@@ -82,6 +82,82 @@ test('prompt, caption và nội dung PR', () => {
   for (const s of ['1 lời chúc mẫu mới', '- Lời chúc mới cho gia đình', 'https://example.com/o/x/', 'Tự động loại 1', 'thiếu token', 'Bài dài', 'Bài ngắn']) {
     assert.ok(body.includes(s), s);
   }
+
+  // Dịp Gemini lỗi: PR ghi rõ lỗi thay vì "không có lời chúc nào đạt yêu cầu".
+  const failed = prBody({
+    model: 'm', site: 'https://example.com/', stats: 's', caption: null,
+    results: [{ ...p, accepted: {}, rejected: [], error: 'Gemini: mọi model đều lỗi\na: HTTP 503' }],
+  });
+  assert.ok(failed.includes('Gemini lỗi nên tuần này chưa có lời chúc') && failed.includes('a: HTTP 503'));
+  assert.ok(!failed.includes('Không có lời chúc nào đạt yêu cầu'));
+});
+
+// ---- Gọi Gemini ----
+import { createGemini } from '../tools/marketing/gemini.mjs';
+
+const HANG = 'hang'; // request không bao giờ được trả lời, chỉ kết thúc khi bị hủy vì quá hạn chờ
+/** Gemini với fetch giả: mỗi request lấy bước kế tiếp trong `script` (HANG, Error để ném, hoặc { status, json }). Hạn chờ một request: 20 ms. */
+function fakeGemini(script, over = {}) {
+  const calls = []; // model của từng request
+  const waits = [];
+  const fetch = async (url, init) => {
+    calls.push(String(url).match(/models\/([^:]+)/)[1]);
+    const step = script.shift();
+    if (step === HANG) await new Promise((_, reject) => init.signal.addEventListener('abort', () => reject(init.signal.reason)));
+    if (step instanceof Error) throw step;
+    return new Response(JSON.stringify(step.json), { status: step.status ?? 200 });
+  };
+  const gemini = createGemini({
+    key: 'k', models: ['a', 'b', 'c'], fetch, sleep: async (ms) => { waits.push(ms); }, log: () => {},
+    limits: { requestMs: 20, totalMs: 60_000, maxWaitMs: 60_000 }, ...over,
+  });
+  return { gemini, calls, waits };
+}
+const answer = (text) => ({ json: { candidates: [{ content: { parts: [{ text }] } }] } });
+const httpError = (status, error) => ({ status, json: { error } });
+
+test('Gemini: request treo thì sang model sau ngay; lỗi mạng, quá tải, JSON hỏng thì thử lại; lần gọi sau bắt đầu từ model dùng được', async () => {
+  const { gemini, calls, waits } = fakeGemini([
+    HANG, // a treo → không thử lại a
+    new TypeError('fetch failed'), // b lỗi mạng → thử lại b
+    answer('[1]'),
+    httpError(429, { status: 'RESOURCE_EXHAUSTED', message: 'quota', details: [{ retryDelay: '37s' }] }), // lần gọi 2: chờ theo gợi ý của Google
+    answer('[{"cắt giữa chừng"'), // JSON hỏng → sang c
+    answer('[2]'),
+  ]);
+  assert.deepEqual(await gemini.generate('p', {}), [1]);
+  assert.deepEqual(calls, ['a', 'b', 'b']);
+  assert.equal(gemini.model, 'b');
+  assert.deepEqual(await gemini.generate('p', {}), [2]);
+  assert.deepEqual(calls.slice(3), ['b', 'b', 'c'], 'không quay lại model a đã treo');
+  assert.deepEqual(waits, [5000, 37000]);
+});
+
+test('Gemini: model từ chối request (4xx) thì sang model sau, không thử lại; mọi model lỗi thì báo đủ lý do; hết tổng hạn chờ thì không gọi nữa', async () => {
+  // Model mới đặt đầu danh sách nhưng không nhận kiểu request này: model cũ vẫn làm được việc.
+  const picky = fakeGemini([httpError(400, { status: 'INVALID_ARGUMENT', message: 'temperature is not supported' }), answer('[1]'), answer('[2]')]);
+  assert.deepEqual(await picky.gemini.generate('p', {}), [1]);
+  assert.deepEqual(await picky.gemini.generate('p', {}), [2]);
+  assert.deepEqual(picky.calls, ['a', 'b', 'b'], 'lần gọi sau không hỏi lại model đã từ chối');
+
+  const keyError = () => httpError(400, { status: 'INVALID_ARGUMENT', message: 'API key not valid' });
+  const bad = fakeGemini([keyError(), keyError(), keyError()]);
+  await assert.rejects(bad.gemini.generate('p', {}), /mọi model đều lỗi\na: HTTP 400 INVALID_ARGUMENT API key not valid/);
+  assert.deepEqual(bad.calls, ['a', 'b', 'c']);
+
+  const down = fakeGemini([httpError(404, { status: 'NOT_FOUND', message: 'no model' }), httpError(503, {}), httpError(503, {}), HANG]);
+  await assert.rejects(down.gemini.generate('p', {}), (err) => {
+    for (const s of ['mọi model đều lỗi', 'a: HTTP 404', 'b: HTTP 503', 'c: không trả lời sau']) assert.ok(err.message.includes(s), s);
+    assert.equal(err.message.match(/b: HTTP 503/g).length, 1, 'hai lần thử cùng lỗi chỉ ghi một dòng');
+    return true;
+  });
+  assert.deepEqual(down.calls, ['a', 'b', 'b', 'c']);
+
+  let t = 0;
+  const late = fakeGemini([answer('[1]')], { now: () => t, limits: { requestMs: 1000, totalMs: 5000, maxWaitMs: 1000 } });
+  t = 5000;
+  await assert.rejects(late.gemini.generate('p', {}), /hết .* phút dành cho một lần chạy/);
+  assert.deepEqual(late.calls, []);
 });
 
 // ---- Theme tự sinh ----
