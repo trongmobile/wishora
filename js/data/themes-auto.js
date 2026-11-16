@@ -47,5 +47,49 @@ export const AUTO_THEMES = [
       ],
       "charRatio": 0.2
     }
+  },
+  {
+    "id": "winter-pine",
+    "name": "Winter Pine",
+    "description": "Rừng thông mùa đông, sắc xanh trầm và ánh vàng ấm áp.",
+    "colors": [
+      "#1b3a2b",
+      "#d4af37",
+      "#0d1f17"
+    ],
+    "intro": "gift",
+    "group": "intl",
+    "occasionId": "christmas",
+    "sample": "Giáng Sinh An Lành",
+    "seal": "🎄",
+    "decor": [
+      "❄️",
+      "⭐",
+      "🎄"
+    ],
+    "ambient": {
+      "chars": [
+        "❄️",
+        "✨",
+        "⭐",
+        "🌲"
+      ],
+      "count": 18,
+      "motion": "fall"
+    },
+    "confetti": {
+      "colors": [
+        "#d4af37",
+        "#ffffff",
+        "#8c7123",
+        "#c85a32",
+        "#2e5a44"
+      ],
+      "chars": [
+        "❄️",
+        "✨"
+      ],
+      "charRatio": 0.2
+    }
   }
 ];
