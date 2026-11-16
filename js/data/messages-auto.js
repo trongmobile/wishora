@@ -121,16 +121,21 @@ export const AUTO_MESSAGES = {
     "colleague": [
       "Chúc bạn một năm mới làm việc thật hiệu suất, ít tăng ca và đạt được nhiều bước tiến mới trong sự nghiệp.",
       "Cảm ơn bạn đã luôn hỗ trợ mình trong công việc suốt năm qua. Chúc bạn năm mới nhiều năng lượng và gặt hái nhiều thành công.",
-      "Chúc bạn và team mình năm mới hợp tác ăn ý, dự án nào cũng suôn sẻ và về đích đúng hẹn."
+      "Chúc bạn và team mình năm mới hợp tác ăn ý, dự án nào cũng suôn sẻ và về đích đúng hẹn.",
+      "Chúc mừng năm mới! Chúc bạn năm nay đi làm ngày nào cũng tràn đầy hứng khởi, ý tưởng tuôn trào không ngớt và gặp toàn những đồng đội dễ thương hết nấc.",
+      "Năm mới gõ cửa rồi, chúc bạn mở màn một năm thật rực rỡ! Mong bạn sớm chinh phục được những mục tiêu lớn và luôn giữ vững phong độ tuyệt vời như hiện tại."
     ],
     "lover": [
       "Khoảnh khắc giao thừa có bạn bên cạnh là điều tuyệt vời nhất. Chúc cho tình yêu của chúng ta năm mới càng thêm gắn bó.",
-      "Mong rằng năm mới này mỗi ngày trôi qua của chúng ta đều là những ngày vui vẻ và hạnh phúc trọn vẹn."
+      "Mong rằng năm mới này mỗi ngày trôi qua của chúng ta đều là những ngày vui vẻ và hạnh phúc trọn vẹn.",
+      "Chúc mừng năm mới! Mong năm nay chúng mình sẽ cùng nhau đi thật nhiều nơi mới mẻ, ăn thật nhiều món ngon và lúc nào cũng rộn ràng tiếng cười bên nhau.",
+      "Năm mới đến tưng bừng rồi! Chúc người thương của mình luôn rạng rỡ, mọi ước mơ đều thành hiện thực và nhớ là luôn có mình cổ vũ ngay phía sau nhé."
     ],
     "friend": [
       "Chúc mừng năm mới! Chúc bạn năm nay ăn ngon ngủ kỹ, rủ đi đâu cũng có mặt ngay, lúc nào cũng rạng rỡ và tràn đầy năng lượng nhé.",
       "Chào năm mới! Mong bạn sớm hoàn thành hết mấy kế hoạch còn dang dở, ngày nào cũng có chuyện vui để kể cho tụi mình nghe.",
-      "Năm mới tưng bừng nhé bạn! Chúc mọi dự định ấp ủ bấy lâu đều thành hiện thực, đi đến đâu cũng gặp toàn điều may mắn và dễ thương."
+      "Năm mới tưng bừng nhé bạn! Chúc mọi dự định ấp ủ bấy lâu đều thành hiện thực, đi đến đâu cũng gặp toàn điều may mắn và dễ thương.",
+      "Chúc mừng năm mới bạn hiền! Năm nay chúc bạn ngày càng tươi trẻ, thử được hết mấy sở thích mới toanh và tụi mình sớm có kèo tụ tập linh đình nhé."
     ],
     "default": [
       "Khép lại năm cũ và mở ra trang mới thật tưng bừng! Chúc mừng năm mới với thật nhiều năng lượng tích cực, cơ hội mới và niềm vui mỗi ngày.",
@@ -142,22 +147,47 @@ export const AUTO_MESSAGES = {
     "family": [
       "Pháo hoa sáng rực đêm giao thừa, chúc nhà mình năm mới lúc nào cũng rộn rã tiếng cười và ngập tràn may mắn.",
       "Khoảnh khắc thiêng liêng này, chỉ mong gia đình ta luôn mạnh khỏe, bình an và sát cánh bên nhau qua mọi chặng đường.",
-      "Năm cũ qua đi, chúc mọi thành viên trong nhà mình đón một năm mới với thật nhiều năng lượng tích cực và niềm vui mới."
+      "Năm cũ qua đi, chúc mọi thành viên trong nhà mình đón một năm mới với thật nhiều năng lượng tích cực và niềm vui mới.",
+      "Giao thừa ấm cúng bên nhau, chúc nhà mình năm mới lúc nào cũng đong đầy yêu thương, gắn kết và đón nhận nhiều tài lộc.",
+      "Đêm chuyển giao năm mới, mong gia đình mình luôn giữ được sự bình yên, mọi thành viên đều mạnh khỏe và thuận lợi trong mọi việc."
     ],
     "parents": [
       "Giây phút giao thừa chuyển giao năm mới, con chúc ba mẹ luôn dồi dào sức khỏe, an khang và mãi là điểm tựa vững chắc của chúng con.",
       "Đêm giao thừa rộn rã tiếng pháo hoa, con cảm ơn ba mẹ cả năm qua đã vất vả lo toan cho gia đình. Năm mới đến rồi, con chúc ba mẹ luôn vui tươi, nhẹ nhàng và đón một cái Tết thật tưng bừng!",
-      "Thời khắc giao thừa đã điểm, con chúc ba mẹ bước sang năm mới lúc nào cũng trẻ trung, yêu đời và có thật nhiều chuyến du xuân rộn ràng niềm vui. Cả nhà mình năm nay sẽ có thêm nhiều kỷ niệm đẹp ba mẹ nhé!"
+      "Thời khắc giao thừa đã điểm, con chúc ba mẹ bước sang năm mới lúc nào cũng trẻ trung, yêu đời và có thật nhiều chuyến du xuân rộn ràng niềm vui. Cả nhà mình năm nay sẽ có thêm nhiều kỷ niệm đẹp ba mẹ nhé!",
+      "Giao thừa thiêng liêng đã điểm, con chúc ba mẹ năm mới an khang thịnh vượng, lúc nào cũng an nhiên và hạnh phúc bên con cháu.",
+      "Cảm ơn ba mẹ đã luôn yêu thương và chăm lo cho chúng con suốt năm qua. Giao thừa đến rồi, con chúc ba mẹ thật nhiều sức khỏe để tận hưởng một năm mới thật an lành."
     ],
     "lover": [
       "Cảm ơn em đã cùng anh đi qua biết bao kỷ niệm rực rỡ trong năm cũ. Tiếng pháo hoa giao thừa vang lên rồi, mình cùng nắm tay nhau đón một năm mới thật tưng bừng và ngọt ngào nhé!",
       "Giao thừa đến rồi, em chúc anh bước sang năm mới luôn rạng rỡ, tràn đầy hứng khởi và có thật nhiều chuyến đi vui hết nấc cùng em. Mình lại tiếp tục quậy tưng bừng trong năm mới thôi!",
-      "Khoảnh khắc chuyển giao năm mới này, cảm ơn anh vì một năm qua đã luôn chiều chuộng và làm em cười mỗi ngày. Chúc anh năm mới lúc nào cũng vui vẻ, tươi tắn và bên em thật lâu nhé!"
+      "Khoảnh khắc chuyển giao năm mới này, cảm ơn anh vì một năm qua đã luôn chiều chuộng và làm em cười mỗi ngày. Chúc anh năm mới lúc nào cũng vui vẻ, tươi tắn và bên em thật lâu nhé!",
+      "Đêm giao thừa ngập tràn ánh sáng, chúc người thương của anh năm mới luôn xinh đẹp, ngọt ngào và mãi là nguồn động lực lớn nhất của anh."
     ],
     "friend": [
       "Pháo hoa giao thừa sắp nổ rồi, chúc bạn năm mới ăn ngon ngủ kỹ, đi chơi không lo kẹt xe và lúc nào cũng cười tươi hết cỡ. Năm mới nhớ tụ tập cùng hội mình thật nhiều đấy nhé!",
       "Cảm ơn bạn vì một năm qua đã luôn lắng nghe và đồng hành cùng mình qua bao phen dở khóc dở cười. Giao thừa gõ cửa rồi, chúc bạn năm mới bùng nổ năng lượng và rực rỡ hơn nữa nhé!",
       "Chuông giao thừa điểm rồi, gác lại hết mọi áp lực năm cũ sang một bên thôi bạn ơi! Chúc bạn bước sang năm mới tinh thần phơi phới, làm gì cũng hanh thông và gặp toàn chuyện vui bất ngờ."
+    ],
+    "default": [
+      "Khoảnh khắc giao thừa ấm áp, chúc bạn bước sang năm mới với một khởi đầu mới mẻ, tràn đầy hứng khởi và gặt hái nhiều thành công.",
+      "Tiếng pháo hoa vang lên chào năm mới, chúc bạn và những người thân yêu có một đêm giao thừa ngập tràn niềm vui và bình yên.",
+      "Gác lại những bộn bề của năm cũ, chúc bạn đón chào giao thừa với tâm thế nhẹ nhàng và một năm mới rực rỡ hơn."
+    ]
+  },
+  "tet": {
+    "parents": [
+      "Mong ba mẹ luôn giữ gìn sức khỏe để lúc nào nhà mình cũng rộn rã tiếng cười trong những ngày đầu năm mới.",
+      "Năm mới đến, con chỉ mong ba mẹ thật nhiều sức khỏe, bình an và thảnh thơi tận hưởng niềm vui bên con cái.",
+      "Cảm ơn ba mẹ đã luôn là điểm tựa vững chắc cho con. Con chúc ba mẹ năm mới ngập tràn niềm vui và an yên."
+    ],
+    "grandparents": [
+      "Kính chúc ông bà năm mới phúc thọ an khang, mỗi ngày trôi qua đều là những giây phút bình yên bên con cháu.",
+      "Cháu chúc ông bà luôn dồi dào sức khỏe, tinh thần minh mẫn để làm chỗ dựa tinh thần ấm áp cho cả nhà.",
+      "Mong ông bà sang năm mới luôn vui khỏe, an hưởng tuổi già và tràn ngập niềm vui sum vầy cùng con cháu."
+    ],
+    "family": [
+      "Chúc cho mái nhà chung của chúng ta năm mới luôn đong đầy yêu thương, mọi thành viên đều khỏe mạnh và bình an."
     ]
   }
 };
