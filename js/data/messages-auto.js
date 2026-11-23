@@ -162,12 +162,15 @@ export const AUTO_MESSAGES = {
       "Cảm ơn em đã cùng anh đi qua biết bao kỷ niệm rực rỡ trong năm cũ. Tiếng pháo hoa giao thừa vang lên rồi, mình cùng nắm tay nhau đón một năm mới thật tưng bừng và ngọt ngào nhé!",
       "Giao thừa đến rồi, em chúc anh bước sang năm mới luôn rạng rỡ, tràn đầy hứng khởi và có thật nhiều chuyến đi vui hết nấc cùng em. Mình lại tiếp tục quậy tưng bừng trong năm mới thôi!",
       "Khoảnh khắc chuyển giao năm mới này, cảm ơn anh vì một năm qua đã luôn chiều chuộng và làm em cười mỗi ngày. Chúc anh năm mới lúc nào cũng vui vẻ, tươi tắn và bên em thật lâu nhé!",
-      "Đêm giao thừa ngập tràn ánh sáng, chúc người thương của anh năm mới luôn xinh đẹp, ngọt ngào và mãi là nguồn động lực lớn nhất của anh."
+      "Đêm giao thừa ngập tràn ánh sáng, chúc người thương của anh năm mới luôn xinh đẹp, ngọt ngào và mãi là nguồn động lực lớn nhất của anh.",
+      "Khoảnh khắc giao thừa rộn ràng tiếng pháo hoa, anh chỉ muốn ôm em thật chặt để chào đón khởi đầu mới của hai đứa. Chúc em năm mới luôn rạng rỡ, an yên và cùng anh viết tiếp thật nhiều niềm vui!"
     ],
     "friend": [
       "Pháo hoa giao thừa sắp nổ rồi, chúc bạn năm mới ăn ngon ngủ kỹ, đi chơi không lo kẹt xe và lúc nào cũng cười tươi hết cỡ. Năm mới nhớ tụ tập cùng hội mình thật nhiều đấy nhé!",
       "Cảm ơn bạn vì một năm qua đã luôn lắng nghe và đồng hành cùng mình qua bao phen dở khóc dở cười. Giao thừa gõ cửa rồi, chúc bạn năm mới bùng nổ năng lượng và rực rỡ hơn nữa nhé!",
-      "Chuông giao thừa điểm rồi, gác lại hết mọi áp lực năm cũ sang một bên thôi bạn ơi! Chúc bạn bước sang năm mới tinh thần phơi phới, làm gì cũng hanh thông và gặp toàn chuyện vui bất ngờ."
+      "Chuông giao thừa điểm rồi, gác lại hết mọi áp lực năm cũ sang một bên thôi bạn ơi! Chúc bạn bước sang năm mới tinh thần phơi phới, làm gì cũng hanh thông và gặp toàn chuyện vui bất ngờ.",
+      "Đồng hồ sắp điểm sang năm mới rồi, chúc bạn năm nay tha hồ vi vu khám phá những điều mới mẻ và có thêm cả rổ kỷ niệm đáng nhớ. Giao thừa thật tưng bừng và rộn rã tiếng cười nhé bạn thân!",
+      "Đêm nay thức trọn vẹn đón giao thừa cùng tiếng pháo hoa rộn rã nhé bạn ơi! Chúc bạn sang năm mới luôn dồi dào sức khỏe, giữ mãi nụ cười tươi rói và lúc nào cũng gặp toàn điều may mắn."
     ],
     "default": [
       "Khoảnh khắc giao thừa ấm áp, chúc bạn bước sang năm mới với một khởi đầu mới mẻ, tràn đầy hứng khởi và gặt hái nhiều thành công.",
@@ -188,6 +191,36 @@ export const AUTO_MESSAGES = {
     ],
     "family": [
       "Chúc cho mái nhà chung của chúng ta năm mới luôn đong đầy yêu thương, mọi thành viên đều khỏe mạnh và bình an."
+    ],
+    "relatives": [
+      "Năm mới sang, chúc đại gia đình mình một năm vạn sự hanh thông, nhà cửa lúc nào cũng rộn ràng tiếng cười.",
+      "Cháu chúc các bác các cô chú năm mới bình an, gặt hái nhiều thành quả mới và luôn giữ vững lửa nhiệt huyết.",
+      "Kính chúc họ hàng nội ngoại năm mới đong đầy yêu thương, mọi dự định đều thành hiện thực và nhiều may mắn."
+    ],
+    "boss": [
+      "Kính chúc sếp năm mới nhiều sinh khí mới, đưa tập thể đi đến những cột mốc rực rỡ và luôn giữ vững phong độ.",
+      "Nhân dịp xuân về, kính chúc sếp cùng gia quyến an khang thịnh vượng, vạn sự cát tường và luôn tràn đầy năng lượng.",
+      "Chúc sếp năm mới thắng lợi mới, gặt hái nhiều thành tựu lớn trong công việc và có những phút giây sum vầy trọn vẹn."
+    ],
+    "partner": [
+      "Kính chúc quý đối tác một năm mới bứt phá mạnh mẽ, hợp tác bền chặt và cùng nhau gặt hái nhiều thắng lợi mới.",
+      "Năm mới sang, chúc quý đối tác vạn sự khởi sắc, dòng tiền hanh thông và uy tín ngày càng lan tỏa rộng rãi."
+    ]
+  },
+  "valentine": {
+    "wife": [
+      "Cảm ơn em đã chăm lo cho tổ ấm nhỏ của chúng mình. Chúc vợ yêu một ngày Valentine thật hạnh phúc và ngập tràn nụ cười.",
+      "Mỗi ngày trôi qua, anh càng thêm yêu sự dịu dàng và thấu hiểu của em. Chúc người bạn đời của anh một mùa Valentine ngọt ngào.",
+      "Cuộc sống bận rộn ngoài kia, chỉ cần về nhà thấy nụ cười của em là anh yên lòng. Chúc vợ một ngày 14 tháng 2 trọn vẹn yêu thương."
+    ],
+    "husband": [
+      "Cảm ơn bờ vai vững chãi của anh đã luôn là chỗ dựa bình yên cho em. Chúc chồng yêu một ngày Valentine ấm áp và luôn vui vẻ.",
+      "Nhiều lúc chẳng cần nói gì nhiều, chỉ cần có anh ở cạnh là em thấy đủ đầy. Chúc mừng ngày lễ tình yêu, người đàn ông của em.",
+      "Cảm ơn anh vì sự kiên nhẫn và cách anh yêu thương em mỗi ngày. Chúc chồng một mùa Valentine thật ngọt ngào bên gia đình nhỏ."
+    ],
+    "friend": [
+      "Chúc đứa bạn thân của tôi sớm thoát ế để còn có người đi chơi ngày này. Valentine vui vẻ và luôn rực rỡ nhé!",
+      "Cảm ơn bạn vì luôn là đứa chịu nghe tôi than thở mọi chuyện trên đời. Chúc bạn một mùa Valentine thật nhiều niềm vui và sớm tìm được một nửa ưng ý."
     ]
   }
 };

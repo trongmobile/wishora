@@ -91,5 +91,48 @@ export const AUTO_THEMES = [
       ],
       "charRatio": 0.2
     }
+  },
+  {
+    "id": "frosty-pine",
+    "name": "Frosty Pine",
+    "description": "Sắc xanh băng giá và ánh đèn vàng rực rỡ mùa lễ hội",
+    "colors": [
+      "#143642",
+      "#e0a96d",
+      "#0f2933"
+    ],
+    "intro": "gift",
+    "group": "intl",
+    "occasionId": "christmas",
+    "sample": "Giáng Sinh An Lành",
+    "seal": "🎄",
+    "decor": [
+      "❄️",
+      "🎁",
+      "⭐"
+    ],
+    "ambient": {
+      "chars": [
+        "❄️",
+        "✨",
+        "⭐",
+        "🌨️"
+      ],
+      "count": 18,
+      "motion": "fall"
+    },
+    "confetti": {
+      "colors": [
+        "#e0a96d",
+        "#f0f7f4",
+        "#c8965c",
+        "#ffffff"
+      ],
+      "chars": [
+        "❄️",
+        "✨"
+      ],
+      "charRatio": 0.2
+    }
   }
 ];
