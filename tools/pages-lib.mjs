@@ -41,8 +41,20 @@ export function wishPhrase(o) {
   return /^(chúc|cảm ơn|xin lỗi)/.test(t) ? `Lời ${t}` : `Lời chúc ${t}`;
 }
 
-/** Tiêu đề trang cho Google (từ khóa trước, thương hiệu sau). og:title vẫn là tên dịp gọn vì người nhận thiệp thấy nó trên Zalo/Facebook. */
-export const seoTitle = (o) => `Thiệp ${topicOf(o)} online miễn phí — Wishora`;
+/** Số lời chúc mẫu hiện trên trang dịp (đếm giống occasionContent). */
+export function wishCount(o) {
+  const t = o.messageTemplates;
+  return (t.default ?? []).length + Object.entries(t)
+    .filter(([rel, items]) => rel !== 'default' && RELATIONS[rel] && items.length)
+    .reduce((n, [, items]) => n + items.length, 0);
+}
+
+/** Thay {n} bằng số lời chúc mẫu, để tiêu đề tự đúng khi workflow SEO hằng tuần thêm lời chúc. */
+const fillSeo = (text, o) => text.replaceAll('{n}', String(wishCount(o)));
+
+/** Tiêu đề trang cho Google (từ khóa trước, thương hiệu sau). og:title vẫn là tên dịp gọn vì người nhận thiệp thấy nó trên Zalo/Facebook.
+ * Dịp có `seo.title` trong occasions.js thì dùng nó (dịp theo mùa, kèm năm); còn lại dùng mẫu chung. */
+export const seoTitle = (o) => (o.seo?.title ? fillSeo(o.seo.title, o) : `Thiệp ${topicOf(o)} online miễn phí — Wishora`);
 
 const WEEKDAYS = ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
 const NTH = ['', 'đầu tiên', 'thứ hai', 'thứ ba', 'thứ tư'];
@@ -85,7 +97,9 @@ export function renderPage(template, o) {
   const site = siteUrl(template);
   const title = `Thiệp ${o.name} — Wishora`;
   const desc = `${o.description} Tạo thiệp chúc mừng cá nhân hóa và gửi bằng một đường link.`;
-  const seoDesc = `${o.description} Lời chúc mẫu có sẵn, tạo thiệp online miễn phí, gửi bằng một link.`;
+  const seoDesc = o.seo?.description
+    ? fillSeo(o.seo.description, o)
+    : `${o.description} Lời chúc mẫu có sẵn, tạo thiệp online miễn phí, gửi bằng một link.`;
   const url = `${site}o/${o.slug}/`;
   const image = `${site}${ogPath(o)}`;
   let h = template.replace(/<title>[^<]*<\/title>/, `<title>${esc(seoTitle(o))}</title>`);

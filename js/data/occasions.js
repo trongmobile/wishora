@@ -75,6 +75,10 @@ export const OCCASIONS = [
   // ---------- Tết & năm mới ----------
   make({
     id: 'new-year', name: 'Tết Dương lịch', category: 'tet', ...fixed(1, 1), region: ['VN', 'international'],
+    seo: {
+      title: '{n} lời chúc Tết Dương lịch 2027 + thiệp năm mới online — Wishora',
+      description: '{n} lời chúc năm mới 2027 cho người yêu, gia đình, bạn bè, đồng nghiệp. Tạo thiệp Tết Dương lịch online miễn phí, gửi qua Zalo, Messenger, không cần đăng ký.',
+    },
     description: 'Chào năm mới dương lịch 01/01 với những lời chúc khởi đầu tốt đẹp.',
     headline: 'Chúc Mừng Năm Mới', introTitle: 'Chào Năm Mới', tone: 'festive', featured: true,
     keywords: ['tet duong lich', 'nam moi', 'new year', '1/1'],
@@ -83,6 +87,10 @@ export const OCCASIONS = [
   }),
   make({
     id: 'tet', name: 'Tết Nguyên Đán', category: 'tet', ...lunar('tet'),
+    seo: {
+      title: '{n} lời chúc Tết 2027 Đinh Mùi hay + thiệp Tết online — Wishora',
+      description: '{n} lời chúc Tết Nguyên Đán 2027 cho ba mẹ, ông bà, họ hàng, sếp, đối tác, bạn bè. Tạo thiệp Tết online miễn phí, gửi qua Zalo, Messenger, không cần đăng ký.',
+    },
     description: 'Mùng 1 Tết âm lịch — hoa mai, hoa đào, câu đối và ánh vàng may mắn.',
     headline: 'Chúc Mừng Năm Mới', introTitle: 'Xuân Về Chúc Phúc', openLabel: 'Mở lì xì', signoff: 'Vạn sự như ý 🌼',
     couplet: ['Vạn sự như ý', 'Tấn tài tấn lộc'], tone: 'festive', featured: true,
@@ -92,6 +100,10 @@ export const OCCASIONS = [
   }),
   make({
     id: 'giao-thua', name: 'Giao thừa', category: 'tet', ...lunar('tet', -1),
+    seo: {
+      title: '{n} lời chúc giao thừa 2027 hay + thiệp online miễn phí — Wishora',
+      description: '{n} lời chúc giao thừa đón năm Đinh Mùi 2027 cho gia đình, ba mẹ, người yêu, bạn bè. Tạo thiệp online miễn phí, gửi qua Zalo, Messenger đúng lúc giao thừa.',
+    },
     description: 'Khoảnh khắc thiêng liêng chuyển giao giữa năm cũ và năm mới âm lịch.',
     headline: 'Đêm Giao Thừa', introTitle: 'Khoảnh Khắc Giao Thừa', openLabel: 'Mở thiệp', tone: 'festive',
     keywords: ['giao thua', 'dem 30', 'tat nien'],
@@ -167,6 +179,10 @@ export const OCCASIONS = [
   // ---------- Tình yêu & tình bạn ----------
   make({
     id: 'valentine', name: 'Valentine 14/2', category: 'love', ...fixed(2, 14), region: ['international', 'VN'],
+    seo: {
+      title: '{n} lời chúc Valentine 14/2 ngọt ngào + thiệp online — Wishora',
+      description: '{n} lời chúc Valentine 14/2 cho người yêu, vợ, chồng và bạn bè. Tạo thiệp tình yêu online miễn phí, gửi qua Zalo, Messenger, không cần đăng ký.',
+    },
     description: 'Gửi lời yêu thương đến người đặc biệt nhân ngày lễ tình yêu.',
     headline: 'Happy Valentine', introTitle: 'Một Lá Thư Gửi Người Thương', tone: 'romantic', featured: true,
     keywords: ['valentine', '14/2', 'tinh yeu', 'ngay le tinh nhan'],
@@ -234,6 +250,10 @@ export const OCCASIONS = [
   // ---------- Quốc tế & lễ hội ----------
   make({
     id: 'christmas', name: 'Giáng sinh 25/12', category: 'international', ...fixed(12, 25), region: ['international', 'VN'],
+    seo: {
+      title: '{n} lời chúc Giáng sinh 2026 hay + thiệp Noel online — Wishora',
+      description: '{n} lời chúc Giáng sinh, Noel 2026 cho người yêu, gia đình, bạn bè, đồng nghiệp. Tạo thiệp online miễn phí, gửi qua Zalo, Messenger, không cần đăng ký.',
+    },
     description: 'Tuyết rơi, cây thông và ánh đèn Noel — lời chúc Giáng sinh an lành.',
     headline: 'Merry Christmas', introTitle: 'Giáng Sinh An Lành', openLabel: 'Mở món quà', signoff: 'Merry Christmas 🎄', tone: 'festive', featured: true,
     keywords: ['giang sinh', 'noel', 'christmas', '25/12'],

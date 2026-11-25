@@ -52,7 +52,9 @@ test('trang theo dịp có sẵn nội dung của dịp trong HTML (không cần
   assert.equal(wishPhrase(byId('graduation')), 'Lời chúc mừng tốt nghiệp');
   assert.equal(wishPhrase(byId('thank-you')), 'Lời cảm ơn');
   assert.equal(wishPhrase(byId('free-wish')), 'Lời chúc tự do');
-  assert.equal(seoTitle(byId('tet')), 'Thiệp Tết Nguyên Đán online miễn phí — Wishora');
+  assert.equal(seoTitle(byId('women-day-20-10')), 'Thiệp Ngày Phụ nữ Việt Nam 20/10 online miễn phí — Wishora');
+  // Dịp có seo.title: {n} được thay bằng số lời chúc mẫu.
+  assert.match(seoTitle(byId('tet')), /^\d+ lời chúc Tết 2027 Đinh Mùi hay \+ thiệp Tết online — Wishora$/);
 });
 
 test('index.html: link tới mọi trang dịp, sitemap.xml và robots.txt khớp dữ liệu (chạy `npm run build:pages` nếu đỏ)', () => {
